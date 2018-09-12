@@ -2,19 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AbschlussKonzertKadetten.Context;
+using AbschlussKonzertKadetten.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AbschlussKonzertKadetten.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class ApiController : ControllerBase
     {
+        private readonly KadettenContext _context;
+        public ApiController(KadettenContext context)
+        {
+            _context = context;
+        }
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public ActionResult<IEnumerable<Ticket>> Get()
         {
-            return new string[] { "value1", "value2" };
+            return _context.Tickets;
         }
 
         // GET api/values/5
