@@ -13,9 +13,22 @@ namespace AbschlussKonzertKadetten.Context
         public KadettenContext(DbContextOptions options) : base(options)
         {
         }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            modelBuilder.Entity<TicketOrder>().HasKey(sc => new { sc.OrderId, sc.TicketId });
+            base.OnModelCreating(builder);
+
+            builder.Entity<TicketOrder>().HasKey(x => new { x.OrderId, x.TicketId });
+
+            builder.Entity<TicketOrder>()
+                .HasOne(m => m.Order)
+                .WithMany(ma => ma.TicketOrders)
+                .HasForeignKey(m => m.OrderId);
+
+            builder.Entity<TicketOrder>()
+                .HasOne(m => m.Ticket)
+                .WithMany(ma => ma.TicketOrders)
+                .HasForeignKey(a => a.TicketId);
+
         }
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<Client> Clients { get; set; }
