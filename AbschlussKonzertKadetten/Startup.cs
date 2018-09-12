@@ -1,39 +1,30 @@
 ﻿using AbschlussKonzertKadetten.Context;
-using AbschlussKonzertKadetten.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 namespace AbschlussKonzertKadetten
 {
     public class Startup
     {
-        private readonly IOptions<MyConfig> _config;
-        public IConfiguration Configuration { get; }
-
-        public Startup(IConfiguration configuration, IOptions<MyConfig> config)
+        public Startup(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json");
-
-            Configuration = builder.Build();
-            _config = config;
+            Configuration = configuration;
         }
 
+        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<MyConfig>(Configuration.GetSection("MyConfig"));
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
+            var connection = @"Server=(localdb)\mssqllocaldb;Database=AbschlussKonzertKadetten;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<KadettenContext>
-                (options => options.UseSqlServer(_config.Value.Connection));
+                (options => options.UseSqlServer(connection));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,7 +40,10 @@ namespace AbschlussKonzertKadetten
             }
 
             app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute("default", "{controller=Ticket}/{action=Get}/{id?}");
+            });
         }
     }
 }
