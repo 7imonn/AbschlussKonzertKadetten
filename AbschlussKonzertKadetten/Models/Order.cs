@@ -15,9 +15,8 @@ namespace AbschlussKonzertKadetten.Models
         public DateTime OrderDate { get; set; }
         [Required]
         [ForeignKey("Id")]
-        public virtual Ticket Tickets { get; set; }
-        [Required]
-        [ForeignKey("Id")]
         public virtual Client Clients { get; set; }
+        public virtual ICollection<TicketOrder> TicketOrders { get; set; }
+
     }
 }

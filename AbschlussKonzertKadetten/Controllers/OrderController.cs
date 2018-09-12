@@ -38,15 +38,26 @@ namespace AbschlussKonzertKadetten.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody] Order order)
+        public void Post([FromBody] ViewModelOrder order)
         {
-            _context.Order.Add(order);
+            
+            _context.Order.Add(new Order()
+            {
+                Bemerkung = order.Bemerkung,
+                OrderDate = DateTime.Now,
+                Clients = new Client()
+                {
+                    Email = order.Email,
+                    FirstName = order.FirstName,
+                    LastName = order.LastName
+                }
+            });
             _context.SaveChanges();
         }
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] Order value)
+        public IActionResult Put(int id, [FromBody] ViewModelOrder value)
         {
             var order = _context.Order.Find(id);
             if (order == null)
@@ -54,9 +65,9 @@ namespace AbschlussKonzertKadetten.Controllers
                 return NotFound();
             }
 
-            order.Bemerkung = value.Bemerkung;
-            order.Clients = value.Clients;
-            order.Tickets = value.Tickets;
+            //order.Bemerkung = value.Email;
+            //order.Clients = value.FirstName;
+            //order.Tickets = value.LastName;
 
             _context.Order.Update(order);
             _context.SaveChanges();
