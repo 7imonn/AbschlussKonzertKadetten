@@ -1,4 +1,4 @@
-const uri = 'https://localhost:44389/api/Ticket';
+const uri = 'https://localhost:44389/api/Order';
 
 function addItem() {
     const order = {

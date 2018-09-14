@@ -18,7 +18,8 @@
 
 <body>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="js/script.js"></script>
+    <script src="js/Api/PostOrder.js"></script>
+    <script src="js/Api/GetOrders.js"></script>
 
     <form method="POST" onsubmit="addItem()">
         <label>email</label>
@@ -34,7 +35,7 @@
         <label>ticketK</label>
         <input type="number" id="add-ticketKSa">
         <label>ticketKK</label>
-        <input type="number" id="add-ticketKKSa">        
+        <input type="number" id="add-ticketKKSa">
         <label>ticketE</label>
         <input type="number" id="add-ticketESo">
         <label>ticketK</label>
@@ -42,6 +43,9 @@
         <label>ticketKK</label>
         <input type="number" id="add-ticketKKSo">
         <input type="submit" value="Add">
+    </form>
+    <form method="POST" onsubmit="GetOrders()">
+        <input type="submit" value="getData">
     </form>
 </body>
 
