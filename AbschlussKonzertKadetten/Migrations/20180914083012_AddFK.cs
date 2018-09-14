@@ -2,28 +2,22 @@
 
 namespace AbschlussKonzertKadetten.Migrations
 {
-    public partial class addFKtoTicket1 : Migration
+    public partial class AddFK : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Tickets_Order_OrdersId",
-                table: "Tickets");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Tickets_OrdersId",
-                table: "Tickets");
-
-            migrationBuilder.DropColumn(
-                name: "OrdersId",
-                table: "Tickets");
+            migrationBuilder.AddColumn<int>(
+                name: "ClientsId",
+                table: "Order",
+                nullable: true);
 
             migrationBuilder.CreateTable(
                 name: "TicketOrders",
                 columns: table => new
                 {
                     OrderId = table.Column<int>(nullable: false),
-                    TicketId = table.Column<int>(nullable: false)
+                    TicketId = table.Column<int>(nullable: false),
+                    Day = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -35,41 +29,48 @@ namespace AbschlussKonzertKadetten.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_TicketOrders_Tickets_TicketId",
+                        name: "FK_TicketOrders_Ticket_TicketId",
                         column: x => x.TicketId,
-                        principalTable: "Tickets",
+                        principalTable: "Ticket",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Order_ClientsId",
+                table: "Order",
+                column: "ClientsId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TicketOrders_TicketId",
                 table: "TicketOrders",
                 column: "TicketId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Order_Client_ClientsId",
+                table: "Order",
+                column: "ClientsId",
+                principalTable: "Client",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Order_Client_ClientsId",
+                table: "Order");
+
             migrationBuilder.DropTable(
                 name: "TicketOrders");
 
-            migrationBuilder.AddColumn<int>(
-                name: "OrdersId",
-                table: "Tickets",
-                nullable: true);
+            migrationBuilder.DropIndex(
+                name: "IX_Order_ClientsId",
+                table: "Order");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Tickets_OrdersId",
-                table: "Tickets",
-                column: "OrdersId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Tickets_Order_OrdersId",
-                table: "Tickets",
-                column: "OrdersId",
-                principalTable: "Order",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+            migrationBuilder.DropColumn(
+                name: "ClientsId",
+                table: "Order");
         }
     }
 }

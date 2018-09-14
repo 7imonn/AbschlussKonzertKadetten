@@ -6,9 +6,12 @@ function addItem() {
         'lastname': $('#add-lastname').val(),
         'firstname': $('#add-firstname').val(),
         'bemerkung': $('#add-bemerkung').val(),
-        'ticketE': $('#add-ticketE').val(),
-        'ticketK': $('#add-ticketK').val(),
-        'ticketKK': $('#add-ticketKK').val(),
+        'ticketE': $('#add-ticketESa').val(),
+        'ticketK': $('#add-ticketKSa').val(),
+        'ticketKK': $('#add-ticketKKSa').val(),
+        'ticketE': $('#add-ticketESo').val(),
+        'ticketK': $('#add-ticketKSo').val(),
+        'ticketKK': $('#add-ticketKKSo').val(),
     };
 
     $.ajax({

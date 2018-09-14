@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AbschlussKonzertKadetten.Migrations
 {
     [DbContext(typeof(KadettenContext))]
-    [Migration("20180912102043_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20180914082913_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,21 +27,22 @@ namespace AbschlussKonzertKadetten.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Email")
-                        .IsRequired();
+                    b.Property<string>("Email");
 
-                    b.Property<string>("ForeName");
+                    b.Property<string>("FirstName");
 
                     b.Property<string>("LastName");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clients");
+                    b.ToTable("Client");
                 });
 
             modelBuilder.Entity("AbschlussKonzertKadetten.Models.Order", b =>
                 {
-                    b.Property<int>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Bemerkung");
 
@@ -65,20 +66,7 @@ namespace AbschlussKonzertKadetten.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tickets");
-                });
-
-            modelBuilder.Entity("AbschlussKonzertKadetten.Models.Order", b =>
-                {
-                    b.HasOne("AbschlussKonzertKadetten.Models.Client", "Clients")
-                        .WithMany()
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("AbschlussKonzertKadetten.Models.Ticket", "Tickets")
-                        .WithMany()
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.ToTable("Ticket");
                 });
 #pragma warning restore 612, 618
         }

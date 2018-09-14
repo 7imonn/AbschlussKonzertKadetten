@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AbschlussKonzertKadetten.Migrations
 {
     [DbContext(typeof(KadettenContext))]
-    [Migration("20180912134109_addFKtoTicket1")]
-    partial class addFKtoTicket1
+    [Migration("20180914083012_AddFK")]
+    partial class AddFK
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,8 +27,7 @@ namespace AbschlussKonzertKadetten.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Email")
-                        .IsRequired();
+                    b.Property<string>("Email");
 
                     b.Property<string>("FirstName");
 
@@ -36,18 +35,24 @@ namespace AbschlussKonzertKadetten.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clients");
+                    b.ToTable("Client");
                 });
 
             modelBuilder.Entity("AbschlussKonzertKadetten.Models.Order", b =>
                 {
-                    b.Property<int>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Bemerkung");
+
+                    b.Property<int?>("ClientsId");
 
                     b.Property<DateTime>("OrderDate");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClientsId");
 
                     b.ToTable("Order");
                 });
@@ -65,7 +70,7 @@ namespace AbschlussKonzertKadetten.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tickets");
+                    b.ToTable("Ticket");
                 });
 
             modelBuilder.Entity("AbschlussKonzertKadetten.Models.TicketOrder", b =>
@@ -73,6 +78,8 @@ namespace AbschlussKonzertKadetten.Migrations
                     b.Property<int>("OrderId");
 
                     b.Property<int>("TicketId");
+
+                    b.Property<string>("Day");
 
                     b.HasKey("OrderId", "TicketId");
 
@@ -85,8 +92,7 @@ namespace AbschlussKonzertKadetten.Migrations
                 {
                     b.HasOne("AbschlussKonzertKadetten.Models.Client", "Clients")
                         .WithMany()
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ClientsId");
                 });
 
             modelBuilder.Entity("AbschlussKonzertKadetten.Models.TicketOrder", b =>

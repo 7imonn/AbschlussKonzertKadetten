@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AbschlussKonzertKadetten.Context;
 using AbschlussKonzertKadetten.Models;
+using AbschlussKonzertKadetten.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AbschlussKonzertKadetten.Controllers
@@ -13,47 +14,63 @@ namespace AbschlussKonzertKadetten.Controllers
     public class OrderController : ControllerBase
     {
         private readonly KadettenContext _context;
-        public OrderController(KadettenContext context)
+        private readonly IOrderRepo _orderRepo;
+        private readonly IClientRepo _clientRepo;
+        private readonly ITicketOrderRepo _ticketOrderRepo;
+        public OrderController(KadettenContext context, IOrderRepo orderRepo, IClientRepo clientRepo, ITicketOrderRepo ticketOrderRepo)
         {
             _context = context;
+            _orderRepo = orderRepo;
+            _ticketOrderRepo = ticketOrderRepo;
         }
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<Order>> GetAll()
+        public async Task<IEnumerable<Order>> Get()
         {
-            return _context.Order.ToList();
+            return await _orderRepo.GetAll();
         }
 
         //GET api/values/5
         //[HttpGet("{id}")]
-        public ActionResult<Order> Get(int id)
-        {
-            var Order = _context.Order.Find(id);
-            if (Order == null)
-            {
-                return NotFound();
-            }
-            return Order;
-        }
+        //public ActionResult<Order> Get(int id)
+        //{
+        //    var Order = _context.Order.Find(id);
+        //    if (Order == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return Order;
+        //}
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody] ViewModelOrder order)
+        public async void Post([FromBody] ViewModelOrder order)
         {
-            
-            _context.Order.Add(new Order()
+            if (ModelState.IsValid)
             {
-                Bemerkung = order.Bemerkung,
-                OrderDate = DateTime.Now,
-                Clients = new Client()
+                if (_clientRepo.ClientFindByEmail(order.Email) == null)
                 {
-                    Email = order.Email,
-                    FirstName = order.FirstName,
-                    LastName = order.LastName
-                }
-            });
+                    var createClient = await _clientRepo.CreateClient(new Client()
+                    {
+                        Email = order.Email,
+                        LastName = order.LastName,
+                        FirstName = order.FirstName
+                    });
 
-            _context.SaveChanges();
+                    var createOrder = await _orderRepo.CreateOrder(new Order()
+                    {
+                        Bemerkung = order.Bemerkung,
+                        OrderDate = DateTime.Now,
+                        Clients = createClient
+                    });
+                    var ticketOrder = await _ticketOrderRepo.CreateTicketOrder(new TicketOrder()
+                    {
+                        Order = createOrder,
+                        
+                    });
+                }
+            }
+
         }
 
         // PUT api/values/5
@@ -66,9 +83,6 @@ namespace AbschlussKonzertKadetten.Controllers
                 return NotFound();
             }
 
-            //order.Bemerkung = value.Email;
-            //order.Clients = value.FirstName;
-            //order.Tickets = value.LastName;
 
             _context.Order.Update(order);
             _context.SaveChanges();

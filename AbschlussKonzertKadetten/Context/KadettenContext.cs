@@ -28,10 +28,9 @@ namespace AbschlussKonzertKadetten.Context
                 .HasOne(m => m.Ticket)
                 .WithMany(ma => ma.TicketOrders)
                 .HasForeignKey(a => a.TicketId);
-
         }
-        public DbSet<Ticket> Tickets { get; set; }
-        public DbSet<Client> Clients { get; set; }
+        public DbSet<Ticket> Ticket { get; set; }
+        public DbSet<Client> Client { get; set; }
         public DbSet<Order> Order { get; set; }
         public DbSet<TicketOrder> TicketOrders { get; set; }
 

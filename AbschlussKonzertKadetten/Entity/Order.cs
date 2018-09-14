@@ -7,15 +7,13 @@ using System.Threading.Tasks;
 
 namespace AbschlussKonzertKadetten.Models
 {
-    public class Ticket
+    public class Order
     {
-        [Key]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [Required]
-        public string Type { get; set; }
-        [Required]
-        public int Price { get; set; }
-        [Required]
+        public string Bemerkung { get; set; }
+        public DateTime OrderDate { get; set; }
+        public virtual Client Clients { get; set; }
         public virtual ICollection<TicketOrder> TicketOrders { get; set; }
 
     }

@@ -1,3 +1,6 @@
 input{
     display: block;
 }
+form{
+    margin-left: 50px;
+}

@@ -11,5 +11,6 @@ namespace AbschlussKonzertKadetten.Models
         public Order Order { get; set; }
         public int TicketId { get; set; }
         public Ticket Ticket { get; set; }
+        public string Day { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AbschlussKonzertKadetten.Context;
+using AbschlussKonzertKadetten.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,9 @@ namespace AbschlussKonzertKadetten
             var connection = @"Server=(localdb)\mssqllocaldb;Database=AbschlussKonzertKadetten;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<KadettenContext>
                 (options => options.UseSqlServer(connection));
+            services.AddTransient<IOrderRepo, OrderRepo>();
+            services.AddTransient<IClientRepo, ClientRepo>();
+            services.AddTransient<ITicketOrderRepo, TicketOrderRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
