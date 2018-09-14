@@ -13,7 +13,8 @@ namespace AbschlussKonzertKadetten.Models
         public int Id { get; set; }
         public string Bemerkung { get; set; }
         public DateTime OrderDate { get; set; }
-        public virtual Client Clients { get; set; }
+        public int ClientId { get; set; }
+        public Client Client { get; set; }
         public virtual ICollection<TicketOrder> TicketOrders { get; set; }
 
     }

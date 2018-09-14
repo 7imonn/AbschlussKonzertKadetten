@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AbschlussKonzertKadetten.Migrations
 {
     [DbContext(typeof(KadettenContext))]
-    [Migration("20180914082913_Init")]
-    partial class Init
+    [Migration("20180914130333_AddQuantity")]
+    partial class AddQuantity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -46,9 +46,13 @@ namespace AbschlussKonzertKadetten.Migrations
 
                     b.Property<string>("Bemerkung");
 
+                    b.Property<int>("ClientId");
+
                     b.Property<DateTime>("OrderDate");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClientId");
 
                     b.ToTable("Order");
                 });
@@ -67,6 +71,44 @@ namespace AbschlussKonzertKadetten.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Ticket");
+                });
+
+            modelBuilder.Entity("AbschlussKonzertKadetten.Models.TicketOrder", b =>
+                {
+                    b.Property<int>("OrderId");
+
+                    b.Property<int>("TicketId");
+
+                    b.Property<DateTime>("Day");
+
+                    b.Property<int>("Quantity");
+
+                    b.HasKey("OrderId", "TicketId");
+
+                    b.HasIndex("TicketId");
+
+                    b.ToTable("TicketOrders");
+                });
+
+            modelBuilder.Entity("AbschlussKonzertKadetten.Models.Order", b =>
+                {
+                    b.HasOne("AbschlussKonzertKadetten.Models.Client", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("AbschlussKonzertKadetten.Models.TicketOrder", b =>
+                {
+                    b.HasOne("AbschlussKonzertKadetten.Models.Order", "Order")
+                        .WithMany("TicketOrders")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AbschlussKonzertKadetten.Models.Ticket", "Ticket")
+                        .WithMany("TicketOrders")
+                        .HasForeignKey("TicketId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

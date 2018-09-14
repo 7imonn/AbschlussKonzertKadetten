@@ -8,7 +8,7 @@ namespace AbschlussKonzertKadetten.Repository
 {
     public interface IOrderRepo
     {
-        Task<IEnumerable<Order>> GetAll();
+        Task<IEnumerable<Order>> GetAllOrders();
         Task<Order> CreateOrder(Order order);
     }
 }

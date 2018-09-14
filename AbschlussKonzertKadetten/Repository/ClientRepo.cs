@@ -23,6 +23,11 @@ namespace AbschlussKonzertKadetten.Repository
             return client;
         }
 
+        public async Task<Client> GetClientById(int id)
+        {
+            return await _context.Client.FindAsync(id);
+        }
+
         public async Task<Client> ClientFindByEmail(string email)
         {
             return await _context.Client.FindAsync(email);

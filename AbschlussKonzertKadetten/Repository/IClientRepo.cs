@@ -9,6 +9,7 @@ namespace AbschlussKonzertKadetten.Repository
     public interface IClientRepo
     {
         Task<Client> CreateClient(Client client);
+        Task<Client> GetClientById(int id);
         Task<Client> ClientFindByEmail(string email);
     }
 }

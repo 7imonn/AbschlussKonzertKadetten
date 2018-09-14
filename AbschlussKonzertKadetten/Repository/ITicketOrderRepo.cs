@@ -9,5 +9,6 @@ namespace AbschlussKonzertKadetten.Repository
     public interface ITicketOrderRepo
     {
         Task<TicketOrder> CreateTicketOrder(TicketOrder ticketOrder);
+        Task<List<TicketOrder>> GetTicketOrderByOrderId(int id);
     }
 }

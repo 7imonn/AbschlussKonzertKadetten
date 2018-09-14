@@ -8,16 +8,16 @@ namespace AbschlussKonzertKadetten.Models
 {
     public class ViewModelOrder
     {
+        [Required]
         [EmailAddress]
         public string Email { get; set; }
+        [StringLength(50)]
         public string LastName { get; set; }
+        [StringLength(50)]
         public string FirstName { get; set; }
+        [StringLength(100)]
         public string Bemerkung { get; set; }
-        public int TicketESa { get; set; }
-        public int TicketKSa { get; set; }
-        public int TicketKKSa { get; set; }
-        public int TicketESo { get; set; }
-        public int TicketKSo { get; set; }
-        public int TicketKKSo { get; set; }
+        [Required]
+        public List<ViewModelTicket> Tickets { get; set; }
     }
 }

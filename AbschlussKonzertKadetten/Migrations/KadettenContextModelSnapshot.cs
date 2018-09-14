@@ -44,13 +44,13 @@ namespace AbschlussKonzertKadetten.Migrations
 
                     b.Property<string>("Bemerkung");
 
-                    b.Property<int?>("ClientsId");
+                    b.Property<int>("ClientId");
 
                     b.Property<DateTime>("OrderDate");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientsId");
+                    b.HasIndex("ClientId");
 
                     b.ToTable("Order");
                 });
@@ -77,7 +77,9 @@ namespace AbschlussKonzertKadetten.Migrations
 
                     b.Property<int>("TicketId");
 
-                    b.Property<string>("Day");
+                    b.Property<DateTime>("Day");
+
+                    b.Property<int>("Quantity");
 
                     b.HasKey("OrderId", "TicketId");
 
@@ -88,9 +90,10 @@ namespace AbschlussKonzertKadetten.Migrations
 
             modelBuilder.Entity("AbschlussKonzertKadetten.Models.Order", b =>
                 {
-                    b.HasOne("AbschlussKonzertKadetten.Models.Client", "Clients")
+                    b.HasOne("AbschlussKonzertKadetten.Models.Client", "Client")
                         .WithMany()
-                        .HasForeignKey("ClientsId");
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("AbschlussKonzertKadetten.Models.TicketOrder", b =>

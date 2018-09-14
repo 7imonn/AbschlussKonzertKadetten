@@ -15,9 +15,20 @@ namespace AbschlussKonzertKadetten.Repository
         {
             _context = context;
         }
-        public async Task<IEnumerable<Ticket>> GetTicketvariation()
+        public async Task<IEnumerable<Ticket>> GetAllTickets()
         {
             return await _context.Ticket.ToListAsync();
+        }
+
+        public async Task<Ticket> GetByType(string type)
+        {
+            var lala = await _context.Ticket.SingleOrDefaultAsync(typ => typ.Type == type);
+            return lala;
+        }
+        public async Task<Ticket> GetTicketById(int id)
+        {
+            var lala = await _context.Ticket.FindAsync(id);
+            return lala;
         }
     }
 }

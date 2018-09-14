@@ -8,7 +8,8 @@ namespace AbschlussKonzertKadetten.Repository
 {
     public interface ITicketRepo
     {
-        Task<IEnumerable<Ticket>> GetTicketvariation();
-
+        Task<IEnumerable<Ticket>> GetAllTickets();
+        Task<Ticket> GetByType(string type);
+        Task<Ticket> GetTicketById(int id); 
     }
 }

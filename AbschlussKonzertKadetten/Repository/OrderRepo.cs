@@ -15,7 +15,7 @@ namespace AbschlussKonzertKadetten.Repository
         {
             _context = context;
         }
-        public async Task<IEnumerable<Order>> GetAll()
+        public async Task<IEnumerable<Order>> GetAllOrders()
         {
             return await _context.Order.ToListAsync();
         }

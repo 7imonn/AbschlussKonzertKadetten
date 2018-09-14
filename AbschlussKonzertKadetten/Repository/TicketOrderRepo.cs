@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AbschlussKonzertKadetten.Context;
 using AbschlussKonzertKadetten.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AbschlussKonzertKadetten.Repository
 {
@@ -18,6 +19,12 @@ namespace AbschlussKonzertKadetten.Repository
         {
             await _context.TicketOrders.AddAsync(ticketOrder);
             return ticketOrder;
+        }
+
+        public Task<List<TicketOrder>> GetTicketOrderByOrderId(int id)
+        {
+            var list = _context.TicketOrders.Where(to => to.OrderId.Equals(id));
+            return list.ToListAsync();
         }
     }
 }
