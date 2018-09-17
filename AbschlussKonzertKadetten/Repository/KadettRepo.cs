@@ -17,7 +17,8 @@ namespace AbschlussKonzertKadetten.Repository
         }
         public async Task<Kadett> GetKadettById(int id)
         {
-            return await _context.Kadett.FindAsync(id);
+            var kadett = await _context.Kadett.FindAsync(id);
+            return kadett;
         }
 
         public async Task<Kadett> CreateKadett(Kadett kadett)

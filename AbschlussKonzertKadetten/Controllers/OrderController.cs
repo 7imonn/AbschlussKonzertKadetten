@@ -140,7 +140,7 @@ namespace AbschlussKonzertKadetten.Controllers
                     foreach (var ticket in order.Tickets)
                     {
 
-                        var ticketMatch = await _ticketRepo.GetByType(ticket.Type);
+                        Ticket ticketMatch = await _ticketRepo.GetByType(ticket.Type);
                         if (ticketMatch == null)
                             return BadRequest();
 
@@ -165,47 +165,48 @@ namespace AbschlussKonzertKadetten.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] ViewModelOrder order)
         {
-            var Dborder = await _orderRepo.GetOrderById(id);
+            var dbOrder = await _orderRepo.GetOrderById(id);
+            var dbClient = await _clientRepo.GetClientById(dbOrder.ClientId);
+            var dbKadett = await _kadettRepo.GetKadettById(dbOrder.KadettId);
+            var dbTicketOrders = await _ticketOrderRepo.GetTicketOrderByOrderId(dbOrder.Id);
 
-            if (Dborder == null)
+            if (order == null)
             {
                 return NotFound();
             }
+            dbClient.Email = order.Email;
+            dbClient.LastName = order.ClientLastName;
+            dbClient.FirstName = order.ClientFirstName;
 
-            if (ModelState.IsValid)
+            dbKadett.LastName = order.KadettLastName;
+            dbKadett.FirstName = order.KadettFirstName;
+
+            dbOrder.Bemerkung = order.Bemerkung;
+
+            foreach (var ticket in order.Tickets)
             {
-                Dborder.Client.Email = order.Email;
-                Dborder.Client.LastName = order.ClientLastName;
-                Dborder.Client.FirstName = order.ClientFirstName;
+                var ticketMatch = await _ticketRepo.GetByType(ticket.Type);
+                if (ticketMatch == null)
+                    return BadRequest();
 
-                Dborder.Kadett.LastName = order.KadettLastName;
-                Dborder.Kadett.FirstName = order.KadettFirstName;
-
-                Dborder.Bemerkung = order.Bemerkung;
-
-                foreach (var ticket in order.Tickets)
+                foreach (var dbTicketOrder in dbTicketOrders)
                 {
-                    var ticketMatch = await _ticketRepo.GetByType(ticket.Type);
-                    if (ticketMatch == null)
-                        return BadRequest();
-
-                    foreach (var dbOrderTicketOrder in Dborder.TicketOrders)
+                    if (dbTicketOrder.Ticket.Type == ticketMatch.Type)
                     {
-                        dbOrderTicketOrder.Quantity = ticket.Quantity;
-                        dbOrderTicketOrder.Day = ticket.Date;
-                        dbOrderTicketOrder.Ticket = ticketMatch;
-                        //Dborder = createOrder;
+                        dbTicketOrder.Quantity = ticket.Quantity;
+                        dbTicketOrder.Day = ticket.Date;
                     }
                 }
-
-                await _context.SaveChangesAsync();
             }
-            return ValidationProblem();
+
+            await _context.SaveChangesAsync();
+            return Ok();
         }
-        // DELETE api/values/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
+        //DELETE api/values/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+
+        }
     }
 }
