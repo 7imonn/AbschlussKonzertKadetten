@@ -73,16 +73,44 @@ namespace AbschlussKonzertKadetten.Controllers
         }
 
         //GET api/values/5
-        //[HttpGet("{id}")]
-        //public ActionResult<Order> Get(int id)
-        //{
-        //    var Order = _context.Order.Find(id);
-        //    if (Order == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return Order;
-        //}
+        [HttpGet("{id}")]
+        public async Task<ViewModelOrder> Get(int id)
+        {
+            var orderList = await _orderRepo.GetAllOrders();
+            var modelOrder = new ViewModelOrder();
+
+            foreach (var order in orderList)
+            {
+                var client = await _clientRepo.GetClientById(order.ClientId);
+                var kadett = await _kadettRepo.GetKadettById(order.KadettId);
+                var modelTickets = new List<ViewModelTicket>();
+                var orderTickets = await _ticketOrderRepo.GetTicketOrderByOrderId(order.Id);
+
+                foreach (var orderTicket in orderTickets)
+                {
+                    var tickets = await _ticketRepo.GetTicketById(orderTicket.TicketId);
+                    var vmTicket = new ViewModelTicket()
+                    {
+                        Type = tickets.Type,
+                        Quantity = orderTicket.Quantity
+                    };
+                    modelTickets.Add(vmTicket);
+                }
+
+               modelOrder = new ViewModelOrder
+                {
+                    Email = client.Email,
+                    Bemerkung = order.Bemerkung,
+                    ClientFirstName = client.FirstName,
+                    ClientLastName = client.LastName,
+                    Tickets = modelTickets,
+                    KadettFirstName = kadett.FirstName,
+                    KadettLastName = kadett.LastName
+                };
+            }
+
+            return modelOrder;
+        }
 
         // POST api/values
         [HttpPost]
@@ -107,8 +135,8 @@ namespace AbschlussKonzertKadetten.Controllers
                     {
                         Bemerkung = order.Bemerkung,
                         OrderDate = DateTime.Now,
-                        ClientId = createClient.Id,
-                        KadettId = createKadett.Id
+                        Client = createClient,
+                        Kadett = createKadett
                     });
 
                     foreach (var ticket in order.Tickets)
@@ -120,10 +148,14 @@ namespace AbschlussKonzertKadetten.Controllers
 
                         var ticketOrder = await _ticketOrderRepo.CreateTicketOrder(new TicketOrder()
                         {
-                            OrderId = createOrder.Id,
-                            TicketId = ticketMatch.Id
+                            Order = createOrder,
+                            Ticket = ticketMatch,
+                            Quantity = ticket.Quantity,
+                            Day = ticket.Date
                         });
                     }
+
+                    await _context.SaveChangesAsync();
                 }
             }
             return Ok();
