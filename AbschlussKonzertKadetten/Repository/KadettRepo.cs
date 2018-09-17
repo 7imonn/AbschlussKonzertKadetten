@@ -26,5 +26,11 @@ namespace AbschlussKonzertKadetten.Repository
             await _context.Kadett.AddAsync(kadett);
             return kadett;
         }
+
+        public async void DeleteKadett(int id)
+        {
+            var deleteKadett = await GetKadettById(id);
+            _context.Remove(deleteKadett);
+        }
     }
 }

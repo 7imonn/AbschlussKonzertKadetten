@@ -11,5 +11,7 @@ namespace AbschlussKonzertKadetten.Repository
         Task<Client> CreateClient(Client client);
         Task<Client> GetClientById(int id);
         Task<Client> ClientFindByEmail(string email);
+        void DeleteClient(int id);
+
     }
 }

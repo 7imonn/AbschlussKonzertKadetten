@@ -10,5 +10,7 @@ namespace AbschlussKonzertKadetten.Repository
     {
         Task<Kadett> GetKadettById(int id);
         Task<Kadett> CreateKadett(Kadett kadett);
+        void DeleteKadett(int id);
+
     }
 }

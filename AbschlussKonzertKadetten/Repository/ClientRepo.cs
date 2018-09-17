@@ -32,5 +32,11 @@ namespace AbschlussKonzertKadetten.Repository
         {
             return await _context.Client.FindAsync(email);
         }
+
+        public async void DeleteClient(int id)
+        {
+            var deleteClient = await GetClientById(id);
+            _context.Remove(deleteClient);
+        }
     }
 }

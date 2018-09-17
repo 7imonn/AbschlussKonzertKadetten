@@ -10,5 +10,6 @@ namespace AbschlussKonzertKadetten.Repository
     {
         Task<TicketOrder> CreateTicketOrder(TicketOrder ticketOrder);
         Task<List<TicketOrder>> GetTicketOrderByOrderId(int id);
+        void DeleteOrderTicket(int id);
     }
 }

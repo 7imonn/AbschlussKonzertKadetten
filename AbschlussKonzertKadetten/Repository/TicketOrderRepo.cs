@@ -23,9 +23,17 @@ namespace AbschlussKonzertKadetten.Repository
 
         public Task<List<TicketOrder>> GetTicketOrderByOrderId(int id)
         {
-            var list = _context.TicketOrders.Include(to => to.Ticket)
-                .Where(to => to.OrderId == id);
+            var list = _context.TicketOrders.Include(to => to.Ticket).Where(to => to.OrderId == id);
             return list.ToListAsync();
+        }
+
+        public void DeleteOrderTicket(int id)
+        {
+            List<TicketOrder> deleteOrderTickets = GetTicketOrderByOrderId(id).Result;
+            foreach (var deleteOrderTicket in deleteOrderTickets)
+            {
+                _context.Remove(deleteOrderTicket);
+            }
         }
     }
 }

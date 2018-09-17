@@ -204,9 +204,18 @@ namespace AbschlussKonzertKadetten.Controllers
         }
         //DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            var dbOrder = await _orderRepo.GetOrderById(id);
 
+            _clientRepo.DeleteClient(dbOrder.ClientId);
+            _kadettRepo.DeleteKadett(dbOrder.KadettId);
+            _orderRepo.DeleteOrder(dbOrder.Id);
+            _ticketOrderRepo.DeleteOrderTicket(dbOrder.Id);
+
+            await _context.SaveChangesAsync();
+            
+            return Ok();
         }
     }
 }
