@@ -19,6 +19,10 @@ namespace AbschlussKonzertKadetten.Repository
         {
             return await _context.Order.ToListAsync();
         }
+        public async Task<Order> GetOrderById(int id)
+        {
+            return await _context.Order.FindAsync(id);
+        }
 
         public async Task<Order> CreateOrder(Order order)
         {

@@ -21,7 +21,9 @@ namespace AbschlussKonzertKadetten.Controllers
         private readonly ITicketOrderRepo _ticketOrderRepo;
         private readonly ITicketRepo _ticketRepo;
         private readonly IKadettRepo _kadettRepo;
-        public OrderController(KadettenContext context, IOrderRepo orderRepo, IClientRepo clientRepo, ITicketOrderRepo ticketOrderRepo, ITicketRepo ticketRepo, IKadettRepo kadettRepo)
+
+        public OrderController(KadettenContext context, IOrderRepo orderRepo, IClientRepo clientRepo,
+            ITicketOrderRepo ticketOrderRepo, ITicketRepo ticketRepo, IKadettRepo kadettRepo)
         {
             _context = context;
             _orderRepo = orderRepo;
@@ -30,6 +32,7 @@ namespace AbschlussKonzertKadetten.Controllers
             _ticketRepo = ticketRepo;
             _kadettRepo = kadettRepo;
         }
+
         // GET api/values
         [HttpGet]
         public async Task<List<ViewModelOrder>> Get()
@@ -76,38 +79,33 @@ namespace AbschlussKonzertKadetten.Controllers
         [HttpGet("{id}")]
         public async Task<ViewModelOrder> Get(int id)
         {
-            var orderList = await _orderRepo.GetAllOrders();
-            var modelOrder = new ViewModelOrder();
+            var order = await _orderRepo.GetOrderById(id);
+            var client = await _clientRepo.GetClientById(order.ClientId);
+            var kadett = await _kadettRepo.GetKadettById(order.KadettId);
+            var modelTickets = new List<ViewModelTicket>();
+            var orderTickets = await _ticketOrderRepo.GetTicketOrderByOrderId(order.Id);
 
-            foreach (var order in orderList)
+            foreach (var orderTicket in orderTickets)
             {
-                var client = await _clientRepo.GetClientById(order.ClientId);
-                var kadett = await _kadettRepo.GetKadettById(order.KadettId);
-                var modelTickets = new List<ViewModelTicket>();
-                var orderTickets = await _ticketOrderRepo.GetTicketOrderByOrderId(order.Id);
-
-                foreach (var orderTicket in orderTickets)
+                var tickets = await _ticketRepo.GetTicketById(orderTicket.TicketId);
+                var vmTicket = new ViewModelTicket()
                 {
-                    var tickets = await _ticketRepo.GetTicketById(orderTicket.TicketId);
-                    var vmTicket = new ViewModelTicket()
-                    {
-                        Type = tickets.Type,
-                        Quantity = orderTicket.Quantity
-                    };
-                    modelTickets.Add(vmTicket);
-                }
-
-               modelOrder = new ViewModelOrder
-                {
-                    Email = client.Email,
-                    Bemerkung = order.Bemerkung,
-                    ClientFirstName = client.FirstName,
-                    ClientLastName = client.LastName,
-                    Tickets = modelTickets,
-                    KadettFirstName = kadett.FirstName,
-                    KadettLastName = kadett.LastName
+                    Type = tickets.Type,
+                    Quantity = orderTicket.Quantity
                 };
+                modelTickets.Add(vmTicket);
             }
+
+            var modelOrder = new ViewModelOrder
+            {
+                Email = client.Email,
+                Bemerkung = order.Bemerkung,
+                ClientFirstName = client.FirstName,
+                ClientLastName = client.LastName,
+                Tickets = modelTickets,
+                KadettFirstName = kadett.FirstName,
+                KadettLastName = kadett.LastName
+            };
 
             return modelOrder;
         }
@@ -158,26 +156,52 @@ namespace AbschlussKonzertKadetten.Controllers
                     await _context.SaveChangesAsync();
                 }
             }
+
             return Ok();
 
         }
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] ViewModelOrder value)
+        public async Task<IActionResult> Put(int id, [FromBody] ViewModelOrder order)
         {
-            var order = _context.Order.Find(id);
-            if (order == null)
+            var Dborder = await _orderRepo.GetOrderById(id);
+
+            if (Dborder == null)
             {
                 return NotFound();
             }
 
+            if (ModelState.IsValid)
+            {
+                Dborder.Client.Email = order.Email;
+                Dborder.Client.LastName = order.ClientLastName;
+                Dborder.Client.FirstName = order.ClientFirstName;
 
-            _context.Order.Update(order);
-            _context.SaveChanges();
-            return NoContent();
+                Dborder.Kadett.LastName = order.KadettLastName;
+                Dborder.Kadett.FirstName = order.KadettFirstName;
+
+                Dborder.Bemerkung = order.Bemerkung;
+
+                foreach (var ticket in order.Tickets)
+                {
+                    var ticketMatch = await _ticketRepo.GetByType(ticket.Type);
+                    if (ticketMatch == null)
+                        return BadRequest();
+
+                    foreach (var dbOrderTicketOrder in Dborder.TicketOrders)
+                    {
+                        dbOrderTicketOrder.Quantity = ticket.Quantity;
+                        dbOrderTicketOrder.Day = ticket.Date;
+                        dbOrderTicketOrder.Ticket = ticketMatch;
+                        //Dborder = createOrder;
+                    }
+                }
+
+                await _context.SaveChangesAsync();
+            }
+            return ValidationProblem();
         }
-
         // DELETE api/values/5
         //[HttpDelete("{id}")]
         //public void Delete(int id)
