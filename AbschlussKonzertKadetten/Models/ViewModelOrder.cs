@@ -12,11 +12,13 @@ namespace AbschlussKonzertKadetten.Models
         [EmailAddress]
         public string Email { get; set; }
         [StringLength(50)]
-        public string LastName { get; set; }
+        public string ClientLastName { get; set; }
         [StringLength(50)]
-        public string FirstName { get; set; }
+        public string ClientFirstName { get; set; }
         [StringLength(100)]
         public string Bemerkung { get; set; }
+        public string KadettLastName { get; set; }
+        public string KadettFirstName { get; set; }
         [Required]
         public List<ViewModelTicket> Tickets { get; set; }
     }

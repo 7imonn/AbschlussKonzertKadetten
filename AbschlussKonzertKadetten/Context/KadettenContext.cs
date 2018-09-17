@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AbschlussKonzertKadetten.Entity;
 using AbschlussKonzertKadetten.Models;
 using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +33,7 @@ namespace AbschlussKonzertKadetten.Context
         public DbSet<Ticket> Ticket { get; set; }
         public DbSet<Client> Client { get; set; }
         public DbSet<Order> Order { get; set; }
+        public DbSet<Kadett> Kadett { get; set; }
         public DbSet<TicketOrder> TicketOrders { get; set; }
 
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AbschlussKonzertKadetten.Context;
+using AbschlussKonzertKadetten.Entity;
 using AbschlussKonzertKadetten.Models;
 using AbschlussKonzertKadetten.Repository;
 using Microsoft.AspNetCore.Identity.UI.Pages.Internal.Account;
@@ -19,13 +20,15 @@ namespace AbschlussKonzertKadetten.Controllers
         private readonly IClientRepo _clientRepo;
         private readonly ITicketOrderRepo _ticketOrderRepo;
         private readonly ITicketRepo _ticketRepo;
-        public OrderController(KadettenContext context, IOrderRepo orderRepo, IClientRepo clientRepo, ITicketOrderRepo ticketOrderRepo, ITicketRepo ticketRepo)
+        private readonly IKadettRepo _kadettRepo;
+        public OrderController(KadettenContext context, IOrderRepo orderRepo, IClientRepo clientRepo, ITicketOrderRepo ticketOrderRepo, ITicketRepo ticketRepo, IKadettRepo kadettRepo)
         {
             _context = context;
             _orderRepo = orderRepo;
             _ticketOrderRepo = ticketOrderRepo;
             _clientRepo = clientRepo;
             _ticketRepo = ticketRepo;
+            _kadettRepo = kadettRepo;
         }
         // GET api/values
         [HttpGet]
@@ -36,7 +39,8 @@ namespace AbschlussKonzertKadetten.Controllers
 
             foreach (var order in orderList)
             {
-                var client = await _clientRepo.GetClientById(order.Id);
+                var client = await _clientRepo.GetClientById(order.ClientId);
+                var kadett = await _kadettRepo.GetKadettById(order.KadettId);
                 var modelTickets = new List<ViewModelTicket>();
                 var orderTickets = await _ticketOrderRepo.GetTicketOrderByOrderId(order.Id);
 
@@ -55,9 +59,11 @@ namespace AbschlussKonzertKadetten.Controllers
                 {
                     Email = client.Email,
                     Bemerkung = order.Bemerkung,
-                    FirstName = client.FirstName,
-                    LastName = client.LastName,
-                    Tickets = modelTickets
+                    ClientFirstName = client.FirstName,
+                    ClientLastName = client.LastName,
+                    Tickets = modelTickets,
+                    KadettFirstName = kadett.FirstName,
+                    KadettLastName = kadett.LastName
                 };
                 modelOrders.Add(vm);
             }
@@ -89,15 +95,20 @@ namespace AbschlussKonzertKadetten.Controllers
                     var createClient = await _clientRepo.CreateClient(new Client()
                     {
                         Email = order.Email,
-                        LastName = order.LastName,
-                        FirstName = order.FirstName
+                        LastName = order.ClientLastName,
+                        FirstName = order.ClientFirstName
                     });
-
+                    var createKadett = await _kadettRepo.CreateKadett(new Kadett()
+                    {
+                        LastName = order.KadettLastName,
+                        FirstName = order.KadettFirstName
+                    });
                     var createOrder = await _orderRepo.CreateOrder(new Order()
                     {
                         Bemerkung = order.Bemerkung,
                         OrderDate = DateTime.Now,
-                        ClientId = createClient.Id
+                        ClientId = createClient.Id,
+                        KadettId = createKadett.Id
                     });
 
                     foreach (var ticket in order.Tickets)

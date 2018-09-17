@@ -1,9 +1,8 @@
-﻿using System;
+﻿using AbschlussKonzertKadetten.Entity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AbschlussKonzertKadetten.Models
 {
@@ -15,6 +14,8 @@ namespace AbschlussKonzertKadetten.Models
         public DateTime OrderDate { get; set; }
         public int ClientId { get; set; }
         public Client Client { get; set; }
+        public int KadettId { get; set; }
+        public Kadett Kadett { get; set; }
         public virtual ICollection<TicketOrder> TicketOrders { get; set; }
 
     }

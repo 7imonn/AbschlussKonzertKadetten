@@ -30,6 +30,7 @@ namespace AbschlussKonzertKadetten
             services.AddTransient<IClientRepo, ClientRepo>();
             services.AddTransient<ITicketOrderRepo, TicketOrderRepo>();
             services.AddTransient<ITicketRepo, TicketRepo>();
+            services.AddTransient<IKadettRepo, KadettRepo>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
