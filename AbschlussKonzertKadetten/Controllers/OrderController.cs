@@ -152,7 +152,7 @@ namespace AbschlussKonzertKadetten.Controllers
                             Order = createOrder,
                             Ticket = ticketMatch,
                             Quantity = ticket.Quantity,
-                            Day = ticket.Date
+                            Day = ticket.Day
                         });
                     }
 
@@ -197,7 +197,7 @@ namespace AbschlussKonzertKadetten.Controllers
                     if (dbTicketOrder.Ticket.Type == ticketMatch.Type)
                     {
                         dbTicketOrder.Quantity = ticket.Quantity;
-                        dbTicketOrder.Day = ticket.Date;
+                        dbTicketOrder.Day = ticket.Day;
                     }
                 }
             }

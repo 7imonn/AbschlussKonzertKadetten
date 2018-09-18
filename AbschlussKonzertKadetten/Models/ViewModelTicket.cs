@@ -9,7 +9,7 @@ namespace AbschlussKonzertKadetten.Models
     {
         public string Type { get; set; }
         public int Quantity { get; set; }
-        public DateTime Date { get; set; }
+        public string Day { get; set; }
 
     }
 }
