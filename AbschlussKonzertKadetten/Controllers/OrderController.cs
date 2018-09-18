@@ -6,12 +6,14 @@ using AbschlussKonzertKadetten.Context;
 using AbschlussKonzertKadetten.Entity;
 using AbschlussKonzertKadetten.Models;
 using AbschlussKonzertKadetten.Repository;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity.UI.Pages.Internal.Account;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AbschlussKonzertKadetten.Controllers
 {
     [Route("api/Order")]
+    [EnableCors("AllowSpecificOrigin")]
     [ApiController]
     public class OrderController : ControllerBase
     {
@@ -21,6 +23,7 @@ namespace AbschlussKonzertKadetten.Controllers
         private readonly ITicketOrderRepo _ticketOrderRepo;
         private readonly ITicketRepo _ticketRepo;
         private readonly IKadettRepo _kadettRepo;
+
 
         public OrderController(KadettenContext context, IOrderRepo orderRepo, IClientRepo clientRepo,
             ITicketOrderRepo ticketOrderRepo, ITicketRepo ticketRepo, IKadettRepo kadettRepo)

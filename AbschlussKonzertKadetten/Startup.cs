@@ -22,7 +22,13 @@ namespace AbschlussKonzertKadetten
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin", builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); ;
+                });
+            });
             var connection = @"Server=(localdb)\mssqllocaldb;Database=AbschlussKonzertKadetten;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<KadettenContext>
                 (options => options.UseSqlServer(connection));
@@ -44,7 +50,7 @@ namespace AbschlussKonzertKadetten
             {
                 app.UseHsts();
             }
-
+            app.UseCors("AllowSpecificOrigin");
             app.UseHttpsRedirection();
             app.UseMvc(routes =>
             {
