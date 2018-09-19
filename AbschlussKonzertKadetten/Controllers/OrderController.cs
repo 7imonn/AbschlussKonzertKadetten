@@ -69,7 +69,8 @@ namespace AbschlussKonzertKadetten.Controllers
                     ClientLastName = client.LastName,
                     Tickets = modelTickets,
                     KadettFirstName = kadett.FirstName,
-                    KadettLastName = kadett.LastName
+                    KadettLastName = kadett.LastName,
+                    KadettInKader = kadett.KadettInKader
                 };
                 modelOrders.Add(vm);
             }
@@ -107,7 +108,8 @@ namespace AbschlussKonzertKadetten.Controllers
                 ClientLastName = client.LastName,
                 Tickets = modelTickets,
                 KadettFirstName = kadett.FirstName,
-                KadettLastName = kadett.LastName
+                KadettLastName = kadett.LastName,
+                KadettInKader = kadett.KadettInKader
             };
 
             return modelOrder;
@@ -115,7 +117,7 @@ namespace AbschlussKonzertKadetten.Controllers
 
         // POST api/values
         [HttpPost]
-        public async Task<ActionResult> Post([FromBody] ViewModelOrder order)
+        public async Task<ActionResult> Post(ViewModelOrder order)
         {
             if (ModelState.IsValid)
             {
@@ -130,7 +132,8 @@ namespace AbschlussKonzertKadetten.Controllers
                     var createKadett = await _kadettRepo.CreateKadett(new Kadett()
                     {
                         LastName = order.KadettLastName,
-                        FirstName = order.KadettFirstName
+                        FirstName = order.KadettFirstName,
+                        KadettInKader = order.KadettInKader
                     });
                     var createOrder = await _orderRepo.CreateOrder(new Order()
                     {
@@ -183,6 +186,7 @@ namespace AbschlussKonzertKadetten.Controllers
 
             dbKadett.LastName = order.KadettLastName;
             dbKadett.FirstName = order.KadettFirstName;
+            dbKadett.KadettInKader = order.KadettInKader;
 
             dbOrder.Bemerkung = order.Bemerkung;
 

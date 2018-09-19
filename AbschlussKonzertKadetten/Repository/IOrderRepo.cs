@@ -12,6 +12,5 @@ namespace AbschlussKonzertKadetten.Repository
         Task<Order> CreateOrder(Order order);
         Task<Order> GetOrderById(int id);
         void DeleteOrder(int id);
-
     }
 }
