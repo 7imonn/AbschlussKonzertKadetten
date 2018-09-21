@@ -29,7 +29,7 @@ namespace AbschlussKonzertKadetten
                     builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); ;
                 });
             });
-            var connection = @"Server=(localdb)\mssqllocaldb;Database=AbschlussKonzertKadetten;Trusted_Connection=True;ConnectRetryCount=0";
+            var connection = "Server=tcp:kadettendev.database.windows.net,1433;Initial Catalog=kadettenDev;Persist Security Info=False;User ID={titten};Password={Penis12345};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";//@"Server=(localdb)\mssqllocaldb;Database=AbschlussKonzertKadetten;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<KadettenContext>
                 (options => options.UseSqlServer(connection));
             services.AddTransient<IOrderRepo, OrderRepo>();
