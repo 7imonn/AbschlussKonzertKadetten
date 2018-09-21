@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace AbschlussKonzertKadetten
 {
@@ -30,13 +31,13 @@ namespace AbschlussKonzertKadetten
                     builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); ;
                 });
             });
-            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
-                services.AddDbContext<KadettenContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("kadettendev")));
-            else
-                services.AddDbContext<KadettenContext>(options =>
-                    options.UseSqlServer(@"Server = (localdb)\mssqllocaldb; Database = AbschlussKonzertKadetten; Trusted_Connection = True; ConnectRetryCount = 0"));
-
+            services.AddDbContextPool<KadettenContext>( // replace "YourDbContext" with the class name of your DbContext
+                options => options.UseMySql("Server=localhost;Database=ef;User=root;Password=123456;", // replace with your Connection String
+                    mysqlOptions =>
+                    {
+                        mysqlOptions.ServerVersion(new Version(5, 7, 17), ServerType.MySql); // replace with your Server Version and Type
+                    }
+                ));
             services.BuildServiceProvider().GetService<KadettenContext>().Database.Migrate();
 
             services.AddTransient<IOrderRepo, OrderRepo>();
