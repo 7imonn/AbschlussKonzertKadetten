@@ -1,4 +1,5 @@
-﻿using AbschlussKonzertKadetten.Context;
+﻿using System;
+using AbschlussKonzertKadetten.Context;
 using AbschlussKonzertKadetten.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -29,9 +30,15 @@ namespace AbschlussKonzertKadetten
                     builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); ;
                 });
             });
-            var connection = "Server=tcp:kadettendev.database.windows.net,1433;Initial Catalog=kadettenDev;Persist Security Info=False;User ID={titten};Password={Penis12345};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";//@"Server=(localdb)\mssqllocaldb;Database=AbschlussKonzertKadetten;Trusted_Connection=True;ConnectRetryCount=0";
-            services.AddDbContext<KadettenContext>
-                (options => options.UseSqlServer(connection));
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Production")
+                services.AddDbContext<KadettenContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("kadettendev")));
+            else
+                services.AddDbContext<KadettenContext>(options =>
+                    options.UseSqlServer(@"Server = (localdb)\mssqllocaldb; Database = AbschlussKonzertKadetten; Trusted_Connection = True; ConnectRetryCount = 0"));
+
+            services.BuildServiceProvider().GetService<KadettenContext>().Database.Migrate();
+
             services.AddTransient<IOrderRepo, OrderRepo>();
             services.AddTransient<IClientRepo, ClientRepo>();
             services.AddTransient<ITicketOrderRepo, TicketOrderRepo>();
