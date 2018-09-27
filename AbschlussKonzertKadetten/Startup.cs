@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using Steeltoe.Extensions.Configuration.CloudFoundry;
 
 namespace AbschlussKonzertKadetten
 {
@@ -23,16 +24,16 @@ namespace AbschlussKonzertKadetten
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var host = Configuration["vcap:services:mariadbent:0:credentials:host"];
+            var port = Configuration["vcap:services:mariadbent:0:credentials:port"];
+            var db = Configuration["vcap:services:mariadbent:0:credentials:database"];
+            var user = Configuration["vcap:services:mariadbent:0:credentials:username"];
+            var password = Configuration["vcap:services:mariadbent:0:credentials:password"];
+            var connectionString = $"Server={host};UID={user};PWD={password};Database={db};Port={port};";
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowSpecificOrigin", builder =>
-                {
-                    builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); ;
-                });
-            });
             services.AddDbContextPool<KadettenContext>( // replace "YourDbContext" with the class name of your DbContext
-                options => options.UseMySql("Server=localhost;Database=ef;User=root;Password=123456;", // replace with your Connection String
+                options => options.UseMySql(connectionString,
                     mysqlOptions =>
                     {
                         mysqlOptions.ServerVersion(new Version(5, 7, 17), ServerType.MySql); // replace with your Server Version and Type
