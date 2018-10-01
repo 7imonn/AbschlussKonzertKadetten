@@ -16,7 +16,7 @@ namespace AbschlussKonzertKadetten
     public class Startup
     {
         private readonly ILoggerFactory _loggerFactory;
-        public Startup(IConfiguration configuration, , ILoggerFactory loggerFactory)
+        public Startup(IConfiguration configuration, ILoggerFactory loggerFactory)
         {
             Configuration = configuration;
             _loggerFactory = loggerFactory;
