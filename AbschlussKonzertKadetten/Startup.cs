@@ -45,9 +45,6 @@ namespace AbschlussKonzertKadetten
                 ));
             services.BuildServiceProvider().GetService<KadettenContext>().Database.Migrate();
 
-            //services.AddDbContext<KadettenContext>(options =>
-            //    options.UseMySql("server=127.0.0.1;port=3306;uid=root@localhost;password=gibbiX12345;database=test"));
-
             services.AddTransient<IOrderRepo, OrderRepo>();
             services.AddTransient<IClientRepo, ClientRepo>();
             services.AddTransient<ITicketOrderRepo, TicketOrderRepo>();
