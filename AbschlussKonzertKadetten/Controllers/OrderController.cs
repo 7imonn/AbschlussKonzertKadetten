@@ -9,6 +9,7 @@ using AbschlussKonzertKadetten.Repository;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity.UI.Pages.Internal.Account;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace AbschlussKonzertKadetten.Controllers
 {
@@ -23,11 +24,12 @@ namespace AbschlussKonzertKadetten.Controllers
         private readonly ITicketOrderRepo _ticketOrderRepo;
         private readonly ITicketRepo _ticketRepo;
         private readonly IKadettRepo _kadettRepo;
-
+        private readonly ILogger _logger;
 
         public OrderController(KadettenContext context, IOrderRepo orderRepo, IClientRepo clientRepo,
-            ITicketOrderRepo ticketOrderRepo, ITicketRepo ticketRepo, IKadettRepo kadettRepo)
+            ITicketOrderRepo ticketOrderRepo, ITicketRepo ticketRepo, IKadettRepo kadettRepo, ILogger<OrderController> logger)
         {
+            _logger = logger;
             _context = context;
             _orderRepo = orderRepo;
             _ticketOrderRepo = ticketOrderRepo;
@@ -40,6 +42,7 @@ namespace AbschlussKonzertKadetten.Controllers
         [HttpGet]
         public async Task<List<ViewModelOrder>> Get()
         {
+            _logger.LogInformation("l items");
             var orderList = await _orderRepo.GetAllOrders();
             var modelOrders = new List<ViewModelOrder>();
 
@@ -83,6 +86,8 @@ namespace AbschlussKonzertKadetten.Controllers
         [HttpGet("{id}")]
         public async Task<ViewModelOrder> Get(int id)
         {
+            _logger.LogInformation("Getting item {ID}", id);
+
             var order = await _orderRepo.GetOrderById(id);
             var client = await _clientRepo.GetClientById(order.ClientId);
             var kadett = await _kadettRepo.GetKadettById(order.KadettId);
@@ -119,6 +124,8 @@ namespace AbschlussKonzertKadetten.Controllers
         [HttpPost]
         public async Task<ActionResult> Post(ViewModelOrder order)
         {
+            _logger.LogInformation("Post Order", order);
+
             if (ModelState.IsValid)
             {
                 if (_clientRepo.ClientFindByEmail(order.Email) != null)
@@ -171,6 +178,8 @@ namespace AbschlussKonzertKadetten.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(int id, [FromBody] ViewModelOrder order)
         {
+            _logger.LogInformation("Update Order", order, id);
+
             var dbOrder = await _orderRepo.GetOrderById(id);
             var dbClient = await _clientRepo.GetClientById(dbOrder.ClientId);
             var dbKadett = await _kadettRepo.GetKadettById(dbOrder.KadettId);
@@ -213,6 +222,8 @@ namespace AbschlussKonzertKadetten.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
+            _logger.LogInformation("Delete Order", id);
+
             var dbOrder = await _orderRepo.GetOrderById(id);
 
             _clientRepo.DeleteClient(dbOrder.ClientId);

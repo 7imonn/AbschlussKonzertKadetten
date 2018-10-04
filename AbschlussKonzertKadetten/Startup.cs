@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Steeltoe.Extensions.Configuration.CloudFoundry;
 
@@ -13,9 +14,11 @@ namespace AbschlussKonzertKadetten
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly ILoggerFactory _loggerFactory;
+        public Startup(IConfiguration configuration, ILoggerFactory loggerFactory)
         {
             Configuration = configuration;
+            _loggerFactory = loggerFactory;
         }
 
         public IConfiguration Configuration { get; }
@@ -23,11 +26,13 @@ namespace AbschlussKonzertKadetten
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var host = Configuration["vcap:services:mariadbent:0:credentials:host"];
-            var port = Configuration["vcap:services:mariadbent:0:credentials:port"];
-            var db = Configuration["vcap:services:mariadbent:0:credentials:database"];
-            var user = Configuration["vcap:services:mariadbent:0:credentials:username"];
-            var password = Configuration["vcap:services:mariadbent:0:credentials:password"];
+            var logger = _loggerFactory.CreateLogger<Startup>();
+
+            var host = Configuration["VCAP_SERVICES:mariadbent:0:credentials:host"];
+            var port = Configuration["VCAP_SERVICES:mariadbent:0:credentials:port"];
+            var db = Configuration["VCAP_SERVICES:mariadbent:0:credentials:database"];
+            var user = Configuration["VCAP_SERVICES:mariadbent:0:credentials:username"];
+            var password = Configuration["VCAP_SERVICES:mariadbent:0:credentials:password"];
             var connectionString = $"Server={host};UID={user};PWD={password};Database={db};Port={port};";
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
