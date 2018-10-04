@@ -50,6 +50,7 @@ namespace AbschlussKonzertKadetten
             services.AddTransient<ITicketOrderRepo, TicketOrderRepo>();
             services.AddTransient<ITicketRepo, TicketRepo>();
             services.AddTransient<IKadettRepo, KadettRepo>();
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,7 +63,7 @@ namespace AbschlussKonzertKadetten
             app.UseHttpsRedirection();
             app.UseMvc(routes =>
             {
-                routes.MapRoute("default", "{controller=Ticket}/{action=Get}/{id?}");
+                routes.MapRoute("default", "{controller=Order}/{action=Get}/{id?}");
             });
         }
     }
