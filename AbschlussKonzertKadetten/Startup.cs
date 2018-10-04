@@ -2,7 +2,6 @@
 using AbschlussKonzertKadetten.Context;
 using AbschlussKonzertKadetten.Repository;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -32,14 +31,17 @@ namespace AbschlussKonzertKadetten
             var connectionString = $"Server={host};UID={user};PWD={password};Database={db};Port={port};";
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddDbContextPool<KadettenContext>( // replace "YourDbContext" with the class name of your DbContext
-                options => options.UseMySql(connectionString,
-                    mysqlOptions =>
-                    {
-                        mysqlOptions.ServerVersion(new Version(5, 7, 17), ServerType.MySql); // replace with your Server Version and Type
-                    }
-                ));
-            services.BuildServiceProvider().GetService<KadettenContext>().Database.Migrate();
+            //services.AddDbContextPool<KadettenContext>(
+            //    options => options.UseMySql(connectionString,
+            //        mysqlOptions =>
+            //        {
+            //            mysqlOptions.ServerVersion(new Version(5, 7, 17), ServerType.MySql);
+            //        }
+            //    ));
+            //services.BuildServiceProvider().GetService<KadettenContext>().Database.Migrate();
+
+            services.AddDbContext<KadettenContext>(options =>
+                options.UseMySql("server=localhost;port=3306;uid=root@localhost;password=gibbiX12345"));
 
             services.AddTransient<IOrderRepo, OrderRepo>();
             services.AddTransient<IClientRepo, ClientRepo>();
@@ -49,16 +51,11 @@ namespace AbschlussKonzertKadetten
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseHsts();
-            }
+            app.UseDeveloperExceptionPage();
+            //    app.UseHsts();
+
             app.UseCors("AllowSpecificOrigin");
             app.UseHttpsRedirection();
             app.UseMvc(routes =>
