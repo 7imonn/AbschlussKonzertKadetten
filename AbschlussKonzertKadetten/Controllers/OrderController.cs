@@ -59,7 +59,8 @@ namespace AbschlussKonzertKadetten.Controllers
                     var vmTicket = new ViewModelTicket()
                     {
                         Type = tickets.Type,
-                        Quantity = orderTicket.Quantity
+                        Quantity = orderTicket.Quantity,
+                        Day = orderTicket.Day
                     };
                     modelTickets.Add(vmTicket);
                 }
@@ -100,7 +101,8 @@ namespace AbschlussKonzertKadetten.Controllers
                 var vmTicket = new ViewModelTicket()
                 {
                     Type = tickets.Type,
-                    Quantity = orderTicket.Quantity
+                    Quantity = orderTicket.Quantity,
+                    Day = orderTicket.Day
                 };
                 modelTickets.Add(vmTicket);
             }

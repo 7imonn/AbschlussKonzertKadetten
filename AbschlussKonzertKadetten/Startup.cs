@@ -28,22 +28,22 @@ namespace AbschlussKonzertKadetten
         {
             var logger = _loggerFactory.CreateLogger<Startup>();
 
-            var host = Configuration["VCAP_SERVICES:mariadbent:0:credentials:host"];
-            var port = Configuration["VCAP_SERVICES:mariadbent:0:credentials:port"];
-            var db = Configuration["VCAP_SERVICES:mariadbent:0:credentials:database"];
-            var user = Configuration["VCAP_SERVICES:mariadbent:0:credentials:username"];
-            var password = Configuration["VCAP_SERVICES:mariadbent:0:credentials:password"];
+            var host = Configuration["vcap:services:mariadbent:0:credentials:host"];
+            var port = Configuration["vcap:services:mariadbent:0:credentials:port"];
+            var db = Configuration["vcap:services:mariadbent:0:credentials:database"];
+            var user = Configuration["vcap:services:mariadbent:0:credentials:username"];
+            var password = Configuration["vcap:services:mariadbent:0:credentials:password"];
             var connectionString = $"Server={host};UID={user};PWD={password};Database={db};Port={port};";
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDbContextPool<KadettenContext>(
-                options => options.UseMySql("server=127.0.0.1;port=3306;uid=root;password=gibbiX12345;database=test",
+                options => options.UseMySql(connectionString,
                     mysqlOptions =>
                     {
                         mysqlOptions.ServerVersion(new Version(5, 7, 17), ServerType.MySql);
                     }
                 ));
-            services.BuildServiceProvider().GetService<KadettenContext>().Database.Migrate();
+            //services.BuildServiceProvider().GetService<KadettenContext>().Database.Migrate();
 
             services.AddTransient<IOrderRepo, OrderRepo>();
             services.AddTransient<IClientRepo, ClientRepo>();
@@ -54,8 +54,11 @@ namespace AbschlussKonzertKadetten
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, KadettenContext kc)
         {
+            //kc.Database.EnsureDeleted();
+            kc.Database.EnsureCreated();
+
             app.UseDeveloperExceptionPage();
             //    app.UseHsts();
 
