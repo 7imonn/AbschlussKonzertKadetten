@@ -128,7 +128,7 @@ namespace AbschlussKonzertKadetten.Controllers
         {
             _logger.LogInformation("Post Order", order);
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && order.Botfield == null)
             {
                 if (_clientRepo.ClientFindByEmail(order.Email) != null)
                 {
@@ -181,44 +181,47 @@ namespace AbschlussKonzertKadetten.Controllers
         public async Task<IActionResult> Put(int id, [FromBody] ViewModelOrder order)
         {
             _logger.LogInformation("Update Order", order, id);
-
-            var dbOrder = await _orderRepo.GetOrderById(id);
-            var dbClient = await _clientRepo.GetClientById(dbOrder.ClientId);
-            var dbKadett = await _kadettRepo.GetKadettById(dbOrder.KadettId);
-            var dbTicketOrders = await _ticketOrderRepo.GetTicketOrderByOrderId(dbOrder.Id);
-
-            if (order == null)
+            if (order.Botfield == null)
             {
-                return NotFound();
-            }
-            dbClient.Email = order.Email;
-            dbClient.LastName = order.ClientLastName;
-            dbClient.FirstName = order.ClientFirstName;
+                var dbOrder = await _orderRepo.GetOrderById(id);
+                var dbClient = await _clientRepo.GetClientById(dbOrder.ClientId);
+                var dbKadett = await _kadettRepo.GetKadettById(dbOrder.KadettId);
+                var dbTicketOrders = await _ticketOrderRepo.GetTicketOrderByOrderId(dbOrder.Id);
 
-            dbKadett.LastName = order.KadettLastName;
-            dbKadett.FirstName = order.KadettFirstName;
-            dbKadett.KadettInKader = order.KadettInKader;
-
-            dbOrder.Bemerkung = order.Bemerkung;
-
-            foreach (var ticket in order.Tickets)
-            {
-                var ticketMatch = await _ticketRepo.GetByType(ticket.Type);
-                if (ticketMatch == null)
-                    return BadRequest();
-
-                foreach (var dbTicketOrder in dbTicketOrders)
+                if (order == null)
                 {
-                    if (dbTicketOrder.Ticket.Type == ticketMatch.Type)
+                    return NotFound();
+                }
+
+                dbClient.Email = order.Email;
+                dbClient.LastName = order.ClientLastName;
+                dbClient.FirstName = order.ClientFirstName;
+
+                dbKadett.LastName = order.KadettLastName;
+                dbKadett.FirstName = order.KadettFirstName;
+                dbKadett.KadettInKader = order.KadettInKader;
+
+                dbOrder.Bemerkung = order.Bemerkung;
+
+                foreach (var ticket in order.Tickets)
+                {
+                    var ticketMatch = await _ticketRepo.GetByType(ticket.Type);
+                    if (ticketMatch == null)
+                        return BadRequest();
+
+                    foreach (var dbTicketOrder in dbTicketOrders)
                     {
-                        dbTicketOrder.Quantity = ticket.Quantity;
-                        dbTicketOrder.Day = ticket.Day;
+                        if (dbTicketOrder.Ticket.Type == ticketMatch.Type)
+                        {
+                            dbTicketOrder.Quantity = ticket.Quantity;
+                            dbTicketOrder.Day = ticket.Day;
+                        }
                     }
                 }
-            }
 
-            await _context.SaveChangesAsync();
-            return Ok();
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
         }
         //DELETE api/values/5
         [HttpDelete("{id}")]
