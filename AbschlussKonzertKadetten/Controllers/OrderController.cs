@@ -14,7 +14,7 @@ using Microsoft.Extensions.Logging;
 namespace AbschlussKonzertKadetten.Controllers
 {
     [Route("api/Order")]
-    [EnableCors("AllowSpecificOrigin")]
+    [EnableCors("MyPolicy")]
     [ApiController]
     public class OrderController : ControllerBase
     {
