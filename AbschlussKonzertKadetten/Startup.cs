@@ -37,7 +37,7 @@ namespace AbschlussKonzertKadetten
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDbContextPool<KadettenContext>(
-                options => options.UseMySql(/*connectionString*/ "server=127.0.0.1;port=3306;uid=root;password=gibbiX12345;database=test",
+                options => options.UseMySql(connectionString /*"server=127.0.0.1;port=3306;uid=root;password=gibbiX12345;database=test"*/,
                     mysqlOptions =>
                     {
                         mysqlOptions.ServerVersion(new Version(5, 7, 17), ServerType.MySql);
