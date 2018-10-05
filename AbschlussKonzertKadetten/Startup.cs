@@ -50,7 +50,12 @@ namespace AbschlussKonzertKadetten
             services.AddTransient<ITicketOrderRepo, TicketOrderRepo>();
             services.AddTransient<ITicketRepo, TicketRepo>();
             services.AddTransient<IKadettRepo, KadettRepo>();
-            services.AddCors();
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,7 +67,7 @@ namespace AbschlussKonzertKadetten
             app.UseDeveloperExceptionPage();
             //    app.UseHsts();
 
-            app.UseCors("AllowSpecificOrigin");
+            app.UseCors("MyPolicy");
             app.UseHttpsRedirection();
             app.UseMvc(routes =>
             {
