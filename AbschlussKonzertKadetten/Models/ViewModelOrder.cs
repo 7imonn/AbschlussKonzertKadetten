@@ -20,6 +20,7 @@ namespace AbschlussKonzertKadetten.Models
         public string KadettLastName { get; set; }
         public string KadettFirstName { get; set; }
         public bool KadettInKader { get; set; }
+        public string Botfield { get; set; }
         //[Required]
         public List<ViewModelTicket> Tickets { get; set; }
     }

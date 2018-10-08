@@ -2,7 +2,6 @@
 using AbschlussKonzertKadetten.Context;
 using AbschlussKonzertKadetten.Repository;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -29,46 +28,50 @@ namespace AbschlussKonzertKadetten
         {
             var logger = _loggerFactory.CreateLogger<Startup>();
 
-            var host = Configuration["VCAP_SERVICES:mariadbent:0:credentials:host"];
-            var port = Configuration["VCAP_SERVICES:mariadbent:0:credentials:port"];
-            var db = Configuration["VCAP_SERVICES:mariadbent:0:credentials:database"];
-            var user = Configuration["VCAP_SERVICES:mariadbent:0:credentials:username"];
-            var password = Configuration["VCAP_SERVICES:mariadbent:0:credentials:password"];
+            var host = Configuration["vcap:services:mariadbent:0:credentials:host"];
+            var port = Configuration["vcap:services:mariadbent:0:credentials:port"];
+            var db = Configuration["vcap:services:mariadbent:0:credentials:database"];
+            var user = Configuration["vcap:services:mariadbent:0:credentials:username"];
+            var password = Configuration["vcap:services:mariadbent:0:credentials:password"];
             var connectionString = $"Server={host};UID={user};PWD={password};Database={db};Port={port};";
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddDbContextPool<KadettenContext>( // replace "YourDbContext" with the class name of your DbContext
+            services.AddDbContextPool<KadettenContext>(
                 options => options.UseMySql(connectionString,
                     mysqlOptions =>
                     {
-                        mysqlOptions.ServerVersion(new Version(5, 7, 17), ServerType.MySql); // replace with your Server Version and Type
+                        mysqlOptions.ServerVersion(new Version(5, 7, 17), ServerType.MySql);
                     }
                 ));
-            services.BuildServiceProvider().GetService<KadettenContext>().Database.Migrate();
+            //services.BuildServiceProvider().GetService<KadettenContext>().Database.Migrate();
 
             services.AddTransient<IOrderRepo, OrderRepo>();
             services.AddTransient<IClientRepo, ClientRepo>();
             services.AddTransient<ITicketOrderRepo, TicketOrderRepo>();
             services.AddTransient<ITicketRepo, TicketRepo>();
             services.AddTransient<IKadettRepo, KadettRepo>();
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+            }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, KadettenContext kc)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseHsts();
-            }
-            app.UseCors(builder => { builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials(); });
+            //kc.Database.EnsureDeleted();
+            kc.Database.EnsureCreated();
+
+            app.UseDeveloperExceptionPage();
+            //    app.UseHsts();
+
+            app.UseCors("MyPolicy");
             app.UseHttpsRedirection();
             app.UseMvc(routes =>
             {
-                routes.MapRoute("default", "{controller=Ticket}/{action=Get}/{id?}");
+                routes.MapRoute("default", "{controller=Order}/{action=Get}/{id?}");
             });
         }
     }
