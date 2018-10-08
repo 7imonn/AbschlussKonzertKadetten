@@ -152,7 +152,6 @@ namespace AbschlussKonzertKadetten.Controllers
 
                     foreach (var ticket in order.Tickets)
                     {
-
                         Ticket ticketMatch = await _ticketRepo.GetByType(ticket.Type);
                         if (ticketMatch == null)
                             return BadRequest();

@@ -23,6 +23,10 @@ namespace AbschlussKonzertKadetten.Repository
         {
             return await _context.Order.FindAsync(id);
         }
+        public async Task<Order> GetOrderByEmail(string email)
+        {
+            return await _context.Order.FindAsync(email);
+        }
 
         public async void DeleteOrder(int id)
         {
