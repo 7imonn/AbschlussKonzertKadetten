@@ -129,9 +129,9 @@ namespace AbschlussKonzertKadetten.Controllers
         {
             _logger.LogInformation("Post Order", order);
 
-            if (ModelState.IsValid && order.Botfield == null && _clientRepo.ClientFindByEmail(order.Email).Result.Email == null)
+            if (ModelState.IsValid && order.Botfield == null)
             {
-                if (_clientRepo.ClientFindByEmail(order.Email) != null)
+                if (_clientRepo.ClientFindByEmail(order.Email).Result.Email != null)
                 {
                     var createClient = await _clientRepo.CreateClient(new Client()
                     {
@@ -171,6 +171,8 @@ namespace AbschlussKonzertKadetten.Controllers
 
                     await _context.SaveChangesAsync();
                 }
+                return Conflict();
+
             }
 
             return ValidationProblem();
