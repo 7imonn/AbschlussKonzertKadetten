@@ -129,7 +129,7 @@ namespace AbschlussKonzertKadetten.Controllers
         {
             _logger.LogInformation("Post Order", order);
 
-            if (ModelState.IsValid && order.Botfield == null && _clientRepo.ClientFindByEmail(order.Email) != null)
+            if (ModelState.IsValid && order.Botfield == null && _clientRepo.ClientFindByEmail(order.Email).Result.Email == null)
             {
                 if (_clientRepo.ClientFindByEmail(order.Email) != null)
                 {
@@ -173,7 +173,7 @@ namespace AbschlussKonzertKadetten.Controllers
                 }
             }
 
-            return Ok();
+            return ValidationProblem();
 
         }
 

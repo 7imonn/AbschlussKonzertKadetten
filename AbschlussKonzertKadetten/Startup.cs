@@ -61,8 +61,8 @@ namespace AbschlussKonzertKadetten
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, KadettenContext kc)
         {
-            kc.Database.EnsureDeleted();
-            //kc.Database.EnsureCreated();
+            //kc.Database.EnsureDeleted();
+            kc.Database.EnsureCreated();
 
             app.UseDeveloperExceptionPage();
             //    app.UseHsts();
