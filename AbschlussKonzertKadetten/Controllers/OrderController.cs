@@ -85,11 +85,11 @@ namespace AbschlussKonzertKadetten.Controllers
 
         //GET api/values/5
         [HttpGet("{id}")]
-        public async Task<ViewModelOrder> Get(int id)
+        public async Task<ViewModelOrder> Get(string email)
         {
-            _logger.LogInformation("Getting item {ID}", id);
+            _logger.LogInformation("Getting item {ID}", email);
 
-            var order = await _orderRepo.GetOrderById(id);
+            var order = await _orderRepo.GetOrderByEmail(email);
             var client = await _clientRepo.GetClientById(order.ClientId);
             var kadett = await _kadettRepo.GetKadettById(order.KadettId);
             var modelTickets = new List<ViewModelTicket>();

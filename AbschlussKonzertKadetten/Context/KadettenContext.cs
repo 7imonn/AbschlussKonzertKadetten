@@ -39,6 +39,9 @@ namespace AbschlussKonzertKadetten.Context
             builder.Entity<Order>()
                 .Property(x => x.Id)
                 .ValueGeneratedOnAdd();
+            builder.Entity<TicketOrder>()
+                .Property(x => x.Id)
+                .ValueGeneratedOnAdd();
         }
         public DbSet<Ticket> Ticket { get; set; }
         public DbSet<Client> Client { get; set; }
