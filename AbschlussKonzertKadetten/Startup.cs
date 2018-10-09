@@ -2,6 +2,7 @@
 using AbschlussKonzertKadetten.Context;
 using AbschlussKonzertKadetten.Repository;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +27,7 @@ namespace AbschlussKonzertKadetten
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             var logger = _loggerFactory.CreateLogger<Startup>();
 
             var host = Configuration["vcap:services:mariadbent:0:credentials:host"];
@@ -43,7 +45,6 @@ namespace AbschlussKonzertKadetten
                         mysqlOptions.ServerVersion(new Version(5, 7, 17), ServerType.MySql);
                     }
                 ));
-            //services.BuildServiceProvider().GetService<KadettenContext>().Database.Migrate();
 
             services.AddTransient<IOrderRepo, OrderRepo>();
             services.AddTransient<IClientRepo, ClientRepo>();
@@ -59,10 +60,13 @@ namespace AbschlussKonzertKadetten
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, KadettenContext kc)
+        public void Configure(IApplicationBuilder app, KadettenContext kc, IHostingEnvironment env)
         {
-            //kc.Database.EnsureDeleted();
-            kc.Database.EnsureCreated();
+            if (env.IsDevelopment())
+            {
+                //kc.Database.EnsureDeleted();
+                kc.Database.EnsureCreated();
+            }
 
             app.UseDeveloperExceptionPage();
             //    app.UseHsts();
