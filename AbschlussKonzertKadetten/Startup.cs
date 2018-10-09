@@ -62,7 +62,7 @@ namespace AbschlussKonzertKadetten
         public void Configure(IApplicationBuilder app, KadettenContext kc)
         {
             kc.Database.EnsureDeleted();
-            kc.Database.EnsureCreated();
+            //kc.Database.EnsureCreated();
 
             app.UseDeveloperExceptionPage();
             //    app.UseHsts();

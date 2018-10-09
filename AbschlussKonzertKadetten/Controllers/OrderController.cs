@@ -84,13 +84,14 @@ namespace AbschlussKonzertKadetten.Controllers
         }
 
         //GET api/values/5
-        [HttpGet("{id}")]
+        [HttpGet("{email}")]
         public async Task<ViewModelOrder> Get(string email)
         {
             _logger.LogInformation("Getting item {ID}", email);
 
-            var order = await _orderRepo.GetOrderByEmail(email);
-            var client = await _clientRepo.GetClientById(order.ClientId);
+            var client = await _clientRepo.ClientFindByEmail(email);
+            var order = await _orderRepo.GetOrderByClientId(client.Id);
+
             var kadett = await _kadettRepo.GetKadettById(order.KadettId);
             var modelTickets = new List<ViewModelTicket>();
             var orderTickets = await _ticketOrderRepo.GetTicketOrderByOrderId(order.Id);
@@ -128,7 +129,7 @@ namespace AbschlussKonzertKadetten.Controllers
         {
             _logger.LogInformation("Post Order", order);
 
-            if (ModelState.IsValid && order.Botfield == null)
+            if (ModelState.IsValid && order.Botfield == null && _clientRepo.ClientFindByEmail(order.Email) != null)
             {
                 if (_clientRepo.ClientFindByEmail(order.Email) != null)
                 {
