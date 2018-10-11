@@ -67,6 +67,8 @@ namespace AbschlussKonzertKadetten
                 kc.Database.EnsureCreated();
             }
 
+            kc.Database.EnsureCreated();
+
             app.UseDeveloperExceptionPage();
             //    app.UseHsts();
 

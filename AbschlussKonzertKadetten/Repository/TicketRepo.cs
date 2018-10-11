@@ -22,8 +22,8 @@ namespace AbschlussKonzertKadetten.Repository
 
         public async Task<Ticket> GetByType(string type)
         {
-            var lala = await _context.Ticket.SingleOrDefaultAsync(typ => typ.Type == type);
-            return lala;
+            var ticket = await _context.Ticket.SingleOrDefaultAsync(typ => typ.Type == type);
+            return ticket;
         }
         public async Task<Ticket> GetTicketById(int id)
         {
