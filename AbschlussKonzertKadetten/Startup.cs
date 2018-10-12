@@ -1,6 +1,7 @@
 ﻿using System;
 using AbschlussKonzertKadetten.Context;
 using AbschlussKonzertKadetten.Repository;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -9,13 +10,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
-using Steeltoe.Extensions.Configuration.CloudFoundry;
+using ZNetCS.AspNetCore.Authentication.Basic;
+using AuthenticationMiddleware = AbschlussKonzertKadetten.Helpers.AuthenticationMiddleware;
 
 namespace AbschlussKonzertKadetten
 {
     public class Startup
     {
         private readonly ILoggerFactory _loggerFactory;
+
         public Startup(IConfiguration configuration, ILoggerFactory loggerFactory)
         {
             Configuration = configuration;
@@ -36,26 +39,28 @@ namespace AbschlussKonzertKadetten
             var password = Configuration["vcap:services:mariadbent:0:credentials:password"];
             var connectionString = $"Server={host};UID={user};PWD={password};Database={db};Port={port};";
 
+            services.AddAuthentication(BasicAuthenticationDefaults.AuthenticationScheme)
+                .AddBasicAuthentication(c => AuthenticationMiddleware() /*(c.username, c.password)*/);
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDbContextPool<KadettenContext>(
-                options => options.UseMySql(/*connectionString*/ "server=127.0.0.1;port=3306;uid=root;password=gibbiX12345;database=test",
-                    mysqlOptions =>
-                    {
-                        mysqlOptions.ServerVersion(new Version(5, 7, 17), ServerType.MySql);
-                    }
+                options => options.UseMySql( /*connectionString*/
+                    "server=127.0.0.1;port=3306;uid=root;password=gibbiX12345;database=test",
+                    mysqlOptions => { mysqlOptions.ServerVersion(new Version(5, 7, 17), ServerType.MySql); }
                 ));
-
-            services.AddTransient<IOrderRepo, OrderRepo>();
-            services.AddTransient<IClientRepo, ClientRepo>();
-            services.AddTransient<ITicketOrderRepo, TicketOrderRepo>();
-            services.AddTransient<ITicketRepo, TicketRepo>();
-            services.AddTransient<IKadettRepo, KadettRepo>();
-            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
-            {
-                builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
-            }));
+            
+                    services.AddTransient<IOrderRepo, OrderRepo>();
+                    services.AddTransient<IClientRepo, ClientRepo>();
+                    services.AddTransient<ITicketOrderRepo, TicketOrderRepo>();
+                    services.AddTransient<ITicketRepo, TicketRepo>();
+                    services.AddTransient<IKadettRepo, KadettRepo>();
+                    services.AddTransient<IUserRepo, UserRepo>();
+                    services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                    }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,15 +76,11 @@ namespace AbschlussKonzertKadetten
 
             app.UseDeveloperExceptionPage();
             //    app.UseHsts();
-
+            app.UseMiddleware<AuthenticationMiddleware>();
             app.UseCors("MyPolicy");
             app.UseHttpsRedirection();
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(name: "default_route",
-                    template: "{controller}/{action}/{id?}",
-                    defaults: new { controller = "order", action = "Get" });
-            });
+            app.UseMvc(routes => { routes.MapRoute("default", "{controller=order}/{action=Get}/{id?}"); });
+
         }
     }
 }

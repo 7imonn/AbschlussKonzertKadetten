@@ -6,6 +6,7 @@ using AbschlussKonzertKadetten.Context;
 using AbschlussKonzertKadetten.Entity;
 using AbschlussKonzertKadetten.Models;
 using AbschlussKonzertKadetten.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity.UI.Pages.Internal.Account;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,7 @@ using Microsoft.Extensions.Logging;
 namespace AbschlussKonzertKadetten.Controllers
 {
     [Route("api/Order")]
+    [Authorize]
     [EnableCors("MyPolicy")]
     [ApiController]
     public class OrderController : ControllerBase
@@ -25,9 +27,10 @@ namespace AbschlussKonzertKadetten.Controllers
         private readonly ITicketRepo _ticketRepo;
         private readonly IKadettRepo _kadettRepo;
         private readonly ILogger _logger;
+        private readonly IUserRepo _userRepo;
 
         public OrderController(KadettenContext context, IOrderRepo orderRepo, IClientRepo clientRepo,
-            ITicketOrderRepo ticketOrderRepo, ITicketRepo ticketRepo, IKadettRepo kadettRepo, ILogger<OrderController> logger)
+            ITicketOrderRepo ticketOrderRepo, ITicketRepo ticketRepo, IKadettRepo kadettRepo, ILogger<OrderController> logger, IUserRepo userRepo)
         {
             _logger = logger;
             _context = context;
@@ -35,11 +38,14 @@ namespace AbschlussKonzertKadetten.Controllers
             _ticketOrderRepo = ticketOrderRepo;
             _clientRepo = clientRepo;
             _ticketRepo = ticketRepo;
+            _userRepo = userRepo;
             _kadettRepo = kadettRepo;
         }
 
         // GET api/values
         [HttpGet]
+        [Route("")]
+        [Route("api/order")]
         public async Task<List<ViewModelOrder>> Get()
         {
             _logger.LogInformation("l items");
@@ -124,6 +130,7 @@ namespace AbschlussKonzertKadetten.Controllers
         }
 
         // POST api/values
+        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult> Post(ViewModelOrder order)
         {
@@ -247,6 +254,44 @@ namespace AbschlussKonzertKadetten.Controllers
             await _context.SaveChangesAsync();
 
             return Ok();
+        }
+        [AllowAnonymous]
+        //[HttpPost("authenticate")]
+        [Route("authenticate")]
+        public async Task<IActionResult> Authenticate(ViewModelUser user)
+        {
+            var userAuthentication = await _userRepo.Authenticate(user.username, user.pw);
+
+            if (userAuthentication == null)
+                return BadRequest(new { message = "Username or password is incorrect" });
+
+            var vm = new ViewModelUser()
+            {
+                username = userAuthentication.Username,
+                FirstName = userAuthentication.FirstName,
+                LastName = userAuthentication.LastName
+            };
+            //var lala = HandleAuthenticateAsync();
+            return Ok(vm);
+        }
+        [Route("authenticate")]
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var users = await _userRepo.GetAll();
+            var viewModelList = new List<ViewModelUser>();
+
+            foreach (var user in users)
+            {
+                var vm = new ViewModelUser()
+                {
+                    username = user.Username,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName
+                };
+                viewModelList.Add(vm);
+            }
+            return Ok(viewModelList);
         }
     }
 }
