@@ -30,7 +30,8 @@ namespace AbschlussKonzertKadetten.Repository
 
         public async Task<Client> ClientFindByEmail(string email)
         {
-            return await _context.Client.FindAsync(email);
+            var client = await _context.Client.SingleOrDefaultAsync(c => c.Email == email);
+            return client;
         }
 
         public async void DeleteClient(int id)

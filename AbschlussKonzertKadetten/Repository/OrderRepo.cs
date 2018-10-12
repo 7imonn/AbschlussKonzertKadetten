@@ -28,6 +28,11 @@ namespace AbschlussKonzertKadetten.Repository
             return await _context.Order.FindAsync(email);
         }
 
+        public async Task<Order> GetOrderByClientId(int id)
+        {
+            var order = await _context.Order.SingleOrDefaultAsync(o => o.ClientId == id);
+            return order;
+        }
         public async void DeleteOrder(int id)
         {
             var deleteOrder = await GetOrderById(id);

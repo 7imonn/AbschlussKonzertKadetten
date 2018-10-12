@@ -14,7 +14,7 @@ using Microsoft.Extensions.Logging;
 namespace AbschlussKonzertKadetten.Controllers
 {
     [Route("api/Order")]
-    [EnableCors("AllowSpecificOrigin")]
+    [EnableCors("MyPolicy")]
     [ApiController]
     public class OrderController : ControllerBase
     {
@@ -84,13 +84,14 @@ namespace AbschlussKonzertKadetten.Controllers
         }
 
         //GET api/values/5
-        [HttpGet("{id}")]
+        [HttpGet("{email}")]
         public async Task<ViewModelOrder> Get(string email)
         {
             _logger.LogInformation("Getting item {ID}", email);
 
-            var order = await _orderRepo.GetOrderByEmail(email);
-            var client = await _clientRepo.GetClientById(order.ClientId);
+            var client = await _clientRepo.ClientFindByEmail(email);
+            var order = await _orderRepo.GetOrderByClientId(client.Id);
+
             var kadett = await _kadettRepo.GetKadettById(order.KadettId);
             var modelTickets = new List<ViewModelTicket>();
             var orderTickets = await _ticketOrderRepo.GetTicketOrderByOrderId(order.Id);
@@ -130,7 +131,8 @@ namespace AbschlussKonzertKadetten.Controllers
 
             if (ModelState.IsValid && order.Botfield == null)
             {
-                if (_clientRepo.ClientFindByEmail(order.Email) != null)
+                var findClient = _clientRepo.ClientFindByEmail(order.Email).Result;
+                if (findClient == null)
                 {
                     var createClient = await _clientRepo.CreateClient(new Client()
                     {
@@ -168,65 +170,73 @@ namespace AbschlussKonzertKadetten.Controllers
                     }
 
                     await _context.SaveChangesAsync();
+                    return Ok();
                 }
+                return Conflict();
             }
-
-            return Ok();
-
+            return ValidationProblem();
         }
 
         // PUT api/values/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] ViewModelOrder order)
+        [HttpPut("{email}")]
+        public async Task<IActionResult> Put(string email, ViewModelOrder order)
         {
-            _logger.LogInformation("Update Order", order, id);
+            _logger.LogInformation("Update Order", order, email);
+            if (_clientRepo.ClientFindByEmail(email) != null)
+            {
+                var dbClient = await _clientRepo.ClientFindByEmail(email);
+                var dbOrder = await _orderRepo.GetOrderByClientId(dbClient.Id);
+                var dbKadett = await _kadettRepo.GetKadettById(dbOrder.KadettId);
+                var dbTicketOrders = await _ticketOrderRepo.GetTicketOrderByOrderId(dbOrder.Id);
 
-            var dbOrder = await _orderRepo.GetOrderById(id);
-            var dbClient = await _clientRepo.GetClientById(dbOrder.ClientId);
-            var dbKadett = await _kadettRepo.GetKadettById(dbOrder.KadettId);
-            var dbTicketOrders = await _ticketOrderRepo.GetTicketOrderByOrderId(dbOrder.Id);
+                if (order == null)
+                {
+                    return NotFound();
+                }
 
-            if (order == null)
+                if (order.Email != dbClient.Email)
+                    dbClient.Email = order.Email;
+                //dbClient.LastName = order.ClientLastName;
+                //dbClient.FirstName = order.ClientFirstName;
+
+                //dbKadett.LastName = order.KadettLastName;
+                //dbKadett.FirstName = order.KadettFirstName;
+                //dbKadett.KadettInKader = order.KadettInKader;
+
+                //dbOrder.Bemerkung = order.Bemerkung;
+
+                foreach (var ticket in order.Tickets)
+                {
+                    var ticketMatch = await _ticketRepo.GetByType(ticket.Type);
+                    if (ticketMatch == null)
+                        return BadRequest();
+
+                    foreach (var dbTicketOrder in dbTicketOrders)
+                    {
+                        if (dbTicketOrder.Ticket.Type == ticket.Type && dbTicketOrder.Day == ticket.Day)
+                        {
+                            dbTicketOrder.Quantity = ticket.Quantity;
+                            dbTicketOrder.Day = ticket.Day;
+                        }
+                    }
+                }
+
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            else
             {
                 return NotFound();
             }
-
-            dbClient.Email = order.Email;
-            dbClient.LastName = order.ClientLastName;
-            dbClient.FirstName = order.ClientFirstName;
-
-            dbKadett.LastName = order.KadettLastName;
-            dbKadett.FirstName = order.KadettFirstName;
-            dbKadett.KadettInKader = order.KadettInKader;
-
-            dbOrder.Bemerkung = order.Bemerkung;
-
-            foreach (var ticket in order.Tickets)
-            {
-                var ticketMatch = await _ticketRepo.GetByType(ticket.Type);
-                if (ticketMatch == null)
-                    return BadRequest();
-
-                foreach (var dbTicketOrder in dbTicketOrders)
-                {
-                    if (dbTicketOrder.Ticket.Type == ticketMatch.Type)
-                    {
-                        dbTicketOrder.Quantity = ticket.Quantity;
-                        dbTicketOrder.Day = ticket.Day;
-                    }
-                }
-            }
-
-            await _context.SaveChangesAsync();
-            return Ok();
         }
         //DELETE api/values/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("{email}")]
+        public async Task<IActionResult> Delete(string email)
         {
-            _logger.LogInformation("Delete Order", id);
+            _logger.LogInformation("Delete Order", email);
 
-            var dbOrder = await _orderRepo.GetOrderById(id);
+            var dbClient = await _clientRepo.ClientFindByEmail(email);
+            var dbOrder = await _orderRepo.GetOrderByClientId(dbClient.Id);
 
             _clientRepo.DeleteClient(dbOrder.ClientId);
             _kadettRepo.DeleteKadett(dbOrder.KadettId);

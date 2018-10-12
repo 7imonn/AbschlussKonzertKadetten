@@ -18,17 +18,15 @@ namespace AbschlussKonzertKadetten.Context
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<TicketOrder>().HasKey(x => new { x.OrderId, x.TicketId });
+            //builder.Entity<TicketOrder>()
+            //    .HasOne(m => m.Order)
+            //    .WithMany(ma => ma.TicketOrders)
+            //    .HasForeignKey(m => m.OrderId);
 
-            builder.Entity<TicketOrder>()
-                .HasOne(m => m.Order)
-                .WithMany(ma => ma.TicketOrders)
-                .HasForeignKey(m => m.OrderId);
-
-            builder.Entity<TicketOrder>()
-                .HasOne(m => m.Ticket)
-                .WithMany(ma => ma.TicketOrders)
-                .HasForeignKey(a => a.TicketId);
+            //builder.Entity<TicketOrder>()
+            //    .HasOne(m => m.Ticket)
+            //    .WithMany(ma => ma.TicketOrders)
+            //    .HasForeignKey(a => a.TicketId);
 
             builder.Entity<Client>()
                 .Property(x => x.Id)
@@ -37,6 +35,9 @@ namespace AbschlussKonzertKadetten.Context
                 .Property(x => x.Id)
                 .ValueGeneratedOnAdd();
             builder.Entity<Order>()
+                .Property(x => x.Id)
+                .ValueGeneratedOnAdd();
+            builder.Entity<TicketOrder>()
                 .Property(x => x.Id)
                 .ValueGeneratedOnAdd();
         }

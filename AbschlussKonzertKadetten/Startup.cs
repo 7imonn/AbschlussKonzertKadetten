@@ -2,6 +2,7 @@
 using AbschlussKonzertKadetten.Context;
 using AbschlussKonzertKadetten.Repository;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -37,13 +38,12 @@ namespace AbschlussKonzertKadetten
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDbContextPool<KadettenContext>(
-                options => options.UseMySql(connectionString,
+                options => options.UseMySql(/*connectionString*/ "server=127.0.0.1;port=3306;uid=root;password=gibbiX12345;database=test",
                     mysqlOptions =>
                     {
                         mysqlOptions.ServerVersion(new Version(5, 7, 17), ServerType.MySql);
                     }
                 ));
-            //services.BuildServiceProvider().GetService<KadettenContext>().Database.Migrate();
 
             services.AddTransient<IOrderRepo, OrderRepo>();
             services.AddTransient<IClientRepo, ClientRepo>();
@@ -59,9 +59,14 @@ namespace AbschlussKonzertKadetten
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, KadettenContext kc)
+        public void Configure(IApplicationBuilder app, KadettenContext kc, IHostingEnvironment env)
         {
-            //kc.Database.EnsureDeleted();
+            if (env.IsDevelopment())
+            {
+                //kc.Database.EnsureDeleted();
+                kc.Database.EnsureCreated();
+            }
+
             kc.Database.EnsureCreated();
 
             app.UseDeveloperExceptionPage();
@@ -71,7 +76,9 @@ namespace AbschlussKonzertKadetten
             app.UseHttpsRedirection();
             app.UseMvc(routes =>
             {
-                routes.MapRoute("default", "{controller=Order}/{action=Get}/{id?}");
+                routes.MapRoute(name: "default_route",
+                    template: "{controller}/{action}/{id?}",
+                    defaults: new { controller = "order", action = "Get" });
             });
         }
     }
