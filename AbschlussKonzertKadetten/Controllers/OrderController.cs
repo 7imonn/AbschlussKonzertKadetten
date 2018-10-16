@@ -196,14 +196,6 @@ namespace AbschlussKonzertKadetten.Controllers
 
                 if (order.Email != dbClient.Email)
                     dbClient.Email = order.Email;
-                //dbClient.LastName = order.ClientLastName;
-                //dbClient.FirstName = order.ClientFirstName;
-
-                //dbKadett.LastName = order.KadettLastName;
-                //dbKadett.FirstName = order.KadettFirstName;
-                //dbKadett.KadettInKader = order.KadettInKader;
-
-                //dbOrder.Bemerkung = order.Bemerkung;
 
                 foreach (var ticket in order.Tickets)
                 {
@@ -247,5 +239,21 @@ namespace AbschlussKonzertKadetten.Controllers
 
             return Ok();
         }
+        //[HttpDelete]
+        //public async Task<IActionResult> Delete()
+        //{
+        //    _logger.LogInformation("Delete All Order");
+
+        //    var dbOrder = await _orderRepo.GetAllOrders();
+
+        //    //_clientRepo.DeleteClient(dbOrder.ClientId);
+        //    //_kadettRepo.DeleteKadett(dbOrder.KadettId);
+        //    //_orderRepo.DeleteOrder(dbOrder.Id);
+        //    //_ticketOrderRepo.DeleteOrderTicket(dbOrder.Id);
+
+        //    await _context.SaveChangesAsync();
+
+        //    return Ok();
+        //}
     }
 }

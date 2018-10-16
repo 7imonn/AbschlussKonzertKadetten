@@ -50,6 +50,7 @@ namespace AbschlussKonzertKadetten
             services.AddTransient<ITicketOrderRepo, TicketOrderRepo>();
             services.AddTransient<ITicketRepo, TicketRepo>();
             services.AddTransient<IKadettRepo, KadettRepo>();
+            services.AddTransient<IRedactorRepo, RedactorRepo>();
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {
                 builder.AllowAnyOrigin()
@@ -64,7 +65,7 @@ namespace AbschlussKonzertKadetten
             if (env.IsDevelopment())
             {
                 //kc.Database.EnsureDeleted();
-                kc.Database.EnsureCreated();
+                //kc.Database.EnsureCreated();
             }
 
             kc.Database.EnsureCreated();
