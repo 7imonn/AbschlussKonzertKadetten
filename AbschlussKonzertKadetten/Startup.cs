@@ -1,8 +1,10 @@
 ﻿using System;
 using AbschlussKonzertKadetten.Context;
+using AbschlussKonzertKadetten.Interface;
 using AbschlussKonzertKadetten.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,10 +18,12 @@ namespace AbschlussKonzertKadetten
     public class Startup
     {
         private readonly ILoggerFactory _loggerFactory;
-        public Startup(IConfiguration configuration, ILoggerFactory loggerFactory)
+        public IHostingEnvironment HostingEnvironment { get; }
+        public Startup(IConfiguration configuration, ILoggerFactory loggerFactory, IHostingEnvironment env)
         {
             Configuration = configuration;
             _loggerFactory = loggerFactory;
+            HostingEnvironment = env;
         }
 
         public IConfiguration Configuration { get; }
@@ -28,17 +32,26 @@ namespace AbschlussKonzertKadetten
         public void ConfigureServices(IServiceCollection services)
         {
             var logger = _loggerFactory.CreateLogger<Startup>();
+            var connectionString = String.Empty;
+            if (HostingEnvironment.IsDevelopment())
+            {
+             connectionString = "server = 127.0.0.1; port = 3306; uid = root; password = gibbiX12345; database = test";
 
-            var host = Configuration["vcap:services:mariadbent:0:credentials:host"];
-            var port = Configuration["vcap:services:mariadbent:0:credentials:port"];
-            var db = Configuration["vcap:services:mariadbent:0:credentials:database"];
-            var user = Configuration["vcap:services:mariadbent:0:credentials:username"];
-            var password = Configuration["vcap:services:mariadbent:0:credentials:password"];
-            var connectionString = $"Server={host};UID={user};PWD={password};Database={db};Port={port};";
+            }
+            else
+            {
+                var host = Configuration["vcap:services:mariadbent:0:credentials:host"];
+                var port = Configuration["vcap:services:mariadbent:0:credentials:port"];
+                var db = Configuration["vcap:services:mariadbent:0:credentials:database"];
+                var user = Configuration["vcap:services:mariadbent:0:credentials:username"];
+                var password = Configuration["vcap:services:mariadbent:0:credentials:password"];
+                connectionString = $"Server={host};UID={user};PWD={password};Database={db};Port={port};";
+            }
+            
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDbContextPool<KadettenContext>(
-                options => options.UseMySql(/*connectionString*/ "server=127.0.0.1;port=3306;uid=root;password=gibbiX12345;database=test",
+                options => options.UseMySql(connectionString,
                     mysqlOptions =>
                     {
                         mysqlOptions.ServerVersion(new Version(5, 7, 17), ServerType.MySql);
@@ -51,6 +64,7 @@ namespace AbschlussKonzertKadetten
             services.AddTransient<ITicketRepo, TicketRepo>();
             services.AddTransient<IKadettRepo, KadettRepo>();
             services.AddTransient<IRedactorRepo, RedactorRepo>();
+            services.AddTransient<IEmailSenderService, EmailSenderService>();
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {
                 builder.AllowAnyOrigin()
