@@ -11,6 +11,7 @@ namespace AbschlussKonzertKadetten.Models
         //[Required]
         //[EmailAddress]
         public string Email { get; set; }
+        public string Phone { get; set; }
         //[StringLength(50)]
         public string ClientLastName { get; set; }
         //[StringLength(50)]

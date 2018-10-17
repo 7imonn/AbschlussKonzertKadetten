@@ -68,6 +68,7 @@ namespace AbschlussKonzertKadetten.Controllers
                 var vm = new ViewModelOrder
                 {
                     Email = client.Email,
+                    Phone = client.Phone,
                     Bemerkung = order.Bemerkung,
                     ClientFirstName = client.FirstName,
                     ClientLastName = client.LastName,
@@ -111,6 +112,7 @@ namespace AbschlussKonzertKadetten.Controllers
             var modelOrder = new ViewModelOrder
             {
                 Email = client.Email,
+                Phone = client.Phone,
                 Bemerkung = order.Bemerkung,
                 ClientFirstName = client.FirstName,
                 ClientLastName = client.LastName,
@@ -137,6 +139,7 @@ namespace AbschlussKonzertKadetten.Controllers
                     var createClient = await _clientRepo.CreateClient(new Client()
                     {
                         Email = order.Email,
+                        Phone = order.Phone,
                         LastName = order.ClientLastName,
                         FirstName = order.ClientFirstName
                     });
@@ -239,21 +242,23 @@ namespace AbschlussKonzertKadetten.Controllers
 
             return Ok();
         }
-        //[HttpDelete]
-        //public async Task<IActionResult> Delete()
-        //{
-        //    _logger.LogInformation("Delete All Order");
+        [HttpDelete]
+        public async Task<IActionResult> Delete()
+        {
+            _logger.LogInformation("Delete All Order");
 
-        //    var dbOrder = await _orderRepo.GetAllOrders();
+            var dbOrder = await _orderRepo.GetAllOrders();
+            foreach (var order in dbOrder)
+            {
+                _clientRepo.DeleteClient(order.ClientId);
+                _kadettRepo.DeleteKadett(order.KadettId);
+                _orderRepo.DeleteOrder(order.Id);
+                _ticketOrderRepo.DeleteOrderTicket(order.Id);
+            }
 
-        //    //_clientRepo.DeleteClient(dbOrder.ClientId);
-        //    //_kadettRepo.DeleteKadett(dbOrder.KadettId);
-        //    //_orderRepo.DeleteOrder(dbOrder.Id);
-        //    //_ticketOrderRepo.DeleteOrderTicket(dbOrder.Id);
+            await _context.SaveChangesAsync();
 
-        //    await _context.SaveChangesAsync();
-
-        //    return Ok();
-        //}
+            return Ok();
+        }
     }
 }
