@@ -47,8 +47,8 @@ namespace AbschlussKonzertKadetten.Controllers
 
             return vm;
         }
-        [HttpGet("active/{active}")]
-        public async Task<bool> Get(bool active)
+        [HttpGet("active")]
+        public async Task<bool> Get()
         {
             _logger.LogInformation("Delete All Order");
 
