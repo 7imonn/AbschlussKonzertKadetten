@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AbschlussKonzertKadetten.Context;
+using AbschlussKonzertKadetten.Interface;
 using AbschlussKonzertKadetten.Models;
 using AbschlussKonzertKadetten.Repository;
 using Microsoft.AspNetCore.Cors;
@@ -13,7 +14,7 @@ using Microsoft.Extensions.Logging;
 
 namespace AbschlussKonzertKadetten.Controllers
 {
-    [Route("api/Redactor")]
+    [Route("api/redactor")]
     [EnableCors("MyPolicy")]
     [ApiController]
     public class RedactorController : Controller
@@ -21,11 +22,13 @@ namespace AbschlussKonzertKadetten.Controllers
         private readonly KadettenContext _context;
         private readonly ILogger _logger;
         private readonly IRedactorRepo _redactorRepo;
-        public RedactorController(KadettenContext context, IRedactorRepo redactorRepo, ILogger<RedactorController> logger)
+        private readonly IFormularActiveRepo _formularActiveRepo;
+        public RedactorController(KadettenContext context, IRedactorRepo redactorRepo, IFormularActiveRepo formularActiveRepo, ILogger<RedactorController> logger)
         {
             _context = context;
             _logger = logger;
             _redactorRepo = redactorRepo;
+            _formularActiveRepo = formularActiveRepo;
 
         }
         // GET: Redactor
@@ -44,35 +47,61 @@ namespace AbschlussKonzertKadetten.Controllers
 
             return vm;
         }
+        [HttpGet("active/{active}")]
+        public async Task<bool> Get(bool active)
+        {
+            _logger.LogInformation("Delete All Order");
+
+            var isFormulaActive = await _formularActiveRepo.isActive();
+
+            return isFormulaActive.Active;
+        }
+        [HttpPut("active/{active}")]
+        public async Task<IActionResult> Put(bool active)
+        {
+            _logger.LogInformation("Delete All Order");
+
+            var dbActive = _formularActiveRepo.isActive();
+            dbActive.Result.Active = active;
+
+            await _context.SaveChangesAsync();
+            return Ok();
+        }
 
         // GET: Redactor/Edit/5
         [HttpPut]
-        public async Task<IActionResult> Put(ViewModelRedactor model)
+        public async Task<IActionResult> Put(List<ViewModelRedactor> models)
         {
-            _logger.LogInformation("Update Order", model);
-            var redactor = _redactorRepo.GetReactorByNameAsync(model.Name);
-            if (redactor.Result != null)
+            foreach (var model in models)
             {
-                var dbReactor = await _redactorRepo.GetReactorByNameAsync(model.Name);
 
-                if (model.Text == null)
-                    return NotFound();
+                _logger.LogInformation("Update Order", model);
+                var redactor = _redactorRepo.GetReactorByNameAsync(model.Name);
+                if (redactor.Result != null)
+                {
+                    var dbReactor = await _redactorRepo.GetReactorByNameAsync(model.Name);
 
-                dbReactor.Name = model.Name;
-                dbReactor.Text = model.Text;
+                    if (model.Text == null)
+                        return NotFound();
 
-                await _context.SaveChangesAsync();
-                return Ok();
+                    dbReactor.Name = model.Name;
+                    dbReactor.Text = model.Text;
+
+                    await _context.SaveChangesAsync();
+                    return Ok();
+                }
+
+                if (ModelState.IsValid)
+                {
+                    await _redactorRepo.CreateRedactor(model);
+                    await _context.SaveChangesAsync();
+                    return Ok();
+
+                }
+                return ValidationProblem();
             }
 
-            if (ModelState.IsValid)
-            {
-                await _redactorRepo.CreateRedactor(model);
-                await _context.SaveChangesAsync();
-                return Ok();
-
-            }
-            return ValidationProblem();
+            return null;
         }
     }
 }

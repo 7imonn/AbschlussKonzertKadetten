@@ -19,6 +19,7 @@ namespace AbschlussKonzertKadetten
     {
         private readonly ILoggerFactory _loggerFactory;
         public IHostingEnvironment HostingEnvironment { get; }
+
         public Startup(IConfiguration configuration, ILoggerFactory loggerFactory, IHostingEnvironment env)
         {
             Configuration = configuration;
@@ -35,7 +36,8 @@ namespace AbschlussKonzertKadetten
             var connectionString = String.Empty;
             if (HostingEnvironment.IsDevelopment())
             {
-             connectionString = "server = 127.0.0.1; port = 3306; uid = root; password = gibbiX12345; database = test";
+                connectionString =
+                    "server = 127.0.0.1; port = 3306; uid = root; password = gibbiX12345; database = test";
 
             }
             else
@@ -47,15 +49,12 @@ namespace AbschlussKonzertKadetten
                 var password = Configuration["vcap:services:mariadbent:0:credentials:password"];
                 connectionString = $"Server={host};UID={user};PWD={password};Database={db};Port={port};";
             }
-            
+
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDbContextPool<KadettenContext>(
                 options => options.UseMySql(connectionString,
-                    mysqlOptions =>
-                    {
-                        mysqlOptions.ServerVersion(new Version(5, 7, 17), ServerType.MySql);
-                    }
+                    mysqlOptions => { mysqlOptions.ServerVersion(new Version(5, 7, 17), ServerType.MySql); }
                 ));
 
             services.AddTransient<IOrderRepo, OrderRepo>();
@@ -65,6 +64,7 @@ namespace AbschlussKonzertKadetten
             services.AddTransient<IKadettRepo, KadettRepo>();
             services.AddTransient<IRedactorRepo, RedactorRepo>();
             services.AddTransient<IEmailSenderService, EmailSenderService>();
+            services.AddTransient<IFormularActiveRepo, FormularActiveRepo>();
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {
                 builder.AllowAnyOrigin()
@@ -89,12 +89,7 @@ namespace AbschlussKonzertKadetten
 
             app.UseCors("MyPolicy");
             app.UseHttpsRedirection();
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(name: "default_route",
-                    template: "{controller}/{action}/{id?}",
-                    defaults: new { controller = "order", action = "Get" });
-            });
+            app.UseMvc(routes => { routes.MapRoute("default", "{controller=api/order}/{action=Get}/{id?}"); });
         }
     }
 }

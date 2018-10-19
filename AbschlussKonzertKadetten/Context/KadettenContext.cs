@@ -44,6 +44,10 @@ namespace AbschlussKonzertKadetten.Context
             builder.Entity<Redactor>()
                 .Property(x => x.Id)
                 .ValueGeneratedOnAdd();
+
+            builder.Entity<FormularActive>()
+                .Property(x => x.Id)
+                .ValueGeneratedOnAdd();
         }
         public DbSet<Ticket> Ticket { get; set; }
         public DbSet<Client> Client { get; set; }
@@ -51,6 +55,7 @@ namespace AbschlussKonzertKadetten.Context
         public DbSet<Kadett> Kadett { get; set; }
         public DbSet<Redactor> Redactor { get; set; }
         public DbSet<TicketOrder> TicketOrders { get; set; }
+        public DbSet<FormularActive> FormularActive { get; set; }
 
     }
 }
