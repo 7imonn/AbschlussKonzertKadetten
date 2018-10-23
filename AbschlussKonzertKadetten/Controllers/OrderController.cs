@@ -25,11 +25,11 @@ namespace AbschlussKonzertKadetten.Controllers
         private readonly ITicketOrderRepo _ticketOrderRepo;
         private readonly ITicketRepo _ticketRepo;
         private readonly IKadettRepo _kadettRepo;
-        private readonly IEmailSenderService _emailSenderService;
+        //private readonly IEmailSenderService _emailSenderService;
         private readonly ILogger _logger;
 
         public OrderController(KadettenContext context, IOrderRepo orderRepo, IClientRepo clientRepo,
-            ITicketOrderRepo ticketOrderRepo, ITicketRepo ticketRepo, IKadettRepo kadettRepo, ILogger<OrderController> logger, IEmailSenderService emailSenderService)
+            ITicketOrderRepo ticketOrderRepo, ITicketRepo ticketRepo, IKadettRepo kadettRepo, ILogger<OrderController> logger/*, IEmailSenderService emailSenderService*/)
         {
             _logger = logger;
             _context = context;
@@ -38,7 +38,7 @@ namespace AbschlussKonzertKadetten.Controllers
             _clientRepo = clientRepo;
             _ticketRepo = ticketRepo;
             _kadettRepo = kadettRepo;
-            _emailSenderService = emailSenderService;
+            //_emailSenderService = emailSenderService;
         }
 
         // GET api/values
@@ -177,7 +177,7 @@ namespace AbschlussKonzertKadetten.Controllers
 
                     await _context.SaveChangesAsync();
 
-                    await _emailSenderService.SendEmailAsync(order.Email);
+                    //await _emailSenderService.SendEmailAsync(order.Email);
                     return Ok();
                 }
                 return Conflict();
