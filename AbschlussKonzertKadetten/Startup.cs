@@ -40,7 +40,7 @@ namespace AbschlussKonzertKadetten
                     "server = 127.0.0.1; port = 3306; uid = root; password = gibbiX12345; database = test";
 
             }
-            else
+            else if (HostingEnvironment.IsStaging())
             {
                 var host = Configuration["vcap:services:mariadbent:0:credentials:host"];
                 var port = Configuration["vcap:services:mariadbent:0:credentials:port"];
@@ -49,7 +49,10 @@ namespace AbschlussKonzertKadetten
                 var password = Configuration["vcap:services:mariadbent:0:credentials:password"];
                 connectionString = $"Server={host};UID={user};PWD={password};Database={db};Port={port};";
             }
-
+            else
+            {
+                connectionString = "Server=sql03.popnetinf.local;UID=kadetten-thun;PWD=5&GrA-2c!Xd@;Database=kadetten-thun;Port=3306;";
+            }
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDbContextPool<KadettenContext>(
@@ -79,12 +82,15 @@ namespace AbschlussKonzertKadetten
             if (env.IsDevelopment())
             {
                 //kc.Database.EnsureDeleted();
-                //kc.Database.EnsureCreated();
+                app.UseDeveloperExceptionPage();
             }
-
+            if (env.IsStaging())
+            {
+                //kc.Database.EnsureDeleted();
+                app.UseDeveloperExceptionPage();
+            }
             kc.Database.EnsureCreated();
 
-            app.UseDeveloperExceptionPage();
             //    app.UseHsts();
 
             app.UseCors("MyPolicy");
