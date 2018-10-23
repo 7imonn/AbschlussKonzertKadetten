@@ -23,6 +23,12 @@ namespace AbschlussKonzertKadetten.Repository
             return redactor;
         }
 
+        public async Task<IEnumerable<Redactor>> GetReactorAll()
+        {
+            var redactor = await _context.Redactor.ToListAsync();
+            return redactor;
+        }
+
         public async Task<Redactor> CreateRedactor(ViewModelRedactor redactor)
         {
             var redactorDb = new Redactor()

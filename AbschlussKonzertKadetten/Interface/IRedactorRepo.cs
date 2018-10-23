@@ -10,6 +10,7 @@ namespace AbschlussKonzertKadetten.Repository
     public interface IRedactorRepo
     {
         Task<Redactor> GetReactorByNameAsync(string name);
+        Task<IEnumerable<Redactor>> GetReactorAll();
         Task<Redactor> CreateRedactor(ViewModelRedactor redactor);
     }
 }

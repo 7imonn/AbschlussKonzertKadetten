@@ -31,7 +31,26 @@ namespace AbschlussKonzertKadetten.Controllers
             _formularActiveRepo = formularActiveRepo;
 
         }
-        // GET: Redactor
+        [HttpGet]
+        public async Task<List<ViewModelRedactor>> Get()
+        {
+            _logger.LogInformation("Delete All Order");
+
+            var redactors = await _redactorRepo.GetReactorAll();
+            var vmList = new List<ViewModelRedactor>();
+            foreach (var redactor in redactors)
+            {
+
+                var vm = new ViewModelRedactor()
+                {
+                    Name = redactor.Name,
+                    Text = redactor.Text
+                };
+                vmList.Add(vm);
+            }
+
+            return vmList;
+        }
         [HttpGet("{name}")]
         public async Task<ViewModelRedactor> Get(string name)
         {
@@ -47,15 +66,15 @@ namespace AbschlussKonzertKadetten.Controllers
 
             return vm;
         }
-        [HttpGet("active")]
-        public async Task<bool> Get()
-        {
-            _logger.LogInformation("Delete All Order");
+        //[HttpGet("active")]
+        //public async Task<bool> Get()
+        //{
+        //    _logger.LogInformation("Delete All Order");
 
-            var isFormulaActive = await _formularActiveRepo.isActive();
+        //    var isFormulaActive = await _formularActiveRepo.isActive();
 
-            return isFormulaActive.Active;
-        }
+        //    return isFormulaActive.Active;
+        //}
         [HttpPut("active/{active}")]
         public async Task<IActionResult> Put(bool active)
         {
@@ -72,36 +91,36 @@ namespace AbschlussKonzertKadetten.Controllers
         [HttpPut]
         public async Task<IActionResult> Put(List<ViewModelRedactor> models)
         {
-            foreach (var model in models)
+            if (ModelState.IsValid)
             {
-
-                _logger.LogInformation("Update Order", model);
-                var redactor = _redactorRepo.GetReactorByNameAsync(model.Name);
-                if (redactor.Result != null)
+                foreach (var model in models)
                 {
-                    var dbReactor = await _redactorRepo.GetReactorByNameAsync(model.Name);
 
-                    if (model.Text == null)
-                        return NotFound();
+                    _logger.LogInformation("Update Redactor", model);
+                    var redactor = _redactorRepo.GetReactorByNameAsync(model.Name);
+                    if (redactor.Result != null)
+                    {
+                        var dbReactor = await _redactorRepo.GetReactorByNameAsync(model.Name);
 
-                    dbReactor.Name = model.Name;
-                    dbReactor.Text = model.Text;
+                        if (model.Text == null)
+                            return NotFound();
 
-                    await _context.SaveChangesAsync();
-                    return Ok();
+                        dbReactor.Name = model.Name;
+                        dbReactor.Text = model.Text;
+
+                        await _context.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        await _redactorRepo.CreateRedactor(model);
+                        await _context.SaveChangesAsync();
+                    }
+
                 }
-
-                if (ModelState.IsValid)
-                {
-                    await _redactorRepo.CreateRedactor(model);
-                    await _context.SaveChangesAsync();
-                    return Ok();
-
-                }
-                return ValidationProblem();
+                return Ok();
             }
 
-            return null;
+            return ValidationProblem();
         }
     }
 }
