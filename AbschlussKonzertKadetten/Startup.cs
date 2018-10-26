@@ -1,7 +1,8 @@
 ﻿using System;
 using AbschlussKonzertKadetten.Context;
-using AbschlussKonzertKadetten.Interface;
+using AbschlussKonzertKadetten.Middelware;
 using AbschlussKonzertKadetten.Repository;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -11,7 +12,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
-using Steeltoe.Extensions.Configuration.CloudFoundry;
 
 namespace AbschlussKonzertKadetten
 {
@@ -54,6 +54,9 @@ namespace AbschlussKonzertKadetten
                 connectionString = "Server=sql03.popnetinf.local;UID=kadetten-thun;PWD=5&GrA-2c!Xd@;Database=kadetten-thun;Port=3306;";
             }
 
+            services.AddAuthentication("BasicAuthentication")
+                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDbContextPool<KadettenContext>(
                 options => options.UseMySql(connectionString,
@@ -74,6 +77,19 @@ namespace AbschlussKonzertKadetten
                     .AllowAnyMethod()
                     .AllowAnyHeader();
             }));
+            
+                    services.AddTransient<IOrderRepo, OrderRepo>();
+                    services.AddTransient<IClientRepo, ClientRepo>();
+                    services.AddTransient<ITicketOrderRepo, TicketOrderRepo>();
+                    services.AddTransient<ITicketRepo, TicketRepo>();
+                    services.AddTransient<IKadettRepo, KadettRepo>();
+                    services.AddTransient<IUserRepo, UserRepo>();
+                    services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+                    {
+                        builder.AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                    }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -92,10 +108,12 @@ namespace AbschlussKonzertKadetten
             kc.Database.EnsureCreated();
 
             //    app.UseHsts();
-
+            //app.UseMiddleware<AuthenticationMiddleware>();
             app.UseCors("MyPolicy");
             app.UseHttpsRedirection();
-            app.UseMvc(routes => { routes.MapRoute("default", "{controller=api/order}/{action=Get}/{id?}"); });
+            app.UseAuthentication();
+            app.UseMvc(routes => { routes.MapRoute("default", "{controller=order}/{action=Get}/{id?}"); });
+
         }
     }
 }
