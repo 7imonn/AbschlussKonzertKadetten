@@ -1,5 +1,6 @@
 ﻿using System;
 using AbschlussKonzertKadetten.Context;
+using AbschlussKonzertKadetten.Interface;
 using AbschlussKonzertKadetten.Middelware;
 using AbschlussKonzertKadetten.Repository;
 using Microsoft.AspNetCore.Authentication;

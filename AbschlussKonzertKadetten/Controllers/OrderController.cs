@@ -32,8 +32,7 @@ namespace AbschlussKonzertKadetten.Controllers
         private readonly IUserRepo _userRepo;
 
         public OrderController(KadettenContext context, IOrderRepo orderRepo, IClientRepo clientRepo,
-            ITicketOrderRepo ticketOrderRepo, ITicketRepo ticketRepo, IKadettRepo kadettRepo, ILogger<OrderController> logger/*, IEmailSenderService emailSenderService*/)
-            ITicketOrderRepo ticketOrderRepo, ITicketRepo ticketRepo, IKadettRepo kadettRepo, ILogger<OrderController> logger, IUserRepo userRepo)
+            ITicketOrderRepo ticketOrderRepo, ITicketRepo ticketRepo, IKadettRepo kadettRepo, ILogger<OrderController> logger, IUserRepo userRepo/*, IEmailSenderService emailSenderService*/)
         {
             _logger = logger;
             _context = context;
@@ -48,7 +47,6 @@ namespace AbschlussKonzertKadetten.Controllers
 
         // GET api/values
         [HttpGet]
-        [Route("")]
         [Route("api/order")]
         public async Task<List<ViewModelOrder>> Get()
         {
