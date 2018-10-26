@@ -1,7 +1,8 @@
 ﻿using System;
 using AbschlussKonzertKadetten.Context;
+using AbschlussKonzertKadetten.Middelware;
 using AbschlussKonzertKadetten.Repository;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -10,8 +11,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
-using ZNetCS.AspNetCore.Authentication.Basic;
-using AuthenticationMiddleware = AbschlussKonzertKadetten.Helpers.AuthenticationMiddleware;
 
 namespace AbschlussKonzertKadetten
 {
@@ -39,8 +38,8 @@ namespace AbschlussKonzertKadetten
             var password = Configuration["vcap:services:mariadbent:0:credentials:password"];
             var connectionString = $"Server={host};UID={user};PWD={password};Database={db};Port={port};";
 
-            services.AddAuthentication(BasicAuthenticationDefaults.AuthenticationScheme)
-                .AddBasicAuthentication(c => AuthenticationMiddleware() /*(c.username, c.password)*/);
+            services.AddAuthentication("BasicAuthentication")
+                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDbContextPool<KadettenContext>(
@@ -76,9 +75,10 @@ namespace AbschlussKonzertKadetten
 
             app.UseDeveloperExceptionPage();
             //    app.UseHsts();
-            app.UseMiddleware<AuthenticationMiddleware>();
+            //app.UseMiddleware<AuthenticationMiddleware>();
             app.UseCors("MyPolicy");
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseMvc(routes => { routes.MapRoute("default", "{controller=order}/{action=Get}/{id?}"); });
 
         }
