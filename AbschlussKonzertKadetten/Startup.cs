@@ -1,7 +1,7 @@
 ﻿using System;
 using AbschlussKonzertKadetten.Context;
+using AbschlussKonzertKadetten.Handler;
 using AbschlussKonzertKadetten.Interface;
-using AbschlussKonzertKadetten.Middelware;
 using AbschlussKonzertKadetten.Repository;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
@@ -70,6 +70,7 @@ namespace AbschlussKonzertKadetten
             services.AddTransient<ITicketRepo, TicketRepo>();
             services.AddTransient<IKadettRepo, KadettRepo>();
             services.AddTransient<IRedactorRepo, RedactorRepo>();
+            services.AddTransient<IUserRepo, UserRepo>();
             //services.AddTransient<IEmailSenderService, EmailSenderService>();
             services.AddTransient<IFormularActiveRepo, FormularActiveRepo>();
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
@@ -78,19 +79,6 @@ namespace AbschlussKonzertKadetten
                     .AllowAnyMethod()
                     .AllowAnyHeader();
             }));
-            
-                    services.AddTransient<IOrderRepo, OrderRepo>();
-                    services.AddTransient<IClientRepo, ClientRepo>();
-                    services.AddTransient<ITicketOrderRepo, TicketOrderRepo>();
-                    services.AddTransient<ITicketRepo, TicketRepo>();
-                    services.AddTransient<IKadettRepo, KadettRepo>();
-                    services.AddTransient<IUserRepo, UserRepo>();
-                    services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
-                    {
-                        builder.AllowAnyOrigin()
-                            .AllowAnyMethod()
-                            .AllowAnyHeader();
-                    }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

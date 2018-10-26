@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
@@ -12,19 +10,20 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace AbschlussKonzertKadetten.Middelware
+namespace AbschlussKonzertKadetten.Handler
 {
     public class BasicAuthenticationHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
         private IUserRepo _userRepo;
-        public BasicAuthenticationHandler(IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock, IUserRepo userRepo) : base(options, logger, encoder, clock)
+        public BasicAuthenticationHandler(IOptionsMonitor<AuthenticationSchemeOptions> options,
+            ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock, IUserRepo userRepo) : base(options, logger, encoder, clock)
         {
             _userRepo = userRepo;
         }
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
-            if (!Request.Headers.ContainsKey("Authorization"))
+             if (!Request.Headers.ContainsKey("Authorization"))
                 return AuthenticateResult.Fail("Missing Authorization Header");
             User user = null;
 
@@ -36,7 +35,7 @@ namespace AbschlussKonzertKadetten.Middelware
                 var username = credentials[0];
                 var password = credentials[1];
                 user = await _userRepo.Authenticate(username, password);
-                user = new User(){Id = 1, Username = "Nobelen"};
+                //user = new User(){Id = 1, Username = "Nobelen"};
             }
             catch
             {
