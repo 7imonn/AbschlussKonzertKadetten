@@ -31,26 +31,26 @@ namespace AbschlussKonzertKadetten.Controllers
             _formularActiveRepo = formularActiveRepo;
 
         }
-        [HttpGet]
-        public async Task<List<ViewModelRedactor>> Get()
-        {
-            _logger.LogInformation("Delete All Order");
+        //[HttpGet]
+        //public async Task<List<ViewModelRedactor>> Get()
+        //{
+        //    _logger.LogInformation("Delete All Order");
 
-            var redactors = await _redactorRepo.GetReactorAll();
-            var vmList = new List<ViewModelRedactor>();
-            foreach (var redactor in redactors)
-            {
+        //    var redactors = await _redactorRepo.GetReactorAll();
+        //    var vmList = new List<ViewModelRedactor>();
+        //    foreach (var redactor in redactors)
+        //    {
 
-                var vm = new ViewModelRedactor()
-                {
-                    Name = redactor.Name,
-                    Text = redactor.Text
-                };
-                vmList.Add(vm);
-            }
+        //        var vm = new ViewModelRedactor()
+        //        {
+        //            Name = redactor.Name,
+        //            Text = redactor.Text
+        //        };
+        //        vmList.Add(vm);
+        //    }
 
-            return vmList;
-        }
+        //    return vmList;
+        //}
         [HttpGet("{name}")]
         public async Task<ViewModelRedactor> Get(string name)
         {
@@ -66,15 +66,15 @@ namespace AbschlussKonzertKadetten.Controllers
 
             return vm;
         }
-        //[HttpGet("active")]
-        //public async Task<bool> Get()
-        //{
-        //    _logger.LogInformation("Delete All Order");
+        [HttpGet("active")]
+        public async Task<bool> Get()
+        {
+            _logger.LogInformation("Delete All Order");
 
-        //    var isFormulaActive = await _formularActiveRepo.isActive();
+            var isFormulaActive = await _formularActiveRepo.isActive();
 
-        //    return isFormulaActive.Active;
-        //}
+            return isFormulaActive.Active;
+        }
         [HttpPut("active/{active}")]
         public async Task<IActionResult> Put(bool active)
         {
