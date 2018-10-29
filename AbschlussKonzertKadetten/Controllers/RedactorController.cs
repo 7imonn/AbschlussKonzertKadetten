@@ -6,6 +6,7 @@ using AbschlussKonzertKadetten.Context;
 using AbschlussKonzertKadetten.Interface;
 using AbschlussKonzertKadetten.Models;
 using AbschlussKonzertKadetten.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +18,7 @@ namespace AbschlussKonzertKadetten.Controllers
     [Route("api/redactor")]
     [EnableCors("MyPolicy")]
     [ApiController]
+    [Authorize]
     public class RedactorController : Controller
     {
         private readonly KadettenContext _context;
@@ -52,6 +54,7 @@ namespace AbschlussKonzertKadetten.Controllers
         //    return vmList;
         //}
         [HttpGet("{name}")]
+        [AllowAnonymous]
         public async Task<ViewModelRedactor> Get(string name)
         {
             _logger.LogInformation("Delete All Order");
@@ -67,6 +70,7 @@ namespace AbschlussKonzertKadetten.Controllers
             return vm;
         }
         [HttpGet("active")]
+        [AllowAnonymous]
         public async Task<bool> Get()
         {
             _logger.LogInformation("Delete All Order");

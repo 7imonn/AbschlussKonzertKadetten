@@ -47,7 +47,6 @@ namespace AbschlussKonzertKadetten.Controllers
 
         // GET api/values
         [HttpGet]
-        [Route("api/order")]
         public async Task<List<ViewModelOrder>> Get()
         {
             _logger.LogInformation("l items");
@@ -252,43 +251,5 @@ namespace AbschlussKonzertKadetten.Controllers
 
             return Ok();
         }
-        //[AllowAnonymous]
-        ////[HttpPost("authenticate")]
-        //[Route("authenticate")]
-        //public async Task<IActionResult> Authenticate(ViewModelUser user)
-        //{
-        //    var userAuthentication = await _userRepo.Authenticate(user.username, user.pw);
-
-        //    if (userAuthentication == null)
-        //        return BadRequest(new { message = "Username or password is incorrect" });
-
-        //    var vm = new ViewModelUser()
-        //    {
-        //        username = userAuthentication.Username,
-        //        FirstName = userAuthentication.FirstName,
-        //        LastName = userAuthentication.LastName
-        //    };
-        //    //var lala = HandleAuthenticateAsync();
-        //    return Ok(vm);
-        //}
-        //[Route("authenticate")]
-        //[HttpGet]
-        //public async Task<IActionResult> GetAll()
-        //{
-        //    var users = await _userRepo.GetAll();
-        //    var viewModelList = new List<ViewModelUser>();
-
-        //    foreach (var user in users)
-        //    {
-        //        var vm = new ViewModelUser()
-        //        {
-        //            username = user.Username,
-        //            FirstName = user.FirstName,
-        //            LastName = user.LastName
-        //        };
-        //        viewModelList.Add(vm);
-        //    }
-        //    return Ok(viewModelList);
-        //}
     }
 }
