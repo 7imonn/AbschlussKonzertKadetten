@@ -22,7 +22,7 @@ namespace AbschlussKonzertKadetten.Repository
             if (user == null)
                 return null;
 
-            user.Password = null;
+            //user.Password = null;
             return user;
         }
         public bool UserIsAuthenticate(string username, string password)
@@ -39,7 +39,7 @@ namespace AbschlussKonzertKadetten.Repository
             var Users = await _context.User.ToListAsync();
             foreach (var user in Users)
             {
-                user.Password = null;
+                //user.Password = null;
             }
             return Users;
         }
