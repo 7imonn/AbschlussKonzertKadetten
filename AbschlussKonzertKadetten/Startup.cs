@@ -71,7 +71,7 @@ namespace AbschlussKonzertKadetten
             services.AddTransient<IKadettRepo, KadettRepo>();
             services.AddTransient<IRedactorRepo, RedactorRepo>();
             services.AddTransient<IUserRepo, UserRepo>();
-            //services.AddTransient<IEmailSenderService, EmailSenderService>();
+            services.AddTransient<IEmailSenderService, EmailSenderService>();
             services.AddTransient<IFormularActiveRepo, FormularActiveRepo>();
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {

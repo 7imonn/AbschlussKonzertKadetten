@@ -27,12 +27,13 @@ namespace AbschlussKonzertKadetten.Controllers
         private readonly ITicketOrderRepo _ticketOrderRepo;
         private readonly ITicketRepo _ticketRepo;
         private readonly IKadettRepo _kadettRepo;
-        //private readonly IEmailSenderService _emailSenderService;
+        private readonly IEmailSenderService _emailSenderService;
         private readonly ILogger _logger;
         private readonly IUserRepo _userRepo;
 
         public OrderController(KadettenContext context, IOrderRepo orderRepo, IClientRepo clientRepo,
-            ITicketOrderRepo ticketOrderRepo, ITicketRepo ticketRepo, IKadettRepo kadettRepo, ILogger<OrderController> logger, IUserRepo userRepo/*, IEmailSenderService emailSenderService*/)
+            ITicketOrderRepo ticketOrderRepo, ITicketRepo ticketRepo, IKadettRepo kadettRepo, ILogger<OrderController> logger
+            , IUserRepo userRepo, IEmailSenderService emailSenderService)
         {
             _logger = logger;
             _context = context;
@@ -42,7 +43,7 @@ namespace AbschlussKonzertKadetten.Controllers
             _ticketRepo = ticketRepo;
             _userRepo = userRepo;
             _kadettRepo = kadettRepo;
-            //_emailSenderService = emailSenderService;
+            _emailSenderService = emailSenderService;
         }
 
         // GET api/values
@@ -178,10 +179,11 @@ namespace AbschlussKonzertKadetten.Controllers
                             Day = ticket.Day
                         });
                     }
-
-                    await _context.SaveChangesAsync();
-
+                    
                     //await _emailSenderService.SendEmailAsync(order.Email);
+                    if(_clientRepo.ClientFindByEmail(order.Email).Result != null)
+                        await _context.SaveChangesAsync();
+
                     return Ok();
                 }
                 return Conflict();
@@ -190,7 +192,7 @@ namespace AbschlussKonzertKadetten.Controllers
         }
 
         // PUT api/values/5
-        [HttpPut("{email}")]
+        [HttpPost("{email}")]
         public async Task<IActionResult> Put(string email, ViewModelOrder order)
         {
             _logger.LogInformation("Update Order", order, email);
