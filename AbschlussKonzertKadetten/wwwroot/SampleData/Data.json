@@ -1,0 +1,40 @@
+{
+  "email": "lolom@gmail.com",
+  "clientLastName": "tröt",
+  "clientFirstName": "pipp",
+  "bemerkung": "tröt",
+  "kadettLastName": "nöbu",
+  "kadettFirstName": "pipp",
+  "tickets": [
+    {
+      "type": "Erwachsene",
+      "quantity": 10,
+      "date": "Sa"
+    },
+    {
+      "type": "Kind",
+      "quantity": 10,
+      "date": "Sa"
+    },
+    {
+      "type": "Kleinkind",
+      "quantity": 10,
+      "date": "Sa"
+    },
+    {
+      "type": "Erwachsene",
+      "quantity": 10,
+      "date": "Sa"
+    },
+    {
+      "type": "Kind",
+      "quantity": 10,
+      "date": "Sa"
+    },
+    {
+      "type": "Kleinkind",
+      "quantity": 10,
+      "date": "Sa"
+    }
+  ]
+}

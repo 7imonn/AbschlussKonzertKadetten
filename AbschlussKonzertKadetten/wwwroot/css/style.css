@@ -1,0 +1,147 @@
+/**************** RESET STYLES IS A GOOD THING *************************************************************************/
+html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, 
+p, blockquote, pre, a, abbr, address, cite, code, del, dfn, em, 
+img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, 
+dl, dt, dd, ol, ul, li, fieldset, form, label, legend, 
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figure, figcaption, 
+menu, footer, header, nav, section, summary, time, mark, audio, video {margin: 0; padding: 0; border: 0;}
+
+main, article, aside, canvas, figure, figure img, figcaption, hgroup,
+footer, header, nav, section, audio, video {display: block;}
+
+a{text-decoration: none; color: inherit; -webkit-transition: .5s; transition: .5s;}
+a img {border: 0;}
+
+figure {position: relative;}
+figure img {width: 100%;}
+
+label{cursor: pointer;}
+
+textarea, input, button, select{background: none; border: none; border-radius: 0; font: inherit; -webkit-appearance: none;}
+
+*{box-sizing: border-box; margin: 0; padding: 0; outline: none;}
+
+html{width: 100%; height: 100%; min-height: 100%}
+
+/**** FONTS *****/
+
+@font-face {
+  font-family: 'BebasNeueBold';
+  src: url('../assets/fonts/BebasNeueBold/BebasNeueBold.eot?#iefix') format('embedded-opentype'),
+		  url('../assets/fonts/BebasNeueBold/BebasNeueBold.otf')  format('opentype'),
+	     url('../assets/fonts/BebasNeueBold/BebasNeueBold.woff') format('woff'),
+	     url('../assets/fonts/BebasNeueBold/BebasNeueBold.ttf')  format('truetype'),
+	     url('../assets/fonts/BebasNeueBold/BebasNeueBold.svg#BebasNeueBold') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+html, body{font-family: "Roboto"; font-weight: 400; font-size: 14px; line-height: 22px; letter-spacing: 0.1px; color: black;}
+p{margin-bottom: 15px;}
+b, strong{font-weight: 700;}
+a{color: #C2A779; display: inline;}
+a:hover{text-decoration: underline;}
+header a:hover{text-decoration: none;}
+h1{font-family: 'BebasNeueBold'; font-size: 2rem; letter-spacing: 0.5px; color: black; max-width: 970px; margin: 0 auto; padding: 0px 60px; width: 60%;}
+h2{font-family: 'BebasNeueBold'; font-size: 2rem; letter-spacing: 0.5px; color: black; margin-bottom: 15px;}
+h3{font-family: 'BebasNeueBold'; font-size: 1.5rem; letter-spacing: 0.5px; color: black;}
+.editortext p{margin-bottom: 0!important;}
+
+/**** COMMON *****/
+html, body{background: white; min-height: 100%;}
+header{padding: 40px 0px; background: white; width: 100%; position: relative;}
+#logo{position: absolute; top: 20px; left: 50px; max-width: 130px;}
+main{background: #F2F2F2; min-height: calc(100vh - 102px);}
+.content{max-width: 970px; margin: 0 auto; padding: 60px 60px 120px 60px; width: 60%;}
+
+
+
+
+/**** INTRO *****/
+body.intro{padding-bottom: 120px;}
+footer{padding-top: 30px; background: white; position: fixed; bottom: 0; left: 0; width: 100%; height: 120px;}
+footer a{padding: 7px 20px; background: #C2A779; color: white; display: block; margin: 0 auto; width: -webkit-fit-content; width: -moz-fit-content; width: fit-content; -webkit-transition: all 0.5s ease; transition: all 0.5s ease; border: 2px solid white; opacity: 0;}
+footer a:hover{background: white; border: 2px solid #C2A779; color: #C2A779; -webkit-transform: scale(1.03); transform: scale(1.03); text-decoration: none;}
+footer a.active{opacity: 1;}
+#map{width: 100%; height: 400px; background: gray;}
+#map #iframe-map{height: 100%; width: 100%; border: none;}
+
+/**** FORM *****/	
+body.form footer{display: none;}
+fieldset{margin-bottom: 40px;}
+input[type="text"], input[type="email"], input[type="tel"], input[type="number"], textarea{display: inline-block; padding: 10px 0px; -webkit-appearance: none; background: none; color: black; border-bottom: 1px solid black; width: calc(50% - 20px); margin-bottom: 20px; -webkit-transition: all 0.3s ease; transition: all 0.3s ease;}
+input[type="text"]:hover, input[type="email"]:hover, input[type="tel"]:hover, input[type="number"]:hover, textarea:hover{border-bottom: 2px solid black; margin-bottom: 19px;}
+input[type="text"]:focus, input[type="email"]:focus, input[type="tel"]:focus, input[type="number"]:focus, textarea:focus{border-bottom: 3px solid #C2A779; margin-bottom: 18px;}
+.form-block input:nth-of-type(odd){margin-right: 36px;}
+::-webkit-input-placeholder {color: black; opacity: 1; -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";}
+::-moz-placeholder {color: black; opacity: 1; -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";}
+:-ms-input-placeholder {color: black; opacity: 1; -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";}
+::placeholder {color: black; opacity: 1; -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";}
+input[type="checkbox"]{-webkit-appearance: checkbox;}
+input[type="checkbox"]{margin-right: 12px!important;}
+#invisibleform{height: 0; overflow: hidden; opacity: 0; -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)"; -webkit-transition: all 0.3s ease; transition: all 0.3s ease;}
+#child-checkbox:checked ~ #invisibleform{height: 85px; opacity: 1; -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; overflow: visible;}
+.form-block .dayset{width: calc(50% - 20px); display: inline-block; font-size: 0; margin-bottom: 0;}
+.form-block .dayset:first-of-type{margin-bottom: 40px;}
+.form-block .dayset:nth-of-type(odd){margin-right: 36px;}
+.form-block .dayset input{width: 60px; display: inline-block; font-size: 1rem;}
+.form-block .dayset label{width: calc(100% - 61px); display: inline-block;  padding: 10px 0px; border-bottom: 1px solid black; font-size: 1rem;}
+.form-block .dayset input:nth-of-type(odd){margin-right: 0;}
+.form-block .dayset time{font-size: 1rem; font-weight: 700;}
+input[type="number"]{text-align: right; margin-bottom: 20px;}
+
+
+textarea{width: 100%; resize: vertical;}
+input[type="submit"]{padding: 7px 20px; background: #C2A779; color: white; display: block; margin-top: 20px; width: -webkit-fit-content; width: -moz-fit-content; width: fit-content; -webkit-transition: all 0.5s ease; transition: all 0.5s ease; border: 2px solid #F2F2F2;}
+input[type="submit"]:hover{background: none; border: 2px solid #C2A779; color: #C2A779; -webkit-transform: scale(1.03); transform: scale(1.03); text-decoration: none;}
+
+.feedback-a{padding: 7px 20px; background: #C2A779; color: white; display: block; margin-top: 40px; width: -webkit-fit-content; width: -moz-fit-content; width: fit-content; -webkit-transition: all 0.5s ease; transition: all 0.5s ease; border: 2px solid #F2F2F2;}
+.feedback-a:hover{background: none; border: 2px solid #C2A779; color: #C2A779; -webkit-transform: scale(1.03); transform: scale(1.03); text-decoration: none;}
+
+
+/*** NOSRCIPT ****/
+.noscript{width: 100%; height: 100%; position: fixed; top: 0; left: 0; background: rgba(242, 242, 242, 0.9); z-index: 5;}
+.noscript div{position: absolute; top: 50%; left: 50%; -webkit-transform: translate(-50%,-50%); transform: translate(-50%,-50%); padding: 30px; background: white; border-radius: 3px; max-width: 600px; width: calc(100% - 60px);}
+
+
+	
+	
+	
+
+.cf:after{content: "."; font-size: 0; line-height: 0; clear: both; display: block; visibility: hidden; opacity: 0; -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";}
+/*** RESPONSIVE MEDIA QUERIES ***/
+
+@media all and (max-width: 1150px){
+	h1{width: 70%}
+	.content{width: 70%;}
+	#logo{left: 40px; max-width: 100px;}
+	.form-block .dayset{width: 100%; display: block }
+	.form-block .dayset:nth-of-type(odd){margin-right: 0;}
+	
+}
+
+@media all and (max-width: 900px){
+	h1{width: 100%}
+	.content{width: 100%;}
+	#logo{display: none;}	
+}
+
+
+@media all and (max-width: 600px){
+	h1{padding: 0px 30px;}
+	.content{padding: 60px 30px 60px 30px;}
+	input[type="text"], input[type="email"], input[type="tel"]{width: 100%;}
+	input:nth-of-type(odd){margin-right: 0;}
+	
+}
+	
+@media all and (max-width: 420px){
+	.content{padding: 40px 30px 60px 30px;}
+	header{padding: 30px 0px;}
+	h1{font-size: 1.75rem;}
+	footer{height: 100px;}
+	body.intro{padding-bottom: 100px;}
+	
+}

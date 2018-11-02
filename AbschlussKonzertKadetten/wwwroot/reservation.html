@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Schlusskonzert Kadetten Thun Tickets Reservieren</title>
+		
+		<!-- browser meta tags -->
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta charset="utf-8">
+		<meta name="robots" content="index, nofollow" />
+		
+		<!-- content meta tags -->
+		<meta name="author" content="Kadetten Thun">
+		<meta name="description" content="beschreibung">			<meta name="geo.region" content="CH-BE">
+		<meta name="geo.position" content="46.7442791,7.6200513">
+		<meta name="geo.placename" content="Thun">
+		
+		<!-- social media meta tags -->
+		<meta name="og:description" content="Vermittlung, Verkauf und Bewertung von Immobilien im Grossraum Bern">
+		<meta name="og:title" content="Abschlusskonzert Kadetten Thun">
+		<meta name="og:image" content="bild url">
+	
+		<!-- Stylesheet -->
+		<link rel="stylesheet" href="css/style.css">
+		
+		<!-- favicon -->
+		<link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+		<link rel="manifest" href="assets/favicon/site.webmanifest">
+		<link rel="mask-icon" href="assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
+		<meta name="msapplication-TileColor" content="#c2a779">
+		<meta name="theme-color" content="#ffffff">
+		
+		<!-- Google fonts -->
+		<link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+
+		
+
+		
+	</head>
+	
+	<body class="form">
+		<noscript>
+			<div class="noscript">
+				<div>
+					<p>Damit du diese Seite anschauen kannst, musst du Javascript in deinem Browser aktivieren</p>
+					<p>Falls du nicht weisst wie man das macht, kannst du <a target="_blank" href="https://www.enable-javascript.com/de/">hier</a> nachschauen.</p>
+				</div>
+			</div>
+		</noscript>
+		<header>
+			<a href="index.html"><img id="logo" alt="kadetten THun" src="assets/images/logo-kadetten-thun.svg"></a>
+			<a href="index.html"><h1>Schlusskonzert Kadetten Thun</h1></a>
+		</header>
+		
+		<main>
+			<div class="content">
+				<h2>Tickets Reservieren</h2>
+				<form id="ticketform"  name="ticketform" onsubmit="addItem(); return false">
+					<fieldset class="form-block">
+						<input name="prename" type="text" placeholder="Vorname" value="" required />
+						<input name="lastname" type="text" placeholder="Nachname" value="" required />
+						<input name="tel" type="tel" placeholder="Telefonnummer" value="" required />
+						<input name="email" type="email" placeholder="E-Mail" value="" required />
+					</fieldset>
+					<fieldset class="form-block">
+						<input name="child" type="checkbox" value="" id="child-checkbox">
+						<label for="child-checkbox">Mein Kind spielt in der Kadettenmusik/Tambouren.</label>
+						<fieldset id="invisibleform">
+							<input name="child-prename" type="text" placeholder="Vorname" value="" />
+							<input name="child-lastname" type="text" placeholder="Nachname" value="" />
+							<input name="child-kader" type="checkbox" value="" id="child-kader-checkbox" />
+							<label for="child-kader-checkbox">Mein Kind ist im Kader</label>
+						</fieldset>
+					</fieldset>
+					<fieldset class="form-block">
+						<fieldset class="dayset">
+							<legend>
+								<h3>Konzert Samstag 10. Februar (Kaderverabschiedung)</h3>
+								<time datetime="19:30:00">19.30 Uhr</time>
+							</legend>
+							<label for="adult-sa">Erwachsene 20.–</label>
+							<input name="adult-sa" class="tickets" type="number" required value="0" min="0" data-ticket="Erwachsene" data-Day="Sa" id="adult-sa"/>
+							<label for="child-sa">Kind im Schulalter 5.–</label>
+							<input name="child-sa" class="tickets" type="number" required value="0" min="0" data-ticket="Kind" data-Day="Sa" id="child-sa"/>
+							<label for="k-child-sa">Kinder von Anfängerkursen (Musik oder Tambouren) ohne Auftritt</label>
+							<input name="k-child-sa" id="k-child-sa" class="tickets" type="number" min="0" required value="0" data-ticket="Kleinkind" data-Day="Sa"/>
+						</fieldset>
+						<fieldset class="dayset">
+							<legend>
+								<h3>Konzert Sonntag 11. Februar</h3>
+								<time datetime="19:30:00">19.30 Uhr</time>
+							</legend>
+							<label for="adult-so">Erwachsene 20.–</label>
+							<input name="adult-so" id="adult-so" class="tickets" type="number" value="0" min="0" required data-ticket="Erwachsene" data-Day="So"/>
+							<label for="child-so">Kind im Schulalter 5.–</label>
+							<input name="child-so" id="child-so" class="tickets" type="number" value="0" min="0" required data-ticket="Kind" data-Day="So"/>
+							<label for="k-child-so">Kinder von Anfängerkursen (Musik oder Tambouren) ohne Auftritt</label>
+							<input name="k-child-so" id="k-child-so" class="tickets" type="number" min="0" value="0" required data-ticket="Kleinkind" data-Day="So"/>
+						</fieldset>
+					</fieldset>
+					<textarea name="text" placeholder="Bemerkung" rows="1"></textarea>
+					<input type="submit" value="Tickets reservieren">
+				</form>
+			</div>
+		</main>
+		<!-- load scripts -->
+		<!--<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>-->
+		<script src="js/order.js" type="text/javascript"></script>
+		<script src="js/formcontents.js" type="text/javascript"></script>
+		
+	</body>
+</html>
+

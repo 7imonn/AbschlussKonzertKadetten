@@ -95,9 +95,8 @@ namespace AbschlussKonzertKadetten
                 app.UseDeveloperExceptionPage();
             }
             kc.Database.EnsureCreated();
-
-            //    app.UseHsts();
-            //app.UseMiddleware<AuthenticationMiddleware>();
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
             app.UseCors("MyPolicy");
             app.UseHttpsRedirection();
             app.UseAuthentication();

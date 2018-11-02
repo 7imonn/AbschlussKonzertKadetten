@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Backend | Schlusskonzert Kadetten Thun</title>
+
+    <!-- browser meta tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex" />
+
+    <!-- content meta tags -->
+    <meta name="author" content="Kadetten Thun">
+
+    <!-- Stylesheet -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <!--redactor css-->
+    <link rel="stylesheet" href="css/backend-style.css">
+
+
+    <!-- favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="../../assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="../assets/favicon/site.webmanifest">
+    <link rel="mask-icon" href="../assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#c2a779">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Google fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+        crossorigin="anonymous">
+
+</head>
+
+<body class="body-login">
+	<main>
+		<img id="logo" alt="Kadetten Thun" src="../assets/images/logo-kadetten-thun.svg">
+	    <form id="loginform" name="loginform" onsubmit="isAuthenticated(); return false">
+	        <input name="username" type="text" placeholder="Username" value="" required />
+	        <input name="pw" type="password" placeholder="Password" value="" required />
+	        <input type="submit" value="login"/>
+	    </form>
+    </main>
+    <!--login js-->
+    <script src="js/backend-login.js" type="text/javascript"></script>
+	
+</body>
+
+</html>

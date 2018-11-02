@@ -192,7 +192,7 @@ namespace AbschlussKonzertKadetten.Controllers
         }
 
         // PUT api/values/5
-        [HttpPost("{email}")]
+        [HttpPut("{email}")]
         public async Task<IActionResult> Put(string email, ViewModelOrder order)
         {
             _logger.LogInformation("Update Order", order, email);
