@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using AbschlussKonzertKadetten.Context;
 using AbschlussKonzertKadetten.Entity;
@@ -15,8 +16,10 @@ namespace AbschlussKonzertKadetten.Repository
         {
             _context = context;
         }
-        public async Task<User> Authenticate(string username, string password)
+        public async Task<User> Authenticate(string username, string passwordde)
         {
+            var password = EnryptString(passwordde);
+
             var user = await Task.Run(() => _context.User.SingleOrDefault(x => x.Username == username && x.Password == password));
 
             if (user == null)
@@ -42,6 +45,29 @@ namespace AbschlussKonzertKadetten.Repository
                 //user.Password = null;
             }
             return Users;
+        }
+        public string DecryptString(string encrString)
+        {
+            byte[] b;
+            string decrypted;
+            try
+            {
+                b = Convert.FromBase64String(encrString);
+                decrypted = Encoding.ASCII.GetString(b);
+            }
+            catch (FormatException fe)
+            {
+                decrypted = "";
+            }
+            return decrypted;
+        }
+
+        public string EnryptString(string strEncrypted)
+        {
+            //strEncrypted = "test";
+            byte[] b = Encoding.ASCII.GetBytes(strEncrypted);
+            string encrypted = Convert.ToBase64String(b);
+            return encrypted;
         }
     }
 }
