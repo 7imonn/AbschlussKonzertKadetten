@@ -1,5 +1,5 @@
 const urlLogin = 'https://kadetten-dev.scapp.io/api/authenticate';
-// const url = 'https://localhost:44389//api/authenticate';
+// const urlLogin = 'https://localhost:44389//api/authenticate';
 
 
 function isAuthenticated() {

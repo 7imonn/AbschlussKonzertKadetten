@@ -1,7 +1,7 @@
 // THIS FILE ONLY GETS USED BY THE BACKEND RESERVATIONEN PAGE
 
-// const uriOrder = 'https://kadetten-dev.scapp.io/api/Order';
-const uriOrder = 'https://localhost:44389/api/Order';
+const uriOrder = 'https://kadetten-dev.scapp.io/api/order';
+// const uriOrder = 'https://localhost:44389/api/order';
 function GetItems() {
     if (document.querySelectorAll("#result").length > 0) {
 
@@ -177,7 +177,6 @@ function safePopUp(email) {
         email: document.getElementsByName("email")[0].value,
         tickets: tickets
     }
-    
     for (var i = 0; i < items.length; i++) {
         var ticket = {
             type: items[i].getAttribute('data-ticket'),
@@ -192,26 +191,13 @@ function safePopUp(email) {
         body: JSON.stringify(data),
         headers: header
     });
-    // fetch(req)
-    //     .then(function (myJson) {
-    //         if (myJson.status == 200) {
-    //             document.getElementById('edit').remove();
-    //             GetItems();
-    //         }
-    //         // else if (myJson.status == 401) {
-    //         //     window.location.pathname = "/admin/login.html";
-    //         // }
-    //     });
-    var url = uriOrder + '/' + email;
-    fetch(url, {
-        method: 'PUT',
-        body: JSON.stringify(data),
-        mode: "cors",
-        headers: header
-    }).then(res => res.json())
-    .then(function(myJson) {
-        console.log(JSON.stringify(myJson));
-      });
+    fetch(req)
+        .then(function (myJson) {
+            if (myJson.status == 200) {
+                document.getElementById('edit').remove();
+                GetItems();
+            }
+        });
 }
 
 
