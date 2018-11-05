@@ -1,5 +1,6 @@
-const urlLogin = 'https://kadetten-dev.scapp.io/api/authenticate';
-// const urlLogin = 'https://localhost:44389//api/authenticate';
+// const urlLogin = 'https://kadetten-dev.scapp.io/api/authenticate';
+// const urlLogin = 'https://localhost:44389/api/authenticate';
+const urlLogin = '/api/authenticate';
 
 
 function isAuthenticated() {
@@ -26,4 +27,13 @@ function isAuthenticated() {
             window.location.pathname = "/admin/reservationen.html";
         }
     });
+}
+
+function logOut() {
+    var datetime = new Date();
+    datetime.setTime(datetime.getTime() - (1000*60*60*24));
+    var expires = "expires=" + datetime.toGMTString();
+    document.cookie = "username=;expires=" + expires;
+    document.cookie = "pw=;expires=" + expires;
+    window.location.pathname = "/admin/login.html";
 }

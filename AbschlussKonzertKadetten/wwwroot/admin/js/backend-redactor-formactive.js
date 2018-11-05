@@ -1,6 +1,8 @@
 // THIS FILE IS USED IN BACKEND FORMULAR AND INTRO PAGE
 
-const urlRedactor = 'https://kadetten-dev.scapp.io/api/redactor';
+// const urlRedactor = 'https://kadetten-dev.scapp.io/api/redactor';
+// const urlRedactor = 'https://localhost:44389/api/redactor';
+const urlRedactor = '/api/redactor';
 
 var UrlindexOfFormular = document.URL.indexOf("formular.html");
 var UrlindexOfIntro = document.URL.indexOf("intro.html");
@@ -184,6 +186,21 @@ function getConcertInfo(name) {
 		});
 }
 
+function getUserName(){
+	var header = base64Request();
+	var req = new Request(urlLogin, {
+		method: 'GET',
+		headers: header,
+	});
+	fetch(req)
+		.then(res => res.json())
+		.then(function (data) {
+	        var username = data[0].username; // @ TIMON isch ds okei so mitem [0]
+	        document.querySelector('#user-panel > div > p').innerHTML = username;
+    	});
+	
+}
+
 /*document.addEventListener('DOMContentLoaded', function() {
 	getRedactor();
  }, false);*/
@@ -201,7 +218,7 @@ window.onload = function () {
 		getConcertInfo('title-concert-2');
 		getConcertInfo('time-concert-2');
 	}
-
+	getUserName();
 }
 function getCookiePw() {
     var pw = document.cookie.match('(^|;) ?pw=([^;]*)(;|$)');
@@ -212,6 +229,7 @@ function getCookieName() {
     var username = document.cookie.match('(^|;) ?username=([^;]*)(;|$)');
     return username ? username[2] : null;
 }
+
 function base64Request() {
 	var h = new Headers();
 	h.append('Accept', 'application/json');

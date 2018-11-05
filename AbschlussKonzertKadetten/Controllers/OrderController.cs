@@ -181,7 +181,7 @@ namespace AbschlussKonzertKadetten.Controllers
                     }
                     
                     //await _emailSenderService.SendEmailAsync(order.Email);
-                    if(_clientRepo.ClientFindByEmail(order.Email).Result != null)
+                    if(_clientRepo.ClientFindByEmail(order.Email).Result == null)
                         await _context.SaveChangesAsync();
 
                     return Ok();
