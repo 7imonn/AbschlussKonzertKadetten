@@ -29,11 +29,3 @@ function isAuthenticated() {
     });
 }
 
-function logOut() {
-    var datetime = new Date();
-    datetime.setTime(datetime.getTime() - (1000*60*60*24));
-    var expires = "expires=" + datetime.toGMTString();
-    document.cookie = "username=;expires=" + expires;
-    document.cookie = "pw=;expires=" + expires;
-    window.location.pathname = "/admin/login.html";
-}

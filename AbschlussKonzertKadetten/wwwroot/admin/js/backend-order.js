@@ -208,16 +208,15 @@ function deleteItem(email) {
     var url = uriOrder + '/' + email;
     var header = base64Request();
     var req = new Request(url, {
-        method: 'delete',
-        body: JSON.stringify(data),
-        mode: "cors",
+        method: 'Delete',
         headers: header
     });
     fetch(req)
         .then((function(myJson) {
-            // if (myJson.status == 401) {
-            //     window.location.pathname = "/admin/login.html";
-            // }
+            if (myJson.status === 200) {
+                document.getElementById('edit').remove();
+                GetItems();
+            }
         }));
 }
 

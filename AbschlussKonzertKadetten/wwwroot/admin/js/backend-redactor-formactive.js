@@ -208,6 +208,15 @@ window.onload = function () {
     }
     getUserName();
 };
+
+function logOut() {
+    var datetime = new Date();
+    datetime.setTime(datetime.getTime() - (1000 * 60 * 60 * 24));
+    var expires = "expires=" + datetime.toGMTString();
+    document.cookie = "username=;expires=" + expires;
+    document.cookie = "pw=;expires=" + expires;
+    window.location.pathname = "/admin/login.html";
+}
 function getCookiePw() {
     var pw = document.cookie.match('(^|;) ?pw=([^;]*)(;|$)');
     return pw ? pw[2] : null;
