@@ -1,15 +1,15 @@
 // THIS FILE ONLY GETS USED BY THE BACKEND RESERVATIONEN PAGE
 
 // const uriOrder = 'https://kadetten-dev.scapp.io/api/order';
-// const uriOrder = 'https://localhost:44389/api/order';
-const uriOrder = '/api/order';
+//const uriOrder = 'https://localhost:44389/api/order';
+ const uriOrder = '/api/order';
 function GetItems() {
     if (document.querySelectorAll("#result").length > 0) {
 
         var header = base64Request();
         var req = new Request(uriOrder, {
             method: 'GET',
-            headers: header,
+            headers: header
         });
         fetch(req)
             .then(res => res.json())
@@ -21,15 +21,15 @@ function GetItems() {
                     html += '<td>' + data[i].clientFirstName + '</td>';
                     html += '<td>' + data[i].email + '</td>';
                     html += '<td>' + data[i].phone + '</td>';
-                    if (data[i].kadettLastName != "" || data[i].kadettFirstName != "")
+                    if (data[i].kadettLastName !== "" || data[i].kadettFirstName !== "")
                         html += '<td>Ja</td>';
                     else
                         html += '<td>Nein</td>';
                     html += '<td>' + data[i].kadettLastName + '</td>';
                     html += '<td>' + data[i].kadettFirstName + '</td>';
-                    if (data[i].kadettInKader == true)
+                    if (data[i].kadettInKader === true)
                         html += '<td>Ja</td>';
-                    else if (data[i].kadettInKader == false)
+                    else if (data[i].kadettInKader === false)
                         html += '<td>Nein</td>';
 
 
@@ -43,17 +43,17 @@ function GetItems() {
                         var type = data[i].tickets[x].type;
 
 
-                        if (type == "Erwachsene" && day == "Sa")
+                        if (type === "Erwachsene" && day === "Sa")
                             html += '<td>' + quantity + '</td>';
-                        else if (type == "Kind" && day == "Sa")
+                        else if (type === "Kind" && day === "Sa")
                             html += '<td>' + quantity + '</td>';
-                        else if (type == "Kleinkind" && day == "Sa")
+                        else if (type === "Kleinkind" && day === "Sa")
                             html += '<td>' + quantity + '</td>';
-                        else if (type == "Erwachsene" && day == "So")
+                        else if (type === "Erwachsene" && day === "So")
                             html += '<td>' + quantity + '</td>';
-                        else if (type == "Kind" && day == "So")
+                        else if (type === "Kind" && day === "So")
                             html += '<td>' + quantity + '</td>';
-                        else if (type == "Kleinkind" && day == "So")
+                        else if (type === "Kleinkind" && day === "So")
                             html += '<td>' + quantity + '</td>';
                     }
                     html += '<td>' + data[i].bemerkung + '</td>';
@@ -76,7 +76,7 @@ function AssignEditIcons() {
     var editIcons = document.querySelectorAll('.edit-icon');
     for (var i = 0; i < editIcons.length; i++) {
         var editIcon = editIcons[i];
-        editIcon.addEventListener("click", function (e) { GetItemByEmail(e) });
+        editIcon.addEventListener("click", function (e) { GetItemByEmail(e); });
     }
 }
 
@@ -86,10 +86,10 @@ function GetItemByEmail(e) {
     var header = base64Request();
     var req = new Request(url, {
         method: 'GET',
-        headers: header,
+        headers: header
     });
     fetch(req)
-        .then((res => res.json()))
+        .then(res => res.json())
         .then(function (data) {
 
             var edithtml = '<section id="edit">';
@@ -102,7 +102,9 @@ function GetItemByEmail(e) {
             //HEADER
             edithtml += '<h2>Reservation von ' + data.clientFirstName + ' ' + data.clientLastName + '</h2>';
             //EMAIL FIELD
-            edithtml += '<h3>Email:</h3><input name="email" type="email" placeholder="E-Mail" value="' + data.email + '" required />'
+            edithtml += '<h3>Email:</h3><input name="email" type="email" placeholder="E-Mail" value="' +
+                data.email +
+                '" required />';
 
             for (i = 0; i < data.tickets.length; i++) {
 
@@ -110,20 +112,20 @@ function GetItemByEmail(e) {
                 var quantity = data.tickets[i].quantity;
                 var type = data.tickets[i].type;
 
-                if (type == "Erwachsene" && day == "Sa")
+                if (type === "Erwachsene" && day === "Sa")
                     edithtml += '<h3>Ticket Samstag Erwachsene</h3><input type="number" min="0" value="' + quantity + '" class="tickets" name="adult-sa" id="adult-sa" required  data-ticket="Erwachsene" data-Day="Sa"/>';
-                else if (type == "Kind" && day == "Sa")
+                else if (type === "Kind" && day === "Sa")
                     edithtml += '<h3>Ticket Samstag Kinder im Schulalter</h3><input type="number" min="0" value="' + quantity + '" class="tickets" name="child-sa" id="child-sa" required data-ticket="Kind" data-Day="Sa" />';
-                else if (type == "Kleinkind" && day == "Sa")
+                else if (type === "Kleinkind" && day === "Sa")
                     edithtml += '<h3>Ticket Samstag Kinder in Vorkursen</h3><input type="number" min="0" value="' + quantity + '" class="tickets" name="k-child-sa" id="k-child-sa" required  data-ticket="Kleinkind" data-Day="Sa"/>';
-                else if (type == "Erwachsene" && day == "So")
+                else if (type === "Erwachsene" && day === "So")
                     edithtml += '<h3>Ticket Samstag Erwachsene</h3><input type="number" min="0" value="' + quantity + '" class="tickets" name="adult-so" id="adult-so" required  data-ticket="Erwachsene" data-Day="So" />';
-                else if (type == "Kind" && day == "So")
+                else if (type === "Kind" && day === "So")
                     edithtml += '<h3>Ticket Samstag Kinder im Schulalter</h3><input type="number" min="0" value="' + quantity + '" class="tickets" name="child-so" id="child-so" required data-ticket="Kind" data-Day="So" />';
-                else if (type == "Kleinkind" && day == "So")
+                else if (type === "Kleinkind" && day === "So")
                     edithtml += '<h3>Ticket Samstag Kinder in Vorkursen</h3><input type="number" min="0" value="' + quantity + '" class="tickets" name="k-child-so" id="k-child-so" required data-ticket="Kleinkind" data-Day="So" />';
             }
-            if (data.bemerkung == 'Keine')
+            if (data.bemerkung === 'Keine')
                 edithtml += '<h3>Bemerkungen</h3><textarea name="text" rows="1"></textarea></form></div></section>';
             else
                 edithtml += '<h3>Bemerkungen</h3><textarea name="text" rows="1">' + data.bemerkung + '</textarea></form></div></section>';
@@ -139,7 +141,7 @@ function GetItemByEmail(e) {
 function closePopUp() {
 
     //CHECK IF SOMETHING WAS CHANGED
-    var change = 0
+    var change = 0;
 
     var inputs = document.querySelectorAll('input[type=number]');
 
@@ -147,19 +149,19 @@ function closePopUp() {
         var input = inputs[i];
         var initialInputValue = input.getAttribute('value');
         input.setAttribute('value', input.value);
-        if (initialInputValue != input.value) change = 1;
+        if (initialInputValue !== input.value) change = 1;
     }
 
     var textareas = document.querySelectorAll('textarea');
-    for (var i = 0; i < textareas.length; i++) {
-        var textarea = textareas[i];
+    for (var x = 0; x < textareas.length; x++) {
+        var textarea = textareas[x];
         var initialTextareaValue = textarea.innerHTML;
         textarea.innerHTML = textarea.value;
-        if (initialTextareaValue != textarea.innerHTML) change = 1;
+        if (initialTextareaValue !== textarea.innerHTML) change = 1;
     }
 
     //IF CHANGE MAKE POPUP
-    if (change == 1) {
+    if (change === 1) {
         if (confirm("Willst du die Seite wirklich verlassen ohne die Änderungen zu speichern ?")) {
             document.getElementById('edit').remove();
         }
@@ -177,7 +179,7 @@ function safePopUp(email) {
     var data = {
         email: document.getElementsByName("email")[0].value,
         tickets: tickets
-    }
+    };
     for (var i = 0; i < items.length; i++) {
         var ticket = {
             type: items[i].getAttribute('data-ticket'),
@@ -186,7 +188,7 @@ function safePopUp(email) {
         };
         tickets.push(ticket);
     }
-    var header = base64Request();
+    var header = base64RequestOrder();
     var req = new Request(urlOrder, {
         method: 'Put',
         body: JSON.stringify(data),
@@ -194,7 +196,7 @@ function safePopUp(email) {
     });
     fetch(req)
         .then(function (myJson) {
-            if (myJson.status == 200) {
+            if (myJson.status === 200) {
                 document.getElementById('edit').remove();
                 GetItems();
             }
@@ -209,14 +211,14 @@ function deleteItem(email) {
         method: 'delete',
         body: JSON.stringify(data),
         mode: "cors",
-        headers: header,
+        headers: header
     });
     fetch(req)
-        .then((function (myJson) {
+        .then((function(myJson) {
             // if (myJson.status == 401) {
             //     window.location.pathname = "/admin/login.html";
             // }
-        }))
+        }));
 }
 
 
@@ -247,7 +249,7 @@ function deleteItem(email) {
 
 function AssignDeleteButton() {
     if (document.getElementById('delete-all') > 0) {
-        document.getElementById('delete-all').addEventListener("click", function () { deleteAll() });
+        document.getElementById('delete-all').addEventListener("click", function () { deleteAll(); });
     }
 
 }
@@ -262,7 +264,7 @@ function AssignDeleteButton() {
 document.addEventListener('DOMContentLoaded', function () {
     GetItems();
     AssignDeleteButton();
-    if (getCookiePw() == null && getCookieName() == null) {
+    if (getCookiePw() === null && getCookieName() === null) {
         window.location.pathname = "/admin/login.html";
     }
 }, false);
@@ -278,7 +280,7 @@ function getCookieNameOrder() {
 }
 function base64RequestOrder() {
     var h = new Headers();
-    h.append('Accept', 'application/json');
+    h.append('Content-Type', 'application/json');
     var name = getCookieNameOrder();
     var pw = getCookiePwOrder();
     var string = '' + name + ':' + pw + '';

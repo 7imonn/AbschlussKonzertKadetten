@@ -227,7 +227,7 @@ namespace AbschlussKonzertKadetten.Controllers
                     }
                 }
 
-                //await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
                 return Ok();
             }
             else

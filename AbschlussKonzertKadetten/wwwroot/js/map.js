@@ -30,7 +30,7 @@ google.maps.event.addDomListener(window, 'load', addMap());
 					map: map,
 					position: {
 						lat: 46.743119,
-						lng: 7.629385,
+						lng: 7.629385
 					}
 				};
 				

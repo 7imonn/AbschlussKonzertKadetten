@@ -1,6 +1,6 @@
 // const urlLogin = 'https://kadetten-dev.scapp.io/api/authenticate';
-// const urlLogin = 'https://localhost:44389/api/authenticate';
-const urlLogin = '/api/authenticate';
+//const urlLogin = 'https://localhost:44389/api/authenticate';
+ const urlLogin = '/api/authenticate';
 
 
 function isAuthenticated() {
@@ -9,7 +9,7 @@ function isAuthenticated() {
     var data = {
         username: username.value,
         pw: pw.value
-    }
+    };
     fetch(urlLogin, {
         method: 'Post',
         body: JSON.stringify(data),
@@ -17,7 +17,7 @@ function isAuthenticated() {
             'Content-Type': 'application/json'
         }
     }).then(function (myJson) {
-        if (myJson.status == 200) {
+        if (myJson.status === 200) {
             var datetime = new Date();
             // datetime.setTime(datetime.getTime() + (2 * 60 * 60 * 1000));
             datetime.setTime(datetime.getTime()+(10*1000));

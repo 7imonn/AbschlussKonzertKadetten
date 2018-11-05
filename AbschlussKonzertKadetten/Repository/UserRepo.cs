@@ -50,15 +50,9 @@ namespace AbschlussKonzertKadetten.Repository
         {
             byte[] b;
             string decrypted;
-            try
-            {
-                b = Convert.FromBase64String(encrString);
-                decrypted = Encoding.ASCII.GetString(b);
-            }
-            catch (FormatException fe)
-            {
-                decrypted = "";
-            }
+            b = Convert.FromBase64String(encrString);
+            decrypted = Encoding.ASCII.GetString(b);
+
             return decrypted;
         }
 
