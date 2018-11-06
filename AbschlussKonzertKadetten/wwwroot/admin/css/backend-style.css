@@ -63,6 +63,9 @@ main{background: #F2F2F2; min-height: 100%; min-height: 100vh; margin-left: 200p
 .safe-button:hover, .download-button:hover{-webkit-transform: scale(1.1);transform: scale(1.1); text-decoration: none; border: none;}
 .wrapper{max-width: 850px; margin: 0 auto; padding: 30px; background: white; position: relative;}
 button { cursor:pointer; }
+#safe-notification{background: #C2A779; border-radius: 0px 0px 3px 3px; padding: 10px 20px; color: white; width: fit-content; position: fixed; top:0; left: 50%; transform: translate(-50%, -100%); font-weight: normal; transition: all 0.3s ease; z-index: 3;}
+#safe-notification.in{transform: translate(-50%, 0%);}
+#safe-notification span{margin-right: 5px;}
 
 
 nav{padding: 0px 30px 0px 30px;}
@@ -92,7 +95,20 @@ nav ul li a i{font-size: 1.1rem; margin-right: 15px;}
 .lightswitch:before{content:""; line-height: 0; font-size: 0; display: block; position: absolute; background: white; height: 15px; width: 15px; border-radius: 30px; top: 0; left: 0; -webkit-transition: all 0.3s ease; transition: all 0.3s ease;}
 .lightswitch.active:before{left: 15px;}
 
-#form-active-button{background: white; padding: 7px 20px; color: #585858; position: relative; margin-top: 60px; border-radius: 3px; -webkit-transition: all 0.3s ease; transition: all 0.3s ease; border: 1px solid #F2F2F2; color: black; display: block; width: fit-content;}
+/*#form-active-button{background: white; padding: 7px 20px; color: #585858; position: relative; margin-top: 60px; border-radius: 3px; -webkit-transition: all 0.3s ease; transition: all 0.3s ease; border: 1px solid #F2F2F2; color: black; display: block; width: -webkit-fit-content; width: -moz-fit-content; width: fit-content; -webkit-animation: formActiveButton 0.6s ease; animation: formActiveButton 0.6s ease;}*/
+#form-active-button{background: white; padding: 7px 20px; color: #585858; position: absolute; top: 30px; right: 30px; border-radius: 3px; -webkit-transition: all 0.3s ease; transition: all 0.3s ease; border: 1px solid #F2F2F2; color: black; display: block; width: -webkit-fit-content; width: -moz-fit-content; width: fit-content; -webkit-animation: formActiveButton 0.6s ease; animation: formActiveButton 0.6s ease;}
+@-webkit-keyframes formActiveButton{
+	0%{-webkit-transform: scale(1);transform: scale(1); box-shadow: 0px 0px 0px white;}
+	20%{-webkit-transform: scale(1);transform: scale(1); box-shadow: 0px 0px 0px white;}
+	60%{-webkit-transform: scale(1.2);transform: scale(1.1); box-shadow: 0px 0px 10px #b6b6b6;}
+	100%{-webkit-transform: scale(1);transform: scale(1); box-shadow: 0px 0px 0px white;}
+}
+@keyframes formActiveButton{
+	0%{-webkit-transform: scale(1);transform: scale(1); box-shadow: 0px 0px 0px white;}
+	20%{-webkit-transform: scale(1);transform: scale(1); box-shadow: 0px 0px 0px white;}
+	60%{-webkit-transform: scale(1.2);transform: scale(1.1); box-shadow: 0px 0px 10px #b6b6b6;}
+	100%{-webkit-transform: scale(1);transform: scale(1); box-shadow: 0px 0px 0px white;}
+}
 #form-active-button:hover{background: #F2F2F2; color: black; text-decoration: none; border: 1px solid #585858;}
 #form-active-button .lightswitch{border: 1px solid #585858; box-sizing: content-box;}
 #form-active-button .lightswitch:before{}
@@ -106,7 +122,7 @@ input[type="time"], input[type="number"]{width: 120px;}
 /*REDACTOR*/
 .ql-toolbar{border-radius: 3px 3px 0px 0px; background: #F2F2F2; border: 1px solid #F2F2F2!important;}
 .ql-container{background: none; border: none!important;}
-.ql-editor{border-radius: 0px 0px 3px 3px; border: 1px solid #F2F2F2!important; background: #F2F2F2; -webkit-transition: background 0.2s ease; transition: background 0.2s ease;}
+.ql-editor{border-radius: 0px 0px 3px 3px; border: 1px solid #F2F2F2!important; background: #F2F2F2; -webkit-transition: background 0.2s ease; transition: background 0.2s ease; margin-bottom: 30px;}
 .ql-editor:focus{ border: 1px solid #585858!important; background: white;}
 
 /**** Table *****/

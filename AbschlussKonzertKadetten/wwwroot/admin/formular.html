@@ -47,7 +47,7 @@
 		</nav>
 		<div id="registration-live-panel">
 			<p>Status</p>
-			<a href="formular.html">
+			<a href="formular.html#form-active-button">
 				<div id="registration-live">
 					<span class="lightswitch active"></span>
 					<p>Formular</p>
@@ -64,6 +64,10 @@
 	</header>
 
 	<main>
+		<div id="safe-notification">
+			<span>gespeichert</span>
+			<i class="fas fa-check"></i>
+		</div>
 		<form id="formularform" name="formularform" onsubmit="postRedactor(); return false">
 			<input type="submit" class="safe-button" value="Speichern">
 			<div class="wrapper">
@@ -89,6 +93,12 @@
 				<p class="field-desc">Dieser Text erscheint wenn das Formular abgeschickt wurde</p>
 				<input name="formfeedback" data-redactor="formfeedback" type="hidden" class="editor-hidden-input" />
 				<div id="editor"></div>
+				
+				<h3>E-Mail Bestätigung</h3>
+				<p class="field-desc">Dieser Text ist der Inhalt des Bestätigungs-Emails</p>
+				<input name="emailtext" data-redactor="emailtext" type="hidden" class="editor-hidden-input" />
+				<div id="editor"></div>
+				
 				<a id="form-active-button" data-status-active="true" onclick="postFormularStatus(); return false">
 					<span class="lightswitch"></span>
 					<p>Formular Aktivieren</p>

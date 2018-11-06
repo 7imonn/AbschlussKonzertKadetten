@@ -63,19 +63,22 @@ function GetformularStatus() {
 function createRedactor() {
     var editorExists = document.querySelectorAll("#editor");
     var editorExistAlredy = document.getElementsByClassName("ql-editor");
-    if (document.querySelectorAll('.editor-hidden-input').length > 0) {
-        var name = document.querySelector('.editor-hidden-input').getAttribute('data-redactor');
-        if (name !== 0) {
+    var hiddenInputs = document.querySelectorAll('.editor-hidden-input')
+    for (x = 0; x < hiddenInputs.length; x++) {
+       var hiddenInput = hiddenInputs[x];
+       var name = hiddenInput.getAttribute('data-redactor');
+       var buildEditor = editorExists[x]
 
-            if (editorExists.length > 0 && editorExistAlredy.length === 0) {
-                var toolbarOptions = [[{ 'header': [2, 3, false] }], ['bold'], ['link']];
-                var quill = new Quill('#editor', {
-                    theme: 'snow',
-                    modules: {
-                        toolbar: toolbarOptions
-                    }
-                });
-            }
+       if (name !== 0) {
+
+            var toolbarOptions = [[{ 'header': [3, false] }], ['bold'], ['link']];
+            var quill = new Quill(buildEditor, {
+                theme: 'snow',
+                modules: {
+                    toolbar: toolbarOptions
+                }
+            });
+            
             var header = base64Request();
             var req = new Request(urlRedactor + "/" + name, {
                 method: 'GET',
@@ -85,19 +88,17 @@ function createRedactor() {
                 .then(res => res.json())
                 .then(function (data) {
                     var text = data.text;
-                    document.querySelector('.ql-editor').innerHTML = text;
+                    var buildEditorId = '#'+buildEditor.getAttribute('id')
+                    document.querySelector(buildEditorId+' > .ql-editor').innerHTML = text;
 
                 });
-
-            //if (UrlindexOfFormular > 0)
-            //getRedactor();
 
         }
     }
 }
 
 
-function postRedactor() {
+/*function postRedactor() {
     var editor = document.querySelector('.ql-editor');
     var UrlindexOf = document.URL.indexOf("intro.html");
     var datas = [];
@@ -135,6 +136,68 @@ function postRedactor() {
             // 	window.location.pathname = "/admin/login.html";
             // }
         }));
+}*/
+
+function postRedactor() {
+    var editors = document.querySelectorAll('.ql-editor');
+    var UrlindexOf = document.URL.indexOf("intro.html");
+    var datas = [];
+    var inputs = null;
+    
+    //redactors
+    var editorInputs = document.querySelectorAll('.editor-hidden-input');
+    
+    for (x = 0; x < editorInputs.length; x++) {
+        var data = {};
+        var name = editorInputs[x].getAttribute('data-redactor');
+        var content = editors[x].innerHTML;
+
+        data = {
+            Name: name,
+            Text: content
+        };
+        
+        var header = base64Request();
+	    var req = new Request(urlRedactor+'/'+name, {
+	        method: 'Put',
+	        body: JSON.stringify(data),
+	        headers: header
+	    });
+	    fetch(req)
+	        .then((function (myJson) {
+	            // if (myJson.status == 401) {
+	            // 	window.location.pathname = "/admin/login.html";
+	            // }
+	        }));
+	}
+	
+	//inputs
+	inputs = document.querySelectorAll('#formularform > div > input');
+        
+
+    for (x = 0; x < inputs.length; x++) {
+        var data = {};
+        var name = inputs[x].getAttribute('data-redactor');
+        content = inputs[x].value;
+        
+        data = {
+            Name: name,
+            Text: content
+        };
+        datas.push(data);
+        var header = base64Request();
+	    var req = new Request(urlRedactor+'/'+name, {
+	        method: 'Put',
+	        body: JSON.stringify(datas),
+	        headers: header
+	    });
+	    fetch(req)
+	        .then((function (myJson) {
+	            // if (myJson.status == 401) {
+	            // 	window.location.pathname = "/admin/login.html";
+	            // }
+	        }));
+    }
 }
 
 function postFormularStatus() {
@@ -237,4 +300,10 @@ function base64Request() {
     var auth = 'Basic ' + encoded;
     h.append('Authorization', auth);
     return h;
+}
+
+function safeNotification()	{
+	var notification = document.getElementById('#safe-notification');
+	notification.classList.add("in");
+	setTimeout(function(){ notification.classList.remove("in"); }, 1000);
 }
