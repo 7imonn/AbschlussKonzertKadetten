@@ -92,7 +92,17 @@ nav ul li a i{font-size: 1.1rem; margin-right: 15px;}
 .lightswitch:before{content:""; line-height: 0; font-size: 0; display: block; position: absolute; background: white; height: 15px; width: 15px; border-radius: 30px; top: 0; left: 0; -webkit-transition: all 0.3s ease; transition: all 0.3s ease;}
 .lightswitch.active:before{left: 15px;}
 
-#form-active-button{background: white; padding: 7px 20px; color: #585858; position: relative; margin-top: 60px; border-radius: 3px; -webkit-transition: all 0.3s ease; transition: all 0.3s ease; border: 1px solid #F2F2F2; color: black; display: block; width: fit-content;}
+#form-active-button{background: white; padding: 7px 20px; color: #585858; position: relative; margin-top: 60px; border-radius: 3px; -webkit-transition: all 0.3s ease; transition: all 0.3s ease; border: 1px solid #F2F2F2; color: black; display: block; width: -webkit-fit-content; width: -moz-fit-content; width: fit-content; -webkit-animation: formActiveButton 0.6s ease; animation: formActiveButton 0.6s ease;}
+@-webkit-keyframes formActiveButton{
+	0%{-webkit-transform: scale(1);transform: scale(1); box-shadow: 0px 0px 0px white;}
+	50%{-webkit-transform: scale(1.2);transform: scale(1.2); box-shadow: 0px 0px 10px black;}
+	100%{-webkit-transform: scale(1);transform: scale(1); box-shadow: 0px 0px 0px white;}
+}
+@keyframes formActiveButton{
+	0%{-webkit-transform: scale(1);transform: scale(1); box-shadow: 0px 0px 0px white;}
+	50%{-webkit-transform: scale(1.2);transform: scale(1.2); box-shadow: 0px 0px 10px black;}
+	100%{-webkit-transform: scale(1);transform: scale(1); box-shadow: 0px 0px 0px white;}
+}
 #form-active-button:hover{background: #F2F2F2; color: black; text-decoration: none; border: 1px solid #585858;}
 #form-active-button .lightswitch{border: 1px solid #585858; box-sizing: content-box;}
 #form-active-button .lightswitch:before{}
