@@ -200,6 +200,9 @@ function safePopUp(email) {
                 document.getElementById('edit').remove();
                 GetItems();
             }
+            if (myJson.status === 400) {
+                var lala = "gits scho";
+            }
         });
 }
 

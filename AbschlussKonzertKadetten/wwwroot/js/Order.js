@@ -10,8 +10,8 @@ function addItem() {
     var data = {
         email: getfrom.namedItem("email").value,
         phone: getfrom.namedItem("tel").value,
-        clientLastName: getfrom.namedItem("prename").value,
-        clientFirstName: getfrom.namedItem("lastname").value,
+        clientLastName: getfrom.namedItem("lastname").value,
+        clientFirstName: getfrom.namedItem("prename").value,
         bemerkung: getfrom.namedItem("text").value,
         kadettLastName: getfrom.namedItem("child-lastname").value,
         kadettFirstName: getfrom.namedItem("child-prename").value,
