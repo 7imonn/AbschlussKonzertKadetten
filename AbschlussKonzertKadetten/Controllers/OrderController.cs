@@ -179,9 +179,9 @@ namespace AbschlussKonzertKadetten.Controllers
                             Day = ticket.Day
                         });
                     }
-                    
+
                     //await _emailSenderService.SendEmailAsync(order.Email);
-                    if(_clientRepo.ClientFindByEmail(order.Email).Result == null)
+                    if (_clientRepo.ClientFindByEmail(order.Email).Result == null)
                         await _context.SaveChangesAsync();
 
                     return Ok();
@@ -195,8 +195,9 @@ namespace AbschlussKonzertKadetten.Controllers
         [HttpPut("{email}")]
         public async Task<IActionResult> Put(string email, ViewModelUpdateOrder order)
         {
+            var findeByEmail = _clientRepo.ClientFindByEmail(email);
             _logger.LogInformation("Update Order", order, email);
-            if (_clientRepo.ClientFindByEmail(email) != null)
+            if (findeByEmail.Result != null)
             {
                 var dbClient = await _clientRepo.ClientFindByEmail(email);
                 var dbOrder = await _orderRepo.GetOrderByClientId(dbClient.Id);
@@ -209,7 +210,12 @@ namespace AbschlussKonzertKadetten.Controllers
                 }
 
                 if (order.Email != dbClient.Email)
-                    dbClient.Email = order.Email;
+                {
+                    if (findeByEmail.Result == null)
+                        dbClient.Email = order.Email;
+                    else
+                        return BadRequest("email gibt es schon");
+                }
 
                 foreach (var ticket in order.Tickets)
                 {
@@ -230,10 +236,7 @@ namespace AbschlussKonzertKadetten.Controllers
                 await _context.SaveChangesAsync();
                 return Ok();
             }
-            else
-            {
-                return NotFound();
-            }
+            return NotFound();
         }
         //DELETE api/values/5
         [HttpDelete("{email}")]

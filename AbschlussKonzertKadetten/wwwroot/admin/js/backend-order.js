@@ -1,8 +1,8 @@
 // THIS FILE ONLY GETS USED BY THE BACKEND RESERVATIONEN PAGE
 
-// const uriOrder = 'https://kadetten-dev.scapp.io/api/order';
+const uriOrder = 'https://kadetten-dev.scapp.io/api/order';
 //const uriOrder = 'https://localhost:44389/api/order';
- const uriOrder = '/api/order';
+//  const uriOrder = '/api/order';
 function GetItems() {
     if (document.querySelectorAll("#result").length > 0) {
 
@@ -199,6 +199,9 @@ function safePopUp(email) {
             if (myJson.status === 200) {
                 document.getElementById('edit').remove();
                 GetItems();
+            }
+            if (myJson.status === 400) {
+                var lala = "gits scho";
             }
         });
 }
