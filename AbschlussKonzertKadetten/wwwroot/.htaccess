@@ -1,0 +1,6 @@
+ErrorDocument 400 /index.html
+ErrorDocument 401 /index.html
+ErrorDocument 403 /index.html
+ErrorDocument 404 http://localhost:8888/
+ErrorDocument 500 /index.html
+ErrorDocument 503 /index.html

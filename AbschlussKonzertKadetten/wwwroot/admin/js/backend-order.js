@@ -199,6 +199,7 @@ function safePopUp(email) {
             if (myJson.status === 200) {
                 document.getElementById('edit').remove();
                 GetItems();
+                safeNotification();
             }
             if (myJson.status === 400) {
                 var lala = "gits scho";

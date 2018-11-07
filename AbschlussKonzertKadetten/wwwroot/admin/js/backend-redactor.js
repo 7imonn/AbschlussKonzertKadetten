@@ -132,9 +132,9 @@ function postRedactor() {
     });
     fetch(req)
         .then((function (myJson) {
-            // if (myJson.status == 401) {
-            // 	window.location.pathname = "/admin/login.html";
-            // }
+            if (myJson.status == 200) {
+             safeNotification();
+            }
         }));
 }
 
@@ -216,6 +216,7 @@ function postFormularStatus() {
     fetch(req)
         .then(function (myJson) {
             if (myJson.status === 200) {
+	            safeNotification();
                 button.setAttribute("data-status-active", status);
                 GetformularStatus();
 
@@ -303,7 +304,7 @@ function base64Request() {
 }
 
 function safeNotification()	{
-	var notification = document.getElementById('#safe-notification');
+	var notification = document.querySelector('#safe-notification');
 	notification.classList.add("in");
-	setTimeout(function(){ notification.classList.remove("in"); }, 1000);
+	setTimeout(function(){ notification.classList.remove("in"); }, 2500);
 }
