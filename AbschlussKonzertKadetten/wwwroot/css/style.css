@@ -55,6 +55,7 @@ header{padding: 40px 0px; background: white; width: 100%; position: relative;}
 #logo{position: absolute; top: 20px; left: 50px; max-width: 130px;}
 main{background: #F2F2F2; min-height: calc(100vh - 102px);}
 .content{max-width: 970px; margin: 0 auto; padding: 60px 60px 120px 60px; width: 60%;}
+.IE{display: none;}
 
 
 
@@ -145,3 +146,15 @@ input[type="submit"]:hover{background: none; border: 2px solid #C2A779; color: #
 	body.intro{padding-bottom: 100px;}
 	
 }
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+	.IE{
+		/* 
+		
+		/*  */
+		/*  */
+		/* Code für wes ä IE isch */
+		/*  */
+		/*  */
+		display: block;
+	}
+ }

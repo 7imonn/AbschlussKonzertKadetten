@@ -137,69 +137,6 @@ function postRedactor() {
             // }
         }));
 }
-
-// function postRedactor() {
-//     var editors = document.querySelectorAll('.ql-editor');
-//     var UrlindexOf = document.URL.indexOf("intro.html");
-//     var datas = [];
-//     var inputs = null;
-    
-//     //redactors
-//     var editorInputs = document.querySelectorAll('.editor-hidden-input');
-    
-//     for (x = 0; x < editorInputs.length; x++) {
-//         var data = {};
-//         var name = editorInputs[x].getAttribute('data-redactor');
-//         var content = editors[x].innerHTML;
-
-//         data = {
-//             Name: name,
-//             Text: content
-//         };
-        
-//         var header = base64Request();
-// 	    var req = new Request(urlRedactor+'/'+name, {
-// 	        method: 'Put',
-// 	        body: JSON.stringify(data),
-// 	        headers: header
-// 	    });
-// 	    fetch(req)
-// 	        .then((function (myJson) {
-// 	            // if (myJson.status == 401) {
-// 	            // 	window.location.pathname = "/admin/login.html";
-// 	            // }
-// 	        }));
-// 	}
-	
-// 	//inputs
-// 	inputs = document.querySelectorAll('#formularform > div > input');
-        
-
-//     for (x = 0; x < inputs.length; x++) {
-//         var data = {};
-//         var name = inputs[x].getAttribute('data-redactor');
-//         content = inputs[x].value;
-        
-//         data = {
-//             Name: name,
-//             Text: content
-//         };
-//         datas.push(data);
-//         var header = base64Request();
-// 	    var req = new Request(urlRedactor+'/'+name, {
-// 	        method: 'Put',
-// 	        body: JSON.stringify(datas),
-// 	        headers: header
-// 	    });
-// 	    fetch(req)
-// 	        .then((function (myJson) {
-// 	            // if (myJson.status == 401) {
-// 	            // 	window.location.pathname = "/admin/login.html";
-// 	            // }
-// 	        }));
-//     }
-// }
-
 function postFormularStatus() {
     var button = document.querySelector('#form-active-button');
     var status = button.getAttribute('data-status-active');
