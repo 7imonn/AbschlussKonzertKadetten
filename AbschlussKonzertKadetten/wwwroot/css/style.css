@@ -63,8 +63,8 @@ main{background: #F2F2F2; min-height: calc(100vh - 102px);}
 /**** INTRO *****/
 body.intro{padding-bottom: 120px;}
 footer{padding-top: 30px; background: white; position: fixed; bottom: 0; left: 0; width: 100%; height: 120px;}
-footer a{padding: 7px 20px; background: #C2A779; color: white; display: block; margin: 0 auto; width: -webkit-fit-content; width: -moz-fit-content; width: fit-content; -webkit-transition: all 0.5s ease; transition: all 0.5s ease; border: 2px solid white; opacity: 0;}
-footer a:hover{background: white; border: 2px solid #C2A779; color: #C2A779; -webkit-transform: scale(1.03); transform: scale(1.03); text-decoration: none;}
+footer a{padding: 7px 20px; background: #C2A779; color: white; display: inline-block; margin-left: 50%; width: -webkit-fit-content; width: -moz-fit-content; width: fit-content; -webkit-transition: all 0.5s ease; transition: all 0.5s ease; border: 2px solid white; opacity: 0; transform: translateX(-50%); -webkit-transform: translateX(-50%);}
+footer a:hover{background: white; border: 2px solid #C2A779; color: #C2A779; -webkit-transform: scale(1.03) translateX(-50%); transform: scale(1.03) translateX(-50%); text-decoration: none;}
 footer a.active{opacity: 1;}
 #map{width: 100%; height: 400px; background: gray;}
 #map #iframe-map{height: 100%; width: 100%; border: none;}
