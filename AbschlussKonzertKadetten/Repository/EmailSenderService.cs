@@ -21,7 +21,7 @@ namespace AbschlussKonzertKadetten.Repository
         public async Task SendEmailAsync(string email)
         {
             var body = await _redactorRepo.GetReactorByNameAsync("emailtext");
-            string bodyText = Regex.Replace(body.Text , @"<[^>]*(>|$)", "");
+            string bodyText = Regex.Replace(body.Text , "<[^(?!br)>]*>", " ");
             var client = new SmtpClient("mail.popnet.ch")
             {
                 UseDefaultCredentials = false,
