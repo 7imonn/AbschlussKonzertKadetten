@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using AbschlussKonzertKadetten.Interface;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -11,24 +12,29 @@ namespace AbschlussKonzertKadetten.Repository
 {
     public class EmailSenderService : IEmailSenderService
     {
+        private readonly IRedactorRepo _redactorRepo;
+
+        public EmailSenderService(IRedactorRepo redactorRepo)
+        {
+            _redactorRepo = redactorRepo;
+        }
         public async Task SendEmailAsync(string email)
         {
+            var body = await _redactorRepo.GetReactorByNameAsync("emailtext");
+            string bodyText = Regex.Replace(body.Text , @"<[^>]*(>|$)", "");
             var client = new SmtpClient("mail.popnet.ch")
             {
                 UseDefaultCredentials = false,
-                Credentials = new NetworkCredential("info@schlusskonzert-kadetten-thun.ch", "z/tDwa=9Mk"),
-                Port = 465,
-                EnableSsl = true
+                Credentials = new NetworkCredential("info@schlusskonzert-kadetten-thun.ch", "z/tDwa=9Mk")
             };
-            var mailMessage = new MailMessage
-            {
-                From = new MailAddress("info@schlusskonzert-kadetten-thun.ch")
-            };
-            //email = "nobelentimon@gmail.com";
+            MailMessage mailMessage = new MailMessage();
+            mailMessage.From = new MailAddress("info@schlusskonzert-kadetten-thun.ch");
             mailMessage.To.Add(email);
-            mailMessage.Body = "body";
-            mailMessage.Subject = "subject";
-            await client.SendMailAsync(mailMessage);
+            mailMessage.IsBodyHtml = true;
+            mailMessage.Body = body.Text;
+            mailMessage.Subject = "Bestellung Schlusskonzert Kadetten Thun";
+
+            client.Send(mailMessage);
         }
     }
 }
