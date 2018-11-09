@@ -13,18 +13,18 @@ namespace AbschlussKonzertKadetten.Repository
     {
         public async Task SendEmailAsync(string email)
         {
-            var client = new SmtpClient("smtp.gmail.com")
+            var client = new SmtpClient("mail.popnet.ch")
             {
                 UseDefaultCredentials = false,
-                Credentials = new NetworkCredential("nobelentimon@gmail.com", "#No14@bel7$en3.5"),
+                Credentials = new NetworkCredential("info@schlusskonzert-kadetten-thun.ch", "z/tDwa=9Mk"),
                 Port = 465,
                 EnableSsl = true
             };
             var mailMessage = new MailMessage
             {
-                From = new MailAddress("confermation-noreply@yourdomain.com")
+                From = new MailAddress("info@schlusskonzert-kadetten-thun.ch")
             };
-            email = "nobelentimon@gmail.com";
+            //email = "nobelentimon@gmail.com";
             mailMessage.To.Add(email);
             mailMessage.Body = "body";
             mailMessage.Subject = "subject";

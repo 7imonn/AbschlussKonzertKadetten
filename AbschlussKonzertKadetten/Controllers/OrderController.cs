@@ -50,7 +50,7 @@ namespace AbschlussKonzertKadetten.Controllers
         [HttpGet]
         public async Task<List<ViewModelOrder>> Get()
         {
-            _logger.LogInformation("l items");
+            _logger.LogInformation("Get items");
             var orderList = await _orderRepo.GetAllOrders();
             var modelOrders = new List<ViewModelOrder>();
 
@@ -180,11 +180,13 @@ namespace AbschlussKonzertKadetten.Controllers
                         });
                     }
 
-                    //await _emailSenderService.SendEmailAsync(order.Email);
+                    await _emailSenderService.SendEmailAsync(order.Email);
                     if (_clientRepo.ClientFindByEmail(order.Email).Result == null)
+                    {
                         await _context.SaveChangesAsync();
+                        return Ok();
+                    }
 
-                    return Ok();
                 }
                 return Conflict();
             }
