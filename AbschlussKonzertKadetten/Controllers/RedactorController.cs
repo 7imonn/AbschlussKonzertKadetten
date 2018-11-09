@@ -95,12 +95,13 @@ namespace AbschlussKonzertKadetten.Controllers
         [HttpPut]
         public async Task<IActionResult> Put(List<ViewModelRedactor> models)
         {
+
             if (ModelState.IsValid)
             {
+                _logger.LogInformation("Update Redactor", models);
+
                 foreach (var model in models)
                 {
-
-                    _logger.LogInformation("Update Redactor", model);
                     var redactor = _redactorRepo.GetReactorByNameAsync(model.Name);
                     if (redactor.Result != null)
                     {
@@ -109,7 +110,6 @@ namespace AbschlussKonzertKadetten.Controllers
                         if (model.Text == null)
                             return NotFound();
 
-                        dbReactor.Name = model.Name;
                         dbReactor.Text = model.Text;
 
                         await _context.SaveChangesAsync();
@@ -121,9 +121,8 @@ namespace AbschlussKonzertKadetten.Controllers
                         await _redactorRepo.CreateRedactor(model);
                         await _context.SaveChangesAsync();
                         return Ok();
-
                     }
-
+                    return Ok();
                 }
             }
 

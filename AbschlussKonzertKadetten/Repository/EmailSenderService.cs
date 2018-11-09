@@ -28,7 +28,7 @@ namespace AbschlussKonzertKadetten.Repository
                 Credentials = new NetworkCredential("info@schlusskonzert-kadetten-thun.ch", "z/tDwa=9Mk")
             };
             MailMessage mailMessage = new MailMessage();
-            mailMessage.From = new MailAddress("info@schlusskonzert-kadetten-thun.ch");
+            mailMessage.From = new MailAddress("schlusskonzert@gmx.ch");
             mailMessage.To.Add(email);
             mailMessage.IsBodyHtml = true;
             mailMessage.Body = body.Text;

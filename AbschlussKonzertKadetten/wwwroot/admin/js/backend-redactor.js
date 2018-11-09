@@ -117,7 +117,6 @@ function postRedactor() {
         else
             content = inputs[x].value;
 
-
         data = {
             Name: name,
             Text: content
