@@ -57,7 +57,7 @@ namespace AbschlussKonzertKadetten.Controllers
         [AllowAnonymous]
         public async Task<ViewModelRedactor> Get(string name)
         {
-            _logger.LogInformation("Delete All Order");
+            _logger.LogInformation("Get Redactor by name:", name);
 
             var redactor = await _redactorRepo.GetReactorByNameAsync(name);
 
@@ -73,7 +73,7 @@ namespace AbschlussKonzertKadetten.Controllers
         [AllowAnonymous]
         public async Task<bool> Get()
         {
-            _logger.LogInformation("Delete All Order");
+            _logger.LogInformation("Get active");
 
             var isFormulaActive = await _formularActiveRepo.isActive();
 
@@ -113,15 +113,18 @@ namespace AbschlussKonzertKadetten.Controllers
                         dbReactor.Text = model.Text;
 
                         await _context.SaveChangesAsync();
+                        return Ok();
+
                     }
                     else
                     {
                         await _redactorRepo.CreateRedactor(model);
                         await _context.SaveChangesAsync();
+                        return Ok();
+
                     }
 
                 }
-                return Ok();
             }
 
             return ValidationProblem();

@@ -132,7 +132,7 @@ function postRedactor() {
     });
     fetch(req)
         .then((function (myJson) {
-            if (myJson.status == 200) {
+            if (myJson.status === 200) {
              safeNotification();
             }
         }));
