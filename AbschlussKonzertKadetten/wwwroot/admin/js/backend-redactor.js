@@ -131,8 +131,10 @@ function postRedactor() {
     });
     fetch(req)
         .then((function (myJson) {
-            if (myJson.status === 200) {
-             safeNotification();
+            if (myJson.status !== 200) {
+                safeNotification();
+            } else {
+                safeNotificationError();
             }
         }));
 }
@@ -152,7 +154,7 @@ function postFormularStatus() {
     fetch(req)
         .then(function (myJson) {
             if (myJson.status === 200) {
-	            safeNotification();
+                safeNotification();
                 button.setAttribute("data-status-active", status);
                 GetformularStatus();
 
@@ -164,6 +166,8 @@ function postFormularStatus() {
                     //document.querySelector('.editor-hidden-input').setAttribute('data-redactor', "intro-inactive");
                     document.querySelector('#form-active-button > span').classList.remove("active");
                 }
+            } else {
+                safeNotificationError();
             }
             // if (myJson.status == 401) {
             // 	window.location.pathname = "/admin/login.html";
@@ -243,4 +247,9 @@ function safeNotification()	{
 	var notification = document.querySelector('#safe-notification');
 	notification.classList.add("in");
 	setTimeout(function(){ notification.classList.remove("in"); }, 2500);
+}
+function safeNotificationError() {
+    var notification = document.querySelector('#safe-notificationerror');
+    notification.classList.add("in");
+    setTimeout(function () { notification.classList.remove("in"); }, 2500);
 }

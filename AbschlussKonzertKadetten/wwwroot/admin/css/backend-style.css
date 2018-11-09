@@ -65,6 +65,28 @@ button { cursor:pointer; }
 #safe-notification{background: #C2A779; border-radius: 0px 0px 3px 3px; padding: 10px 20px; color: white; width: fit-content; position: fixed; top:0; left: 50%; transform: translate(-50%, -100%); font-weight: normal; transition: all 0.5s ease; z-index: 3;}
 #safe-notification.in{transform: translate(-50%, 0%);}
 #safe-notification span{margin-right: 5px;}
+#safe-notificationerror {
+    background: #E53946;
+    border-radius: 0px 0px 3px 3px;
+    padding: 10px 20px;
+    color: white;
+    width: fit-content;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    font-weight: normal;
+    transition: all 0.5s ease;
+    z-index: 3;
+}
+
+    #safe-notificationerror.in {
+        transform: translate(-50%, 0%);
+    }
+
+    #safe-notificationerror span {
+        margin-right: 5px;
+    }
 
 
 nav{padding: 0px 30px 0px 30px;}
@@ -110,7 +132,6 @@ nav ul li a i{font-size: 1.1rem; margin-right: 15px;}
 }
 #form-active-button:hover{background: #F2F2F2; color: black; text-decoration: none; border: 1px solid #585858;}
 #form-active-button .lightswitch{border: 1px solid #585858; box-sizing: content-box;}
-#form-active-button .lightswitch:before{}
 #form-active-button p{display: inline-block; margin-bottom: 0; margin-left: 10px; vertical-align: middle;}
 
 input{background: #F2F2F2; padding: 7px 15px; border-radius: 3px; color: #585858; -webkit-transition: all 0.3s ease; transition: all 0.3s ease; border: 1px solid #F2F2F2; margin-bottom: 30px; width: 100%;}
