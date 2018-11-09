@@ -1,8 +1,8 @@
 // THIS FILE IS USED IN BACKEND FORMULAR AND INTRO PAGE
 
-const urlRedactor = 'https://kadetten-dev.scapp.io/api/redactor';
+//const urlRedactor = 'https://kadetten-dev.scapp.io/api/redactor';
 //const urlRedactor = 'https://localhost:44389/api/redactor';
-//  const urlRedactor = '/api/redactor';
+  const urlRedactor = '/api/redactor';
 
 var UrlindexOfFormular = document.URL.indexOf("formular.html");
 var UrlindexOfIntro = document.URL.indexOf("intro.html");
