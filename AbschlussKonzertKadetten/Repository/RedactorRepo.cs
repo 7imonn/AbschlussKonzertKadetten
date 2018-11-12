@@ -19,7 +19,8 @@ namespace AbschlussKonzertKadetten.Repository
         }
         public async Task<Redactor> GetReactorByNameAsync(string name)
         {
-            var redactor = await _context.Redactor.SingleOrDefaultAsync(r => r.Name == name);
+            //var redactor = await _context.Redactor.SingleOrDefaultAsync(r => r.Name == name);
+            var redactor = await _context.Redactor.FirstOrDefaultAsync(r => r.Name == name);
             return redactor;
         }
 

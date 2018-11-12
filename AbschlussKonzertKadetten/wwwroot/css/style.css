@@ -148,13 +148,11 @@ input[type="submit"]:hover{background: none; border: 2px solid #C2A779; color: #
 }
 @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
 	.ie{
-		/* 
-		
-		/*  */
-		/*  */
-		/* Code für wes ä IE isch */
-		/*  */
-		/*  */
 		display: block;
 	}
  }
+@media screen and (min-width:0\0) { 
+    .ie{
+        display: block;
+    }
+}
