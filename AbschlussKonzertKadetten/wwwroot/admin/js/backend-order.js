@@ -17,8 +17,8 @@ function GetItems() {
                 var html = '';
                 for (var i = 0; i < data.length; i++) {
                     html += '<tr >';
-                    html += '<td>' + data[i].clientLastName + '</td>';
                     html += '<td>' + data[i].clientFirstName + '</td>';
+                    html += '<td>' + data[i].clientLastName + '</td>';
                     html += '<td>' + data[i].email + '</td>';
                     html += '<td>' + data[i].phone + '</td>';
                     if (data[i].kadettLastName !== "" || data[i].kadettFirstName !== "")
