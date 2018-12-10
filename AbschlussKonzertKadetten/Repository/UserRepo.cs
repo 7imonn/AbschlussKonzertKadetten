@@ -58,6 +58,7 @@ namespace AbschlussKonzertKadetten.Repository
 
         public string EnryptString(string strEncrypted)
         {
+            strEncrypted = "l@zydog14";
             //strEncrypted = "test";
             byte[] b = Encoding.ASCII.GetBytes(strEncrypted);
             string encrypted = Convert.ToBase64String(b);

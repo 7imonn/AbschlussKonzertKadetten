@@ -1,8 +1,8 @@
 // THIS FILE ONLY GETS LOADED BY THE ANMELDUNG PAGE (FRONTEND)
 
- const url = 'https://kadetten-dev.scapp.io/api/redactor';
+ //const url = 'https://kadetten-dev.scapp.io/api/redactor';
 //const url = 'https://localhost:44389/api/redactor';
-//  const url = '/api/redactor';
+  const url = '/api/redactor';
 
 
 
