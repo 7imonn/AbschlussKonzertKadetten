@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AbschlussKonzertKadetten.Models
 {
-    public class Client
+    public class Clients
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }

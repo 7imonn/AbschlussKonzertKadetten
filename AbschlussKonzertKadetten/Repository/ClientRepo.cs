@@ -17,27 +17,27 @@ namespace AbschlussKonzertKadetten.Repository
             _context = context;
         }
 
-        public async Task<Client> CreateClient(Client client)
+        public async Task<Clients> CreateClient(Clients Clients)
         {
-            await _context.Client.AddAsync(client);
-            return client;
+            await _context.Clients.AddAsync(Clients);
+            return Clients;
         }
 
-        public async Task<Client> GetClientById(int id)
+        public async Task<Clients> GetClientById(int id)
         {
-            return await _context.Client.FindAsync(id);
+            return await _context.Clients.FindAsync(id);
         }
 
-        public async Task<Client> ClientFindByEmail(string email)
+        public async Task<Clients> ClientFindByEmail(string email)
         {
-            var client = await _context.Client.SingleOrDefaultAsync(c => c.Email == email);
-            return client;
+            var Clients = await _context.Clients.SingleOrDefaultAsync(c => c.Email == email);
+            return Clients;
         }
 
         public async void DeleteClient(int id)
         {
-            var deleteClient = await GetClientById(id);
-            _context.Remove(deleteClient);
+            var deleteClients = await GetClientById(id);
+            _context.Remove(deleteClients);
         }
     }
 }

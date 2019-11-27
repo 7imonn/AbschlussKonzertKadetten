@@ -28,13 +28,13 @@ namespace AbschlussKonzertKadetten.Context
             //    .WithMany(ma => ma.TicketOrders)
             //    .HasForeignKey(a => a.TicketId);
 
-            builder.Entity<Client>()
+            builder.Entity<Clients>()
                 .Property(x => x.Id)
                 .ValueGeneratedOnAdd();
             builder.Entity<Kadett>()
                 .Property(x => x.Id)
                 .ValueGeneratedOnAdd();
-            builder.Entity<Order>()
+            builder.Entity<Orders>()
                 .Property(x => x.Id)
                 .ValueGeneratedOnAdd();
             builder.Entity<TicketOrder>()
@@ -53,8 +53,8 @@ namespace AbschlussKonzertKadetten.Context
                 .ValueGeneratedOnAdd();
         }
         public DbSet<Ticket> Ticket { get; set; }
-        public DbSet<Client> Client { get; set; }
-        public DbSet<Order> Order { get; set; }
+        public DbSet<Clients> Clients { get; set; }
+        public DbSet<Orders> Orders { get; set; }
         public DbSet<Kadett> Kadett { get; set; }
         public DbSet<Redactor> Redactor { get; set; }
         public DbSet<TicketOrder> TicketOrders { get; set; }

@@ -122,7 +122,6 @@ namespace AbschlussKonzertKadetten.Controllers
                         await _context.SaveChangesAsync();
                         return Ok();
                     }
-                    return Ok();
                 }
             }
 

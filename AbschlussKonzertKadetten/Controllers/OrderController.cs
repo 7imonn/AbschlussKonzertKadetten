@@ -144,7 +144,7 @@ namespace AbschlussKonzertKadetten.Controllers
                 var findClient = _clientRepo.ClientFindByEmail(order.Email).Result;
                 if (findClient == null || findClient != null)
                 {
-                    var createClient = await _clientRepo.CreateClient(new Client()
+                    var createClient = await _clientRepo.CreateClient(new Clients()
                     {
                         Email = order.Email,
                         Phone = order.Phone,
@@ -157,7 +157,7 @@ namespace AbschlussKonzertKadetten.Controllers
                         FirstName = order.KadettFirstName,
                         KadettInKader = order.KadettInKader
                     });
-                    var createOrder = await _orderRepo.CreateOrder(new Order()
+                    var createOrder = await _orderRepo.CreateOrder(new Orders()
                     {
                         Bemerkung = order.Bemerkung,
                         OrderDate = DateTime.Now,

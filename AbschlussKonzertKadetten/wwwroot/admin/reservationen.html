@@ -64,43 +64,47 @@
 			</div>
 		</div>
 	</header>
-	<main>
-		<div id="safe-notification" class="">
-			<span>gespeichert</span>
-			<i class="fas fa-check"></i>
-		</div>
-		<div id="editcontainer"></div>
+    <main>
+        <div id="safe-notification" class="">
+            <span>gespeichert</span>
+            <i class="fas fa-check"></i>
+        </div>
+        <div id="editcontainer"></div>
 
-		<a id="delete-all" class="delete-all" href="#"><i class="fas fa-ban"></i></a>
-		<a class="download-button" href="#" onclick='tableToExcel()'>Liste Herunterladen</a>
-		<h2>Reservationen</h2>
-		<div class="table-wrapper">
-			<table id="reservationenTable">
-				<thead>
-					<tr>
-						<th>Vorname</th>
-						<th>Nachname</th>
-						<th>E-Mail</th>
-						<th>Telefon</th>
-						<th>Kind in Kadetten</th>
-						<th>Nachname Kind</th>
-						<th>Vorname Kind</th>
-						<th>Kind in Kader</th>
-						<th>Tickets Sa Erwachsene</th>
-						<th>Tickets Sa Kind</th>
-						<th>Tickets Sa Kind Kurs</th>
-						<th>Tickets So Erwachsene</th>
-						<th>Tickets So Kind</th>
-						<th>Tickets So Kind Kurs</th>
-						<th>Bemerkung</th>
-					</tr>
-				</thead>
-				<tbody id="result">
-
-				</tbody>
-			</table>
-		</div>
-	</main>
+        <!--<a id="delete-all" class="delete-all" href="#"><i class="fas fa-ban"></i></a>-->
+        <select>
+            <option value="volvo">Volvo</option>
+            <option value="saab">Saab</option>
+            <option value="opel">Opel</option>
+            <option value="audi">Audi</option>
+        </select>
+        <a class="download-button" href="#" onclick='tableToExcel()'>Liste Herunterladen</a>
+        <h2>Reservationen</h2>
+        <div class="table-wrapper">
+            <table id="reservationenTable">
+                <thead>
+                    <tr>
+                        <th>Vorname</th>
+                        <th>Nachname</th>
+                        <th>E-Mail</th>
+                        <th>Telefon</th>
+                        <th>Kind in Kadetten</th>
+                        <th>Nachname Kind</th>
+                        <th>Vorname Kind</th>
+                        <th>Kind in Kader</th>
+                        <th>Tickets Sa Erwachsene</th>
+                        <th>Tickets Sa Kind</th>
+                        <th>Tickets Sa Kind Kurs</th>
+                        <th>Tickets So Erwachsene</th>
+                        <th>Tickets So Kind</th>
+                        <th>Tickets So Kind Kurs</th>
+                        <th>Bemerkung</th>
+                    </tr>
+                </thead>
+                <tbody id="result"></tbody>
+            </table>
+        </div>
+    </main>
 
 	<!-- load scripts -->
 	<!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="crossorigin="anonymous"></script> -->

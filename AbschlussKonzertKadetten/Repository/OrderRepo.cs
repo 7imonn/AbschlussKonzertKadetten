@@ -15,34 +15,34 @@ namespace AbschlussKonzertKadetten.Repository
         {
             _context = context;
         }
-        public async Task<IEnumerable<Order>> GetAllOrders()
+        public async Task<IEnumerable<Orders>> GetAllOrders()
         {
-            return await _context.Order.ToListAsync();
+            return await _context.Orders.ToListAsync();
         }
-        public async Task<Order> GetOrderById(int id)
+        public async Task<Orders> GetOrderById(int id)
         {
-            return await _context.Order.FindAsync(id);
+            return await _context.Orders.FindAsync(id);
         }
-        public async Task<Order> GetOrderByEmail(string email)
+        public async Task<Orders> GetOrdersByEmail(string email)
         {
-            return await _context.Order.FindAsync(email);
+            return await _context.Orders.FindAsync(email);
         }
 
-        public async Task<Order> GetOrderByClientId(int id)
+        public async Task<Orders> GetOrderByClientId(int id)
         {
-            var order = await _context.Order.SingleOrDefaultAsync(o => o.ClientId == id);
-            return order;
+            var Orders = await _context.Orders.SingleOrDefaultAsync(o => o.ClientId == id);
+            return Orders;
         }
         public async void DeleteOrder(int id)
         {
-            var deleteOrder = await GetOrderById(id);
-            _context.Order.Remove(deleteOrder);
+            var deleteOrders = await GetOrderById(id);
+            _context.Orders.Remove(deleteOrders);
         }
 
-        public async Task<Order> CreateOrder(Order order)
+        public async Task<Orders> CreateOrder(Orders Orders)
         {
-            await _context.Order.AddAsync(order);
-            return order;
+            await _context.Orders.AddAsync(Orders);
+            return Orders;
         }
     }
 }

@@ -63,11 +63,11 @@ function GetformularStatus() {
 function createRedactor() {
     var editorExists = document.querySelectorAll("#editor");
     var editorExistAlredy = document.getElementsByClassName("ql-editor");
-    var hiddenInputs = document.querySelectorAll('.editor-hidden-input')
+    var hiddenInputs = document.querySelectorAll('.editor-hidden-input');
     for (x = 0; x < hiddenInputs.length; x++) {
        var hiddenInput = hiddenInputs[x];
        var name = hiddenInput.getAttribute('data-redactor');
-       var buildEditor = editorExists[x]
+        var buildEditor = editorExists[x];
 
        if (name !== 0) {
 
@@ -88,7 +88,7 @@ function createRedactor() {
                 .then(res => res.json())
                 .then(function (data) {
                     var text = data.text;
-                    var buildEditorId = '#'+buildEditor.getAttribute('id')
+                    var buildEditorId = '#' + buildEditor.getAttribute('id');
                     document.querySelector(buildEditorId+' > .ql-editor').innerHTML = text;
 
                 });
