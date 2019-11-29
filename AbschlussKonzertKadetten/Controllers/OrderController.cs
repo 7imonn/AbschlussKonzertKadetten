@@ -141,10 +141,10 @@ namespace AbschlussKonzertKadetten.Controllers
 
             if (ModelState.IsValid && order.Botfield == null)
             {
-                var findClient = _clientRepo.ClientFindByEmail(order.Email).Result;
-                if (findClient == null || findClient != null)
+                var findClient = await _clientRepo.ClientFindByEmail(order.Email);
+                if (findClient == null)
                 {
-                    var createClient = await _clientRepo.CreateClient(new Clients()
+                    findClient = await _clientRepo.CreateClient(new Clients()
                     {
                         Email = order.Email,
                         Phone = order.Phone,
@@ -161,7 +161,7 @@ namespace AbschlussKonzertKadetten.Controllers
                     {
                         Bemerkung = order.Bemerkung,
                         OrderDate = DateTime.Now,
-                        Client = createClient,
+                        Client = findClient,
                         Kadett = createKadett
                     });
 

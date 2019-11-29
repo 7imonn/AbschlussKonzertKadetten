@@ -38,8 +38,8 @@ namespace AbschlussKonzertKadetten
             if (HostingEnvironment.IsDevelopment())
             {
                 connectionString =
-                    "server = 127.0.0.1; port = 3306; uid = root; password = gibbiX12345; database = test";
-
+                    //"server = 127.0.0.1; port = 3306; uid = root; password = gibbiX12345; database = test";
+                    "server = localhost; port = 63306; uid = gJjPnRlt9zRoSm4y; password = jh4gOJZmFhlaMnIG; database = CFDB_F5CF1261_22B8_45F4_B8A2_3BA63103BFAD";
             }
             else if (HostingEnvironment.IsStaging())
             {
@@ -62,7 +62,9 @@ namespace AbschlussKonzertKadetten
             services.AddDbContextPool<KadettenContext>(
                 options => options.UseMySql(connectionString,
                     mysqlOptions => { mysqlOptions.ServerVersion(new Version(5, 7, 17), ServerType.MySql); }
+                    //add assembly
                 ));
+            //Type of startup.getTypeinfo.assembly.getname() name
 
             services.AddTransient<IOrderRepo, OrderRepo>();
             services.AddTransient<IClientRepo, ClientRepo>();
@@ -94,6 +96,7 @@ namespace AbschlussKonzertKadetten
                 //kc.Database.EnsureDeleted();
                 app.UseDeveloperExceptionPage();
             }
+            //kc.Database.Migrate();
             kc.Database.EnsureCreated();
             app.UseDefaultFiles();
             app.UseStaticFiles();
