@@ -2,7 +2,7 @@
 
 //const uriOrder = 'https://kadetten-dev.scapp.io/api/order';
 //const uriOrder = 'https://localhost:44389/api/order';
-const uriOrder = '/api/order';
+  const uriOrder = '/api/order';
 function GetItems() {
     if (document.querySelectorAll("#result").length > 0) {
 
@@ -15,16 +15,17 @@ function GetItems() {
             .then(res => res.json())
             .then(function (data) {
                 var html = '';
-                var ticketSaEr = "";
-                var ticketSaK = "";
-                var ticketSaKk = "";
-                var ticketSoEr = "";
-                var ticketSoK = "";
-                var ticketSoKk = "";
                 for (var i = 0; i < data.length; i++) {
+                    var saE = "";
+                    var saK = "";
+                    var saKk = "";
+                    var soE = "";
+                    var soK = "";
+                    var soKk = "";
+
                     html += '<tr >';
-                    html += '<td>' + data[i].clientLastName + '</td>';
                     html += '<td>' + data[i].clientFirstName + '</td>';
+                    html += '<td>' + data[i].clientLastName + '</td>';
                     html += '<td>' + data[i].email + '</td>';
                     html += '<td>' + data[i].phone + '</td>';
                     if (data[i].kadettLastName !== "" || data[i].kadettFirstName !== "")
@@ -49,30 +50,25 @@ function GetItems() {
                         var type = data[i].tickets[x].type;
 
 
-                        if (day === "Sa") {
-                            if (type === "Erwachsene")
-                                ticketSaEr = '<td>' + quantity + '</td>';
-                            else if (type === "Kind")
-                                ticketSaK = '<td>' + quantity + '</td>';
-                            else if (type === "Kleinkind")
-                                ticketSaKk = '<td>' + quantity + '</td>';
-                        }
-                        if (day === "So") {
-                            if (type === "Erwachsene")
-                                ticketSoEr = '<td>' + quantity + '</td>';
-                            else if (type === "Kind")
-                                ticketSoK = '<td>' + quantity + '</td>';
-                            else if (type === "Kleinkind")
-                                ticketSoKk = '<td>' + quantity + '</td>';
-                        }
-
+                        if (type === "Erwachsene" && day === "Sa")
+                            saE += '<td>' + quantity + '</td>';
+                        else if (type === "Kind" && day === "Sa")
+                            saK += '<td>' + quantity + '</td>';
+                        else if (type === "Kleinkind" && day === "Sa")
+                            saKk += '<td>' + quantity + '</td>';
+                        else if (type === "Erwachsene" && day === "So")
+                            soE += '<td>' + quantity + '</td>';
+                        else if (type === "Kind" && day === "So")
+                            soK += '<td>' + quantity + '</td>';
+                        else if (type === "Kleinkind" && day === "So")
+                            soKk += '<td>' + quantity + '</td>';
                     }
-                    html += ticketSaEr;
-                    html += ticketSaK;
-                    html += ticketSaKk;
-                    html += ticketSoEr;
-                    html += ticketSoK;
-                    html += ticketSoKk;
+                    html += saE;
+                    html += saK;
+                    html += saKk;
+                    html += soE;
+                    html += soK;
+                    html += soKk;
                     html += '<td>' + data[i].bemerkung + '</td>';
                     //html += '<td class="edit-icon">' + '<a onclick="modifyItem()" data-email="' + data[i].email + '" href="#" ><i class="fas fa-pencil-alt"></i></a>' + '</td>';
                     html += '<td data-email="' + data[i].email + '" class="edit-icon">' + '<a data-email="' + data[i].email + '" href="#" ><i data-email="' + data[i].email + '" class="fas fa-pencil-alt"></i></a>' + '</td>';
@@ -110,12 +106,6 @@ function GetItemByEmail(e) {
         .then(function (data) {
 
             var edithtml = '<section id="edit">';
-            var ticketSaEr = "";
-            var ticketSaK = "";
-            var ticketSaKk = "";
-            var ticketSoEr = "";
-            var ticketSoK = "";
-            var ticketSoKk = "";
             //BUTTON DELETE
             edithtml += '<button onclick="deleteItem(\'' + data.email + '\');" class="delete-button" onmouseover="" style="cursor: pointer;"><i class="fas fa-trash-alt"></i></button>';
             //BUTTON ADD
@@ -126,9 +116,13 @@ function GetItemByEmail(e) {
             edithtml += '<h2>Reservation von ' + data.clientFirstName + ' ' + data.clientLastName + '</h2>';
             //EMAIL FIELD
             edithtml += '<h3>Email:</h3><input name="email" type="email" placeholder="E-Mail" value="' +
-                data.email +
-                '" required />';
-
+                data.email + '" required />';
+            var saE = "";
+            var saK = "";
+            var saKk = "";
+            var soE = "";
+            var soK = "";
+            var soKk = "";
             for (i = 0; i < data.tickets.length; i++) {
 
                 var day = data.tickets[i].day;
@@ -136,24 +130,25 @@ function GetItemByEmail(e) {
                 var type = data.tickets[i].type;
 
                 if (type === "Erwachsene" && day === "Sa")
-                    ticketSaEr += '<h3>Ticket Samstag Erwachsene</h3><input type="number" min="0" value="' + quantity + '" class="tickets" name="adult-sa" id="adult-sa" required  data-ticket="Erwachsene" data-Day="Sa"/>';
+                    saE = '<h3>Ticket Samstag Erwachsene</h3><input type="number" min="0" value="' + quantity + '" class="tickets" name="adult-sa" id="adult-sa" required  data-ticket="Erwachsene" data-Day="Sa"/>';
                 else if (type === "Kind" && day === "Sa")
-                    ticketSaK += '<h3>Ticket Samstag Kinder im Schulalter</h3><input type="number" min="0" value="' + quantity + '" class="tickets" name="child-sa" id="child-sa" required data-ticket="Kind" data-Day="Sa" />';
+                    saK = '<h3>Ticket Samstag Kinder im Schulalter</h3><input type="number" min="0" value="' + quantity + '" class="tickets" name="child-sa" id="child-sa" required data-ticket="Kind" data-Day="Sa" />';
                 else if (type === "Kleinkind" && day === "Sa")
-                    ticketSaKk += '<h3>Ticket Samstag Kinder in Vorkursen</h3><input type="number" min="0" value="' + quantity + '" class="tickets" name="k-child-sa" id="k-child-sa" required  data-ticket="Kleinkind" data-Day="Sa"/>';
+                    saKk = '<h3>Ticket Samstag Kinder in Vorkursen</h3><input type="number" min="0" value="' + quantity + '" class="tickets" name="k-child-sa" id="k-child-sa" required  data-ticket="Kleinkind" data-Day="Sa"/>';
                 else if (type === "Erwachsene" && day === "So")
-                    ticketSoEr += '<h3>Ticket Sonntag Erwachsene</h3><input type="number" min="0" value="' + quantity + '" class="tickets" name="adult-so" id="adult-so" required  data-ticket="Erwachsene" data-Day="So" />';
+                    soE = '<h3>Ticket Samstag Erwachsene</h3><input type="number" min="0" value="' + quantity + '" class="tickets" name="adult-so" id="adult-so" required  data-ticket="Erwachsene" data-Day="So" />';
                 else if (type === "Kind" && day === "So")
-                    ticketSoK += '<h3>Ticket Sonntag Kinder im Schulalter</h3><input type="number" min="0" value="' + quantity + '" class="tickets" name="child-so" id="child-so" required data-ticket="Kind" data-Day="So" />';
+                    soK = '<h3>Ticket Samstag Kinder im Schulalter</h3><input type="number" min="0" value="' + quantity + '" class="tickets" name="child-so" id="child-so" required data-ticket="Kind" data-Day="So" />';
                 else if (type === "Kleinkind" && day === "So")
-                    ticketSoKk += '<h3>Ticket Sonntag Kinder in Vorkursen</h3><input type="number" min="0" value="' + quantity + '" class="tickets" name="k-child-so" id="k-child-so" required data-ticket="Kleinkind" data-Day="So" />';
+                    soKk = '<h3>Ticket Samstag Kinder in Vorkursen</h3><input type="number" min="0" value="' + quantity + '" class="tickets" name="k-child-so" id="k-child-so" required data-ticket="Kleinkind" data-Day="So" />';
             }
-            edithtml += ticketSaEr;
-            edithtml += ticketSaK;
-            edithtml += ticketSaKk;
-            edithtml += ticketSoEr;
-            edithtml += ticketSoK;
-            edithtml += ticketSoKk;
+            edithtml += saE;
+            edithtml += saK;
+            edithtml += saKk;
+            edithtml += soE;
+            edithtml += soK;
+            edithtml += soKk;
+
             if (data.bemerkung === 'Keine')
                 edithtml += '<h3>Bemerkungen</h3><textarea name="text" rows="1"></textarea></form></div></section>';
             else
@@ -245,7 +240,7 @@ function deleteItem(email) {
         headers: header
     });
     fetch(req)
-        .then((function (myJson) {
+        .then((function(myJson) {
             if (myJson.status === 200) {
                 document.getElementById('edit').remove();
                 GetItems();
