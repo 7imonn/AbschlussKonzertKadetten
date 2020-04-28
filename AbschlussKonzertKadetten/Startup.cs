@@ -38,8 +38,8 @@ namespace AbschlussKonzertKadetten
             if (HostingEnvironment.IsDevelopment())
             {
                 connectionString =
-                    //"server = 127.0.0.1; port = 3306; uid = root; password = gibbiX12345; database = test";
-                    "server = localhost; port = 63306; uid = gJjPnRlt9zRoSm4y; password = jh4gOJZmFhlaMnIG; database = CFDB_F5CF1261_22B8_45F4_B8A2_3BA63103BFAD";
+                    "server = 127.0.0.1; port = 3306; uid = root; password = gibbiX12345; database = test";
+                //"server = localhost; port = 63306; uid = gJjPnRlt9zRoSm4y; password = jh4gOJZmFhlaMnIG; database = CFDB_F5CF1261_22B8_45F4_B8A2_3BA63103BFAD";
             }
             else if (HostingEnvironment.IsStaging())
             {

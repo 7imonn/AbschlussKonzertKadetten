@@ -9,7 +9,7 @@ using AbschlussKonzertKadetten.Models;
 using AbschlussKonzertKadetten.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Identity.UI.Pages.Internal.Account;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -21,6 +21,9 @@ namespace AbschlussKonzertKadetten.Controllers
     [ApiController]
     public class OrderController : ControllerBase
     {
+
+        public IHostingEnvironment HostingEnvironment { get; }
+
         private readonly KadettenContext _context;
         private readonly IOrderRepo _orderRepo;
         private readonly IClientRepo _clientRepo;
@@ -33,7 +36,7 @@ namespace AbschlussKonzertKadetten.Controllers
 
         public OrderController(KadettenContext context, IOrderRepo orderRepo, IClientRepo clientRepo,
             ITicketOrderRepo ticketOrderRepo, ITicketRepo ticketRepo, IKadettRepo kadettRepo, ILogger<OrderController> logger
-            , IUserRepo userRepo, IEmailSenderService emailSenderService)
+            , IUserRepo userRepo, IEmailSenderService emailSenderService, IHostingEnvironment env)
         {
             _logger = logger;
             _context = context;
@@ -44,6 +47,7 @@ namespace AbschlussKonzertKadetten.Controllers
             _userRepo = userRepo;
             _kadettRepo = kadettRepo;
             _emailSenderService = emailSenderService;
+            HostingEnvironment = env;
         }
 
         // GET api/values
@@ -179,11 +183,12 @@ namespace AbschlussKonzertKadetten.Controllers
                             Day = ticket.Day
                         });
                     }
-
-                    if (_clientRepo.ClientFindByEmail(order.Email).Result == null || true)
+                    var email = await _clientRepo.ClientFindByEmail(order.Email);
+                    if (email == null)
                     {
                         await _context.SaveChangesAsync();
-                        await _emailSenderService.SendEmailAsync(order.Email);
+                        if(!HostingEnvironment.IsDevelopment())
+                            await _emailSenderService.SendEmailAsync(order.Email);
                         return Ok();
                     }
 
