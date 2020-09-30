@@ -18,7 +18,6 @@ namespace AbschlussKonzertKadetten.Controllers
     [Route("api/redactor")]
     [EnableCors("MyPolicy")]
     [ApiController]
-    [Authorize]
     public class RedactorController : Controller
     {
         private readonly KadettenContext _context;
@@ -54,7 +53,6 @@ namespace AbschlussKonzertKadetten.Controllers
         //    return vmList;
         //}
         [HttpGet("{name}")]
-        [AllowAnonymous]
         public async Task<ViewModelRedactor> Get(string name)
         {
             _logger.LogInformation("Get Redactor by name:", name);
@@ -70,7 +68,6 @@ namespace AbschlussKonzertKadetten.Controllers
             return vm;
         }
         [HttpGet("active")]
-        [AllowAnonymous]
         public async Task<bool> Get()
         {
             _logger.LogInformation("Get active");

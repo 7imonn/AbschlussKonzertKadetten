@@ -16,7 +16,6 @@ using Microsoft.Extensions.Logging;
 namespace AbschlussKonzertKadetten.Controllers
 {
     [Route("api/Order")]
-    [Authorize]
     [EnableCors("MyPolicy")]
     [ApiController]
     public class OrderController : ControllerBase
@@ -137,7 +136,6 @@ namespace AbschlussKonzertKadetten.Controllers
         }
 
         // POST api/values
-        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult> Post(ViewModelOrder order)
         {

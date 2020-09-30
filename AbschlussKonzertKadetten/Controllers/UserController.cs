@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AbschlussKonzertKadetten.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("api/authenticate")]
     public class UsersController : ControllerBase
@@ -23,7 +22,6 @@ namespace AbschlussKonzertKadetten.Controllers
             _user = user;
         }
 
-        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Authenticate(ViewModelUser userModel)
         {

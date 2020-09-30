@@ -55,9 +55,6 @@ namespace AbschlussKonzertKadetten
                 connectionString = "Server=sql03.popnetinf.local;UID=kadetten-thun;PWD=5&GrA-2c!Xd@;Database=kadetten-thun;Port=3306;";
             }
 
-            services.AddAuthentication("BasicAuthentication")
-                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDbContextPool<KadettenContext>(
                 options => options.UseMySql(connectionString,
@@ -102,7 +99,6 @@ namespace AbschlussKonzertKadetten
             app.UseStaticFiles();
             app.UseCors("MyPolicy");
             app.UseHttpsRedirection();
-            app.UseAuthentication();
             app.UseMvc(routes => { routes.MapRoute("default", "{controller=order}/{action=Get}/{id?}"); });
 
         }
