@@ -34,25 +34,12 @@ namespace AbschlussKonzertKadetten
         public void ConfigureServices(IServiceCollection services)
         {
             var logger = _loggerFactory.CreateLogger<Startup>();
-            var connectionString = String.Empty;
+            var connectionString = "Server=sql03.popnetinf.local;UID=kadetten-thun;PWD=5&GrA-2c!Xd@;Database=kadetten-thun;Port=3306;";
             if (HostingEnvironment.IsDevelopment())
             {
                 connectionString =
                     "server = 127.0.0.1; port = 3306; uid = root; password = gibbiX12345; database = test";
                 //"server = localhost; port = 63306; uid = gJjPnRlt9zRoSm4y; password = jh4gOJZmFhlaMnIG; database = CFDB_F5CF1261_22B8_45F4_B8A2_3BA63103BFAD";
-            }
-            else if (HostingEnvironment.IsStaging())
-            {
-                var host = Configuration["vcap:services:mariadbent:0:credentials:host"];
-                var port = Configuration["vcap:services:mariadbent:0:credentials:port"];
-                var db = Configuration["vcap:services:mariadbent:0:credentials:database"];
-                var user = Configuration["vcap:services:mariadbent:0:credentials:username"];
-                var password = Configuration["vcap:services:mariadbent:0:credentials:password"];
-                connectionString = $"Server={host};UID={user};PWD={password};Database={db};Port={port};";
-            }
-            else
-            {
-                connectionString = "Server=sql03.popnetinf.local;UID=kadetten-thun;PWD=5&GrA-2c!Xd@;Database=kadetten-thun;Port=3306;";
             }
 
             services.AddAuthentication("BasicAuthentication")
@@ -84,18 +71,9 @@ namespace AbschlussKonzertKadetten
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, KadettenContext kc, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, KadettenContext kc)
         {
-            if (env.IsDevelopment())
-            {
-                //kc.Database.EnsureDeleted();
-                app.UseDeveloperExceptionPage();
-            }
-            if (env.IsStaging())
-            {
-                //kc.Database.EnsureDeleted();
-                app.UseDeveloperExceptionPage();
-            }
+            app.UseDeveloperExceptionPage();
             //kc.Database.Migrate();
             kc.Database.EnsureCreated();
             app.UseDefaultFiles();
